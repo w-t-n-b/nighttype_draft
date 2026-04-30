@@ -1,0 +1,246 @@
+/* === NightType Cinema Noir — 共通シェル === */
+:root{
+  --bg:#04040e;
+  --bg-2:#0a0a1a;
+  --ink:#e9e6ff;
+  --ink-mute:#9a96b8;
+  --ink-faint:#6c688a;
+  --violet:#9B7CF8;
+  --violet-deep:#6d4dd9;
+  --cyan:#22D3EE;
+  --pink:#F472B6;
+  --gold:#e8c574;
+  --line:rgba(255,255,255,0.08);
+  --line-strong:rgba(255,255,255,0.16);
+  --glass:rgba(14,12,32,0.45);
+  --glass-strong:rgba(22,18,52,0.65);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Noto Sans JP",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body{min-height:100vh;position:relative}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;color:inherit}
+
+/* === Background layers === */
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.nebula{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 45% at 15% 20%, rgba(155,124,248,0.22), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 75%, rgba(34,211,238,0.16), transparent 60%),
+    radial-gradient(ellipse 35% 30% at 50% 95%, rgba(244,114,182,0.12), transparent 60%);
+  mix-blend-mode:screen;
+}
+.constellation{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.const-char{
+  position:absolute;width:130px;height:130px;
+  opacity:.08;
+  filter:grayscale(.4) brightness(.85) saturate(.7) drop-shadow(0 0 18px rgba(155,124,248,.4));
+  mix-blend-mode:screen;
+  animation:driftFloat 22s ease-in-out infinite;
+  will-change:transform;
+}
+.const-char img{width:100%;height:100%;object-fit:contain}
+@keyframes driftFloat{
+  0%,100%{transform:translate(0,0) rotate(0deg) scale(1)}
+  33%{transform:translate(20px,-30px) rotate(2deg) scale(1.04)}
+  66%{transform:translate(-15px,20px) rotate(-2deg) scale(.97)}
+}
+.grain{
+  position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.vignette{
+  position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse 90% 70% at 50% 50%,transparent 50%,rgba(4,4,14,.6) 100%);
+}
+
+main, .nt-main{position:relative;z-index:5}
+
+/* === Top Nav === */
+.nt-nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 28px;
+  backdrop-filter:blur(16px) saturate(140%);
+  background:rgba(4,4,14,0.55);
+  border-bottom:1px solid var(--line);
+}
+.nt-brand{
+  font-family:"Cormorant Garamond",serif;
+  font-size:22px;font-weight:600;letter-spacing:.06em;
+  background:linear-gradient(90deg,#fff,var(--violet),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  display:flex;align-items:center;gap:10px;
+}
+.nt-brand-mark{
+  display:inline-block;width:8px;height:8px;border-radius:50%;
+  background:var(--violet);
+  box-shadow:0 0 12px var(--violet),0 0 24px rgba(155,124,248,.6);
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
+.nt-nav-links{
+  display:flex;gap:24px;
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-mute);
+}
+.nt-nav-links a{transition:color .25s}
+.nt-nav-links a:hover, .nt-nav-links a.active{color:var(--ink)}
+.nt-nav-links a.active{
+  position:relative;
+  color:#fff;
+}
+.nt-nav-links a.active::after{
+  content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;
+  background:linear-gradient(90deg,var(--violet),var(--cyan));
+}
+
+/* Mobile drawer toggle */
+.nt-burger{
+  display:none;width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,0.04);border:1px solid var(--line);
+  cursor:pointer;position:relative;
+}
+.nt-burger span{
+  position:absolute;left:10px;right:10px;height:1px;
+  background:var(--ink-mute);transition:.3s;
+}
+.nt-burger span:nth-child(1){top:14px}
+.nt-burger span:nth-child(2){top:18px}
+.nt-burger span:nth-child(3){top:22px}
+.nt-burger.open span:nth-child(1){top:18px;transform:rotate(45deg);background:var(--violet)}
+.nt-burger.open span:nth-child(2){opacity:0}
+.nt-burger.open span:nth-child(3){top:18px;transform:rotate(-45deg);background:var(--violet)}
+
+@media (max-width:780px){
+  .nt-nav{padding:12px 18px}
+  .nt-nav-links{
+    position:fixed;top:0;right:0;bottom:0;
+    width:78%;max-width:320px;
+    background:rgba(8,6,22,0.96);
+    backdrop-filter:blur(24px);
+    border-left:1px solid var(--line);
+    flex-direction:column;gap:0;padding:90px 32px 32px;
+    transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+    z-index:60;
+  }
+  .nt-nav-links.open{transform:translateX(0)}
+  .nt-nav-links a{
+    padding:18px 0;border-bottom:1px solid var(--line);
+    font-size:12px;letter-spacing:.22em;
+  }
+  .nt-nav-links a.active::after{display:none}
+  .nt-burger{display:block;z-index:70}
+  .nt-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.5);
+    z-index:55;opacity:0;pointer-events:none;transition:opacity .3s;
+  }
+  .nt-overlay.open{opacity:1;pointer-events:all}
+}
+
+/* === Buttons === */
+.nt-btn{
+  position:relative;display:inline-flex;align-items:center;gap:10px;
+  padding:16px 32px;border-radius:99px;
+  font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;cursor:pointer;
+  border:1px solid var(--line);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;
+  backdrop-filter:blur(12px);
+  overflow:hidden;isolation:isolate;
+  background:rgba(255,255,255,0.03);color:var(--ink);
+}
+.nt-btn:hover{
+  transform:translateY(-3px);
+  border-color:rgba(155,124,248,.5);
+  box-shadow:0 12px 40px rgba(155,124,248,.15);
+}
+.nt-btn-primary{
+  background:linear-gradient(135deg,var(--violet),var(--cyan));
+  color:#0b0820;border-color:transparent;
+  box-shadow:0 20px 60px -20px rgba(155,124,248,.5);
+}
+.nt-btn-primary:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 24px rgba(155,124,248,.5),0 28px 80px -16px rgba(34,211,238,.4);
+}
+.nt-btn-primary::before{
+  content:"";position:absolute;inset:-2px;
+  background:conic-gradient(from 0deg,var(--violet),var(--cyan),var(--pink),var(--violet));
+  border-radius:99px;z-index:-2;animation:spin 4s linear infinite;
+  opacity:0;transition:opacity .3s;
+}
+.nt-btn-primary:hover::before{opacity:.55}
+@keyframes spin{to{transform:rotate(360deg)}}
+.nt-btn .arrow{transition:transform .3s}
+.nt-btn:hover .arrow{transform:translateX(4px)}
+
+/* === Section base === */
+.nt-section{
+  padding:80px 32px 60px;position:relative;z-index:5;
+  max-width:920px;margin:0 auto;
+}
+.nt-eyebrow{
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.34em;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:16px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.nt-eyebrow::before{
+  content:"";width:24px;height:1px;background:var(--cyan);opacity:.5;
+}
+.nt-title{
+  font-family:"Cormorant Garamond",serif;font-weight:500;
+  font-size:clamp(36px,6vw,64px);line-height:1.05;letter-spacing:-.01em;
+  margin-bottom:36px;text-wrap:balance;
+}
+.nt-title em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--violet),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* === Card / Glass === */
+.nt-card{
+  position:relative;
+  border-radius:24px;
+  border:1px solid var(--line);
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(140%);
+  overflow:hidden;
+}
+.nt-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
+}
+
+/* utility */
+.serif{font-family:"Cormorant Garamond",serif}
+.mono{font-family:"Space Mono",monospace}
+.gradient-text{
+  background:linear-gradient(135deg,#fff,var(--violet) 50%,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.violet-text{color:var(--violet)}
+.cyan-text{color:var(--cyan)}
+.pink-text{color:var(--pink)}
+
+@keyframes ntFadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes ntFadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes ntPop{
+  0%{opacity:0;transform:scale(.92)}
+  100%{opacity:1;transform:scale(1)}
+}

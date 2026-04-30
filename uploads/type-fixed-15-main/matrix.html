@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>相性マトリクス｜ナイトタイプ</title>
+  <link rel="stylesheet" href="./style.css"/>
+  <style>
+    .matrix-wrap{max-width:480px;margin:0 auto;padding:24px 12px 60px;}
+    .matrix-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
+    .matrix-table{border-collapse:collapse;min-width:520px;}
+    .matrix-table th,.matrix-table td{width:34px;height:34px;text-align:center;vertical-align:middle;font-size:0.6rem;}
+    .matrix-table th{background:var(--surface2);color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;font-size:0.55rem;position:sticky;}
+    .matrix-table th:first-child{left:0;z-index:10;width:80px;text-align:left;padding-left:8px;background:var(--surface2);}
+    .row-header{display:flex;align-items:center;gap:6px;padding:4px 0 4px 4px;}
+    .row-header img,.col-header img{width:24px;height:24px;border-radius:6px;object-fit:cover;}
+    .row-header .rh-name{font-size:0.58rem;color:var(--white);font-family:'Syne',sans-serif;font-weight:700;white-space:nowrap;}
+    .col-header{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 2px;}
+    .col-header .ch-code{font-size:0.5rem;color:var(--purple-ll);}
+    .score-cell{border-radius:6px;cursor:pointer;transition:all 0.15s;position:relative;}
+    .score-cell:hover{transform:scale(1.15);z-index:5;}
+    .score-cell.s5{background:rgba(168,85,247,0.75);}
+    .score-cell.s4{background:rgba(168,85,247,0.45);}
+    .score-cell.s3{background:rgba(124,58,237,0.25);}
+    .score-cell.s2{background:rgba(100,80,140,0.2);}
+    .score-cell.s1{background:rgba(236,72,153,0.25);}
+    .score-cell.self{background:linear-gradient(135deg,rgba(168,85,247,0.5),rgba(236,72,153,0.5));}
+    .score-num{font-family:'Syne',sans-serif;font-weight:700;font-size:0.65rem;color:rgba(255,255,255,0.8);}
+    .legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+    .legend-item{display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--muted);}
+    .legend-dot{width:12px;height:12px;border-radius:3px;}
+
+    /* tooltip */
+    .tooltip{
+      position:fixed;z-index:999;
+      background:rgba(17,17,24,0.97);border:1px solid var(--border);
+      border-radius:12px;padding:10px 14px;max-width:200px;
+      pointer-events:none;opacity:0;transition:opacity 0.15s;
+      font-size:0.72rem;line-height:1.6;color:var(--white);
+    }
+    .tooltip.show{opacity:1;}
+    .tooltip .tt-names{font-family:'Syne',sans-serif;font-weight:700;font-size:0.68rem;color:var(--purple-ll);margin-bottom:4px;}
+    .tooltip .tt-score{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+    .tooltip .tt-hearts{letter-spacing:2px;font-size:0.75rem;}
+    .tooltip .tt-comment{font-size:0.65rem;color:var(--muted);}
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="noise"></div>
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">NightType</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer" id="drawer">
+  <a href="index.html"><span class="icon">🏠</span>ホーム</a>
+  <a href="quiz.html"><span class="icon">🌙</span>診断する</a>
+  <a href="characters.html"><span class="icon">🎴</span>キャラ一覧</a>
+  <a href="compat.html"><span class="icon">💜</span>相性チェック</a>
+  <a href="matrix.html" class="active"><span class="icon">📊</span>相性マトリクス</a>
+</div>
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<div class="page">
+  <div class="matrix-wrap">
+    <div class="page-header">
+      <h1>相性マトリクス</h1>
+      <p>全16タイプの相性を一覧で確認</p>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(168,85,247,0.75)"></div>最高(5)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(168,85,247,0.45)"></div>良い(4)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(124,58,237,0.25)"></div>普通(3)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(100,80,140,0.2)"></div>難(2)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(236,72,153,0.25)"></div>刺激的(1)</div>
+    </div>
+
+    <div class="matrix-scroll">
+      <table class="matrix-table" id="matrixTable"></table>
+    </div>
+    <p style="font-size:0.62rem;color:var(--muted);margin-top:12px;text-align:center">タップで相性詳細を表示</p>
+  </div>
+</div>
+
+<!-- Tooltip -->
+<div class="tooltip" id="tooltip">
+  <div class="tt-names" id="ttNames"></div>
+  <div class="tt-score"><span class="tt-hearts" id="ttHearts"></span></div>
+  <div class="tt-comment" id="ttComment"></div>
+</div>
+
+<script src="./types.js"></script>
+<script src="./common.js"></script>
+<script>
+const keys=Object.keys(types);
+const table=document.getElementById('matrixTable');
+const tooltip=document.getElementById('tooltip');
+const heartMap={5:'💜💜💜💜💜',4:'💜💜💜💜🤍',3:'💜💜💜🤍🤍',2:'💜💜🤍🤍🤍',1:'💜🤍🤍🤍🤍'};
+
+// ヘッダー行
+const thead=document.createElement('thead');
+const headerRow=document.createElement('tr');
+const emptyTh=document.createElement('th'); emptyTh.textContent='';
+headerRow.appendChild(emptyTh);
+keys.forEach(k=>{
+  const th=document.createElement('th');
+  const d=types[k];
+  th.innerHTML=`<div class="col-header">${d.image?`<img src="${d.image}" alt="">`:`<span style="font-size:1rem">${d.icon}</span>`}<span class="ch-code">${k}</span>${d.axisCode?`<span style="font-size:0.38rem;color:rgba(196,181,253,0.6);letter-spacing:0.05em">${d.axisCode}</span>`:''}</div>`;
+  headerRow.appendChild(th);
+});
+thead.appendChild(headerRow);
+table.appendChild(thead);
+
+// データ行
+const tbody=document.createElement('tbody');
+keys.forEach(rowKey=>{
+  const tr=document.createElement('tr');
+  const rd=types[rowKey];
+  // 行ヘッダー
+  const th=document.createElement('th');
+  th.innerHTML=`<div class="row-header">${rd.image?`<img src="${rd.image}" alt="">`:`<span style="font-size:1.1rem">${rd.icon}</span>`}<span class="rh-name">${rd.name.slice(0,6)}</span></div>`;
+  tr.appendChild(th);
+
+  keys.forEach(colKey=>{
+    const td=document.createElement('td');
+    const score=getCompat(rowKey,colKey);
+    const isSelf=rowKey===colKey;
+    td.className=`score-cell ${isSelf?'self':'s'+score}`;
+    td.innerHTML=`<span class="score-num">${score}</span>`;
+    td.addEventListener('click',e=>{
+      const r=types[rowKey], c=types[colKey];
+      document.getElementById('ttNames').textContent=`${r.name} × ${c.name}`;
+      document.getElementById('ttHearts').textContent=heartMap[score];
+      document.getElementById('ttComment').textContent=getCompatComment(score);
+      const rect=td.getBoundingClientRect();
+      let top=rect.bottom+8+window.scrollY;
+      let left=rect.left+window.scrollX;
+      if(left+200>window.innerWidth) left=window.innerWidth-210;
+      tooltip.style.top=top+'px'; tooltip.style.left=left+'px';
+      tooltip.classList.add('show');
+      e.stopPropagation();
+    });
+    tr.appendChild(td);
+  });
+  tbody.appendChild(tr);
+});
+table.appendChild(tbody);
+
+document.addEventListener('click',()=>tooltip.classList.remove('show'));
+</script>
+</body>
+</html>

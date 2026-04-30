@@ -1,580 +1,748 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8"/>
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>診断結果｜ナイトタイプ</title>
-  <meta property="og:title"       id="ogTitle"  content="ナイトタイプ診断"/>
-  <meta property="og:description" id="ogDesc"   content="あなたのナイトタイプが分かる診断"/>
-  <meta property="og:image"       id="ogImage"  content=""/>
-  <meta property="og:type"                      content="website"/>
-  <meta name="twitter:card"                     content="summary_large_image"/>
-  <meta name="twitter:title"      id="twTitle"  content="ナイトタイプ診断"/>
-  <meta name="twitter:description" id="twDesc"  content=""/>
-  <meta name="twitter:image"      id="twImage"  content=""/>
-  <link rel="stylesheet" href="./style.css"/>
-  <style>
-    .result-char-img{width:190px;height:190px;border-radius:50%;object-fit:cover;border:2px solid var(--border);box-shadow:0 0 50px rgba(124,58,237,0.45),0 0 90px rgba(236,72,153,0.2);opacity:0;animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards;}
-    .result-char-fallback{width:190px;height:190px;border-radius:50%;font-size:5rem;display:flex;align-items:center;justify-content:center;border:2px solid var(--border);background:radial-gradient(circle at 30% 30%,rgba(124,58,237,0.3),rgba(10,10,15,0.8));box-shadow:0 0 50px rgba(124,58,237,0.45);opacity:0;animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards;}
-    .result-tagline{font-size:0.72rem;color:var(--purple-ll);font-family:'Syne',sans-serif;margin-bottom:10px;opacity:0;animation:popIn 0.6s ease 0.45s forwards;}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Result — NightType</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="nighttype-shell.css" />
+<style>
+  body{ background:var(--bg); }
 
-    /* URL共有 */
-    .url-share-block{width:100%;margin-top:14px;opacity:0;animation:popIn 0.6s ease 0.7s forwards;}
-    .url-share-inner{display:flex;gap:8px;align-items:center;padding:12px 14px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);}
-    .url-share-text{flex:1;font-size:0.68rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'Syne',sans-serif;}
-    .btn-copy{flex-shrink:0;padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--purple-ll);font-family:'Syne',sans-serif;font-weight:700;font-size:0.65rem;cursor:pointer;transition:all 0.2s;letter-spacing:0.06em;}
-    .btn-copy:hover{background:rgba(124,58,237,0.2);border-color:var(--purple-l);}
-    .btn-copy.copied{background:rgba(124,58,237,0.3);border-color:var(--purple-l);color:var(--purple-ll);}
+  .result-main{
+    max-width:760px; margin:0 auto;
+    padding:120px 24px 100px;
+    position:relative; z-index:5;
+  }
 
-    /* 友達比較 */
-    .friend-block{width:100%;margin-top:14px;border-radius:18px;background:var(--surface);border:1px solid var(--border);overflow:hidden;opacity:0;animation:popIn 0.6s ease 0.8s forwards;}
-    .friend-block::before{content:'';display:block;height:2px;background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan));}
-    .friend-inner{padding:20px 18px;}
-    .friend-title{font-family:'Syne',sans-serif;font-weight:700;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple-ll);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-    .friend-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;}
-    .friend-type-btn{padding:0;border-radius:10px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;transition:all 0.18s;overflow:hidden;text-align:left;color:var(--white);}
-    .friend-type-btn:hover{border-color:var(--purple-l);transform:translateY(-2px);}
-    .friend-type-btn.selected{border-color:var(--purple-l);background:rgba(124,58,237,0.2);box-shadow:0 0 12px rgba(124,58,237,0.25);}
-    .friend-type-btn img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
-    .friend-type-btn .ftb-icon{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--bg);}
-    .friend-type-btn .ftb-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.65rem;padding:6px 8px;line-height:1.3;}
-    .friend-result{border-radius:12px;background:var(--surface2);padding:14px 16px;display:none;}
-    .friend-result.show{display:block;animation:popIn 0.4s ease forwards;}
-    .fr-pair{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;}
-    .fr-char{display:flex;flex-direction:column;align-items:center;gap:4px;}
-    .fr-char img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--border);}
-    .fr-char .fr-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:var(--surface);border:2px solid var(--border);}
-    .fr-char .fr-name{font-size:0.6rem;font-family:'Syne',sans-serif;font-weight:700;color:var(--purple-ll);text-align:center;max-width:60px;line-height:1.3;}
-    .fr-arrow{font-size:1.2rem;color:var(--pink);}
-    .fr-hearts{text-align:center;font-size:1.3rem;letter-spacing:3px;margin-bottom:6px;}
-    .fr-label{text-align:center;font-family:'Syne',sans-serif;font-size:0.62rem;letter-spacing:0.12em;color:var(--muted);margin-bottom:8px;}
-    .fr-comment{font-size:0.78rem;color:#9d99b0;line-height:1.7;padding:10px 12px;border-radius:8px;background:rgba(124,58,237,0.08);border-left:2px solid var(--purple);}
+  /* ── Hero ── */
+  .result-hero{
+    text-align:center;
+    margin-bottom:60px;
+    animation:ntFadeUp .8s cubic-bezier(.4,0,.2,1) both;
+  }
+  .result-eyebrow{
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.4em; text-transform:uppercase;
+    color:var(--cyan); margin-bottom:36px;
+    display:inline-flex; align-items:center; gap:12px;
+  }
+  .result-eyebrow::before,
+  .result-eyebrow::after{
+    content:""; width:36px; height:1px; background:var(--cyan); opacity:.5;
+  }
 
-    /* シェアセクション */
-    .share-section{width:100%;margin-top:16px;opacity:0;animation:popIn 0.6s ease 1s forwards;}
-    .share-title{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;text-align:center;}
-    .card-preview-wrap{width:100%;border-radius:16px;overflow:hidden;margin-bottom:14px;background:var(--surface);border:1px solid var(--border);}
-    #shareCanvas{display:block;width:100%;height:auto;}
-    .share-tabs{display:flex;gap:8px;margin-bottom:12px;}
-    .share-tab{flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--surface);font-family:'Syne',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);cursor:pointer;transition:all 0.2s;text-align:center;}
-    .share-tab.active{border-color:var(--purple-l);background:rgba(124,58,237,0.18);color:var(--purple-ll);}
-    .share-btns{display:flex;flex-direction:column;gap:10px;}
-    .btn-x{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;border-radius:14px;border:none;cursor:pointer;background:#000;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.08em;transition:all 0.22s;}
-    .btn-x:hover{background:#111;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
-    .btn-x svg{width:18px;height:18px;fill:#fff;flex-shrink:0;}
-    .btn-line{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;border-radius:14px;border:none;cursor:pointer;background:#06C755;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.08em;transition:all 0.22s;text-decoration:none;}
-    .btn-line:hover{background:#05b04c;transform:translateY(-2px);box-shadow:0 8px 24px rgba(6,199,85,0.4);}
-    .btn-line svg{width:20px;height:20px;fill:#fff;flex-shrink:0;}
-    .btn-dl{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;border-radius:14px;border:1px solid var(--border);background:transparent;color:var(--purple-ll);font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.08em;cursor:pointer;transition:all 0.22s;text-decoration:none;}
-    .btn-dl:hover{background:rgba(124,58,237,0.12);transform:translateY(-2px);}
+  .char-orbit{
+    position:relative; width:240px; height:240px;
+    margin:0 auto 24px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .char-orbit-ring{
+    position:absolute; inset:0; border-radius:50%;
+    border:1px solid rgba(155,124,248,.18);
+    animation:slowRotate 40s linear infinite;
+  }
+  .char-orbit-ring::after{
+    content:""; position:absolute; top:-3px; left:50%;
+    transform:translateX(-50%);
+    width:6px; height:6px; border-radius:50%;
+    background:var(--violet);
+    box-shadow:0 0 14px var(--violet);
+  }
+  .char-orbit-ring:nth-child(2){
+    inset:18px;
+    border-color:rgba(34,211,238,.14);
+    animation-direction:reverse; animation-duration:50s;
+  }
+  .char-orbit-ring:nth-child(2)::after{
+    background:var(--cyan); box-shadow:0 0 14px var(--cyan);
+  }
+  @keyframes slowRotate{ to{transform:rotate(360deg)} }
 
-    /* 相性理由ボックス */
-    .compat-reason-box {
-      margin-top: 12px; padding: 14px 16px;
-      border-radius: 14px; font-size: 0.8rem;
-      line-height: 1.85; color: #9d99b0;
-    }
-    .compat-reason-box.good-reason {
-      background: rgba(124,58,237,0.07);
-      border-left: 3px solid rgba(168,85,247,0.5);
-    }
-    .compat-reason-box.bad-reason {
-      background: rgba(236,72,153,0.07);
-      border-left: 3px solid rgba(236,72,153,0.4);
-    }
+  .char-frame{
+    position:relative; width:200px; height:200px; border-radius:50%;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:
+      0 0 60px rgba(155,124,248,.4),
+      0 0 120px rgba(34,211,238,.18),
+      inset 0 0 40px rgba(0,0,0,.4);
+    animation:ntPop .8s cubic-bezier(.34,1.56,.64,1) .2s both;
+  }
+  .char-frame img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .char-frame::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse at 30% 30%, transparent 30%, rgba(155,124,248,.15) 90%);
+  }
 
-    /* 相性理由の相手名を強調 */
-    .compat-reason-box strong {
-      color: var(--purple-ll); font-weight: 700;
-    }
+  .type-code{
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.34em; color:var(--violet);
+    margin-bottom:8px;
+    animation:ntFadeUp .6s ease .4s both;
+  }
+  .type-name{
+    font-family:"Cormorant Garamond",serif;
+    font-size:clamp(40px,7vw,64px);
+    font-weight:500; line-height:1.1;
+    background:linear-gradient(135deg,#fff,var(--violet) 50%,var(--cyan));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    margin-bottom:16px; letter-spacing:-.01em;
+    animation:ntFadeUp .7s cubic-bezier(.4,0,.2,1) .5s both;
+  }
+  .type-tagline{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:clamp(18px,3vw,22px); color:var(--ink-mute);
+    margin-bottom:24px; text-wrap:pretty;
+    animation:ntFadeUp .7s ease .6s both;
+  }
+  .type-axes{
+    display:inline-flex; align-items:center; gap:14px;
+    padding:8px 18px; border-radius:99px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.18em; color:var(--ink-mute);
+    animation:ntFadeUp .6s ease .7s both;
+  }
+  .type-axes span strong{ color:var(--ink); font-weight:700; }
+  .type-axes-divider{ color:var(--ink-faint); }
 
-    /* ローディング */
-    .loading-overlay{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.6s ease;}
-    .loading-overlay.hidden{opacity:0;pointer-events:none;transition:opacity 0.6s ease;}
-    .loading-overlay.hidden-done{display:none;}
-    .loading-ring{width:64px;height:64px;border-radius:50%;border:3px solid rgba(124,58,237,0.2);border-top-color:var(--purple-l);animation:spin 0.9s linear infinite;}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .loading-text{font-family:'Syne',sans-serif;font-size:0.75rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;}
-    .loading-chars{display:flex;gap:8px;}
-    .loading-chars img{width:40px;height:40px;border-radius:50%;object-fit:cover;opacity:0;animation:popIn 0.4s ease forwards;}
+  /* ── Section ── */
+  .section-block{
+    margin-bottom:48px;
+    animation:ntFadeUp .8s cubic-bezier(.4,0,.2,1) both;
+  }
+  .section-block:nth-child(2){animation-delay:.8s}
+  .section-block:nth-child(3){animation-delay:.9s}
+  .section-block:nth-child(4){animation-delay:1.0s}
+  .section-block:nth-child(5){animation-delay:1.1s}
 
-    /* ── Instagram誘導 ── */
-    .insta-block {
-      width:100%; margin-top:16px;
-      border-radius:20px; overflow:hidden;
-      border:1px solid rgba(188,24,136,0.3);
-      background:rgba(188,24,136,0.05);
-      opacity:0; animation:popIn 0.6s ease 1.1s forwards;
-    }
-    .insta-block::before {
-      content:''; display:block; height:2px;
-      background:linear-gradient(90deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
-    }
-    .insta-inner { padding:20px 18px 22px; }
-    .insta-top { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
-    .insta-logo svg { width:40px; height:40px; }
-    .insta-title { font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; margin-bottom:2px; }
-    .insta-handle { font-size:0.68rem; color:#e1306c; letter-spacing:0.05em; }
-    .insta-desc { font-size:0.78rem; color:var(--muted); line-height:1.7; margin-bottom:16px; }
+  .section-eyebrow{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.4em; text-transform:uppercase;
+    color:var(--cyan); margin-bottom:14px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .section-eyebrow::before{
+    content:""; width:24px; height:1px; background:var(--cyan); opacity:.5;
+  }
+  .section-title{
+    font-family:"Cormorant Garamond",serif;
+    font-size:28px; font-weight:500;
+    margin-bottom:24px; line-height:1.2;
+  }
+  .section-title em{
+    font-style:italic;
+    color:var(--violet);
+  }
 
-    /* プレビューグリッド（キャラ3枚） */
-    .insta-preview { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; border-radius:10px; overflow:hidden; margin-bottom:16px; }
-    .insta-post {
-      aspect-ratio:1/1; background:var(--surface2);
-      overflow:hidden; position:relative;
-    }
-    .insta-post img { width:100%; height:100%; object-fit:cover; display:block; }
-    .insta-post::after {
-      content:''; position:absolute; inset:0;
-      background:linear-gradient(135deg,rgba(188,24,136,0.15),transparent);
-    }
+  /* ── Description card ── */
+  .desc-card{
+    padding:32px;
+    border-radius:24px;
+    border:1px solid var(--line);
+    background:var(--glass);
+    backdrop-filter:blur(20px) saturate(140%);
+    position:relative;
+  }
+  .desc-card::before{
+    content:""; position:absolute; top:0; left:24px; right:24px; height:1px;
+    background:linear-gradient(90deg,transparent,rgba(155,124,248,.6),rgba(34,211,238,.4),transparent);
+  }
+  .desc-quote{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:22px; line-height:1.5; color:var(--ink);
+    padding-left:20px; border-left:2px solid var(--violet);
+    margin-bottom:24px; text-wrap:pretty;
+  }
+  .desc-text{
+    font-size:14.5px; line-height:1.95; color:var(--ink-mute);
+    text-wrap:pretty;
+  }
+  .desc-text p{ margin-bottom:14px; }
+  .desc-text p:last-child{ margin-bottom:0; }
 
-    .btn-insta {
-      display:flex; align-items:center; justify-content:center; gap:10px;
-      width:100%; padding:15px; border-radius:14px; border:none; cursor:pointer;
-      background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#bc1888);
-      color:#fff; font-family:'Syne',sans-serif; font-weight:700;
-      font-size:0.82rem; letter-spacing:0.08em;
-      transition:all 0.22s; text-decoration:none;
-      margin-bottom:10px;
-    }
-    .btn-insta:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(188,24,136,0.4); }
+  /* meta info row */
+  .meta-row{
+    display:flex; gap:14px; flex-wrap:wrap;
+    margin-top:24px; padding-top:24px;
+    border-top:1px solid var(--line);
+  }
+  .meta-chip{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.2em; text-transform:uppercase;
+    padding:6px 12px; border-radius:99px;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    color:var(--ink-mute);
+  }
+  .meta-chip strong{ color:var(--violet); margin-right:6px; font-weight:700; }
 
-    .btn-insta-story {
-      display:flex; align-items:center; justify-content:center;
-      width:100%; padding:14px; border-radius:14px;
-      border:1px solid rgba(188,24,136,0.4);
-      background:transparent; color:#e1306c;
-      font-family:'Syne',sans-serif; font-weight:700;
-      font-size:0.75rem; letter-spacing:0.06em;
-      cursor:pointer; transition:all 0.22s; text-decoration:none;
-    }
-    .btn-insta-story:hover { background:rgba(188,24,136,0.1); transform:translateY(-2px); }
-  </style>
+  /* ── Compatibility ── */
+  .compat-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  }
+  .compat-card{
+    padding:24px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:var(--glass);
+    backdrop-filter:blur(16px);
+    position:relative; overflow:hidden;
+  }
+  .compat-card.good::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(244,114,182,.7), transparent);
+  }
+  .compat-card.bad::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(99,102,241,.7), transparent);
+  }
+  .compat-head{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.3em; text-transform:uppercase;
+    margin-bottom:14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .compat-card.good .compat-head{ color:var(--pink); }
+  .compat-card.bad  .compat-head{ color:#a5b4fc; }
+  .compat-head .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:currentColor;
+    box-shadow:0 0 10px currentColor;
+  }
+  .compat-list{
+    display:flex; flex-direction:column; gap:10px;
+    margin-bottom:16px;
+  }
+  .compat-item{
+    display:flex; align-items:center; gap:12px;
+    padding:10px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    cursor:pointer;
+    transition:all .25s;
+    text-decoration:none; color:inherit;
+  }
+  .compat-item:hover{
+    border-color:rgba(155,124,248,.4);
+    background:rgba(155,124,248,.05);
+    transform:translateX(2px);
+  }
+  .compat-item img{
+    width:42px; height:42px; border-radius:50%;
+    object-fit:cover; flex-shrink:0;
+    border:1px solid var(--line);
+  }
+  .compat-item-body{ flex:1; min-width:0; }
+  .compat-item-code{
+    font-family:"Space Mono",monospace; font-size:9px;
+    letter-spacing:.18em; color:var(--violet); margin-bottom:2px;
+  }
+  .compat-item-name{
+    font-family:"Cormorant Garamond",serif; font-size:16px;
+    font-weight:500; color:var(--ink);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .compat-reason{
+    font-size:13px; line-height:1.8; color:var(--ink-mute);
+    text-wrap:pretty;
+    padding:14px;
+    border-radius:12px;
+    background:rgba(255,255,255,.02);
+    border-left:2px solid;
+  }
+  .compat-card.good .compat-reason{ border-left-color:var(--pink); }
+  .compat-card.bad  .compat-reason{ border-left-color:#a5b4fc; }
+
+  @media (max-width:600px){
+    .compat-grid{grid-template-columns:1fr; gap:14px}
+  }
+
+  /* ── Aruaru ── */
+  .aruaru-list{
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .aruaru-item{
+    display:flex; gap:14px;
+    padding:16px 20px;
+    border-radius:14px;
+    background:rgba(255,255,255,.02);
+    border:1px solid var(--line);
+    font-size:14px; line-height:1.7; color:var(--ink-mute);
+    transition:all .25s;
+    text-wrap:pretty;
+  }
+  .aruaru-item:hover{
+    border-color:rgba(155,124,248,.3);
+    background:rgba(155,124,248,.04);
+  }
+  .aruaru-num{
+    flex-shrink:0;
+    font-family:"Space Mono",monospace; font-size:11px;
+    color:var(--violet); padding-top:2px;
+    letter-spacing:.1em;
+  }
+
+  /* ── Friend compare ── */
+  .friend-card{
+    padding:28px;
+    border-radius:24px;
+    border:1px solid var(--line);
+    background:var(--glass);
+    backdrop-filter:blur(20px);
+  }
+  .friend-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px; margin-bottom:24px;
+  }
+  .friend-tile{
+    cursor:pointer;
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    background:rgba(255,255,255,.02);
+    transition:all .22s;
+    aspect-ratio:1;
+    position:relative;
+  }
+  .friend-tile img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transition:transform .4s;
+  }
+  .friend-tile:hover{
+    border-color:rgba(155,124,248,.5);
+    transform:translateY(-3px);
+  }
+  .friend-tile:hover img{ transform:scale(1.08); }
+  .friend-tile.selected{
+    border-color:var(--violet);
+    box-shadow:0 0 0 1px var(--violet),0 0 22px rgba(155,124,248,.5);
+  }
+  .friend-tile-label{
+    position:absolute; bottom:0; left:0; right:0;
+    padding:4px 6px;
+    background:linear-gradient(transparent,rgba(0,0,0,.85));
+    font-family:"Space Mono",monospace;
+    font-size:9px; letter-spacing:.18em; text-align:center;
+    color:#fff;
+  }
+
+  .friend-result{
+    border-top:1px solid var(--line);
+    padding-top:24px;
+    display:none;
+    animation:ntFadeUp .5s ease;
+  }
+  .friend-result.show{ display:block; }
+  .friend-pair{
+    display:flex; align-items:center; justify-content:center;
+    gap:24px; margin-bottom:20px;
+  }
+  .fp-char{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .fp-char img{
+    width:64px; height:64px; border-radius:50%;
+    object-fit:cover; border:1px solid var(--line);
+  }
+  .fp-char-name{
+    font-family:"Cormorant Garamond",serif; font-size:14px;
+    color:var(--ink); text-align:center;
+  }
+  .fp-cross{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:32px;
+    background:linear-gradient(135deg,var(--violet),var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .fp-score{
+    text-align:center; margin-bottom:18px;
+  }
+  .fp-hearts{
+    font-size:28px; letter-spacing:6px;
+    background:linear-gradient(135deg,var(--violet),var(--pink),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:6px;
+  }
+  .fp-label{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.3em; text-transform:uppercase;
+    color:var(--ink-mute);
+  }
+  .fp-comment{
+    font-size:13.5px; line-height:1.85;
+    color:var(--ink-mute);
+    padding:16px 18px; border-radius:12px;
+    background:rgba(155,124,248,.06);
+    border-left:2px solid var(--violet);
+    text-wrap:pretty;
+  }
+
+  /* ── Share strip ── */
+  .share-row{
+    display:flex; gap:12px; flex-wrap:wrap;
+    margin-bottom:24px;
+  }
+  .share-btn{
+    flex:1; min-width:120px;
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    padding:16px; border-radius:99px;
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.18em; text-transform:uppercase;
+    cursor:pointer; transition:all .25s;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    color:var(--ink); text-decoration:none;
+  }
+  .share-btn:hover{
+    transform:translateY(-2px);
+    border-color:rgba(155,124,248,.5);
+    box-shadow:0 12px 32px rgba(155,124,248,.15);
+  }
+  .share-btn svg{
+    width:14px; height:14px; fill:currentColor;
+  }
+  .share-btn.copy.copied{
+    border-color:var(--cyan); color:var(--cyan);
+  }
+
+  /* ── CTA ── */
+  .cta-row{
+    display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+    margin-top:48px;
+  }
+
+  /* ── Loading ── */
+  .loader{
+    position:fixed; inset:0; z-index:300;
+    background:var(--bg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:24px;
+    transition:opacity .6s;
+  }
+  .loader.hidden{ opacity:0; pointer-events:none; }
+  .loader.gone{ display:none; }
+  .loader-orbit{
+    position:relative; width:100px; height:100px;
+  }
+  .loader-orbit::before,
+  .loader-orbit::after{
+    content:""; position:absolute; inset:0; border-radius:50%;
+    border:1px solid transparent;
+    border-top-color:var(--violet);
+    animation:spin 1.4s linear infinite;
+  }
+  .loader-orbit::after{
+    inset:14px; border-top-color:var(--cyan);
+    animation-duration:1s; animation-direction:reverse;
+  }
+  .loader-text{
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.34em; text-transform:uppercase;
+    color:var(--ink-mute);
+  }
+  @keyframes spin{ to{ transform:rotate(360deg) } }
+
+  @media (max-width:600px){
+    .result-main{ padding:90px 18px 80px; }
+    .desc-card{ padding:24px 22px; }
+    .desc-quote{ font-size:18px; }
+    .friend-grid{ grid-template-columns:repeat(4,1fr); gap:6px }
+    .friend-card{ padding:22px 18px; }
+    .section-title{ font-size:24px; }
+    .char-orbit{ width:200px; height:200px }
+    .char-frame{ width:170px; height:170px; }
+  }
+</style>
 </head>
 <body>
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-chars" id="loadingChars"></div>
-  <div class="loading-ring"></div>
-  <div class="loading-text">Analyzing your night type...</div>
+
+<canvas id="stars"></canvas>
+<div class="nebula"></div>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="loader-orbit"></div>
+  <div class="loader-text">Reading your stars…</div>
 </div>
 
-<canvas id="bg-canvas"></canvas>
-<div class="noise"></div>
-<nav class="navbar">
-  <a href="index.html" class="nav-logo">NightType</a>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+<!-- Top Nav -->
+<nav class="nt-nav">
+  <a href="index.html" class="nt-brand"><span class="nt-brand-mark"></span>NightType</a>
+  <div class="nt-nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="characters.html">Characters</a>
+    <a href="index.html#about">About</a>
+  </div>
+  <button class="nt-burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
+  <div class="nt-overlay" id="navOverlay"></div>
 </nav>
-<div class="drawer" id="drawer">
-  <a href="index.html"><span class="icon">🏠</span>ホーム</a>
-  <a href="quiz.html"><span class="icon">🌙</span>診断する</a>
-  <a href="characters.html"><span class="icon">🎴</span>キャラ一覧</a>
-  <a href="compat.html"><span class="icon">💜</span>相性チェック</a>
-  <a href="matrix.html"><span class="icon">📊</span>相性マトリクス</a>
-</div>
-<div class="drawer-overlay" id="drawer-overlay"></div>
 
-<div class="page">
-  <div class="result-wrap">
-    <p class="result-eyebrow">Your Night Type</p>
-    <div id="charVisual"></div>
-    <p class="result-tagline" id="typeTagline"></p>
+<main class="result-main">
 
-    <div class="result-card">
-      <div class="result-type-label">TYPE</div>
-      <div class="result-type-name" id="typeName">—</div>
-      <div style="margin:6px 0 10px;text-align:center"><span id="typeAxisCode" style="display:none;font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.18em;padding:4px 14px;border-radius:999px;background:rgba(124,58,237,0.18);border:1px solid rgba(168,85,247,0.4);color:rgba(196,181,253,0.9)"></span></div>
-      <p class="result-desc" id="typeDesc">—</p>
-        <a href="type.html?type=" id="typeDetailLink" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:13px;border-radius:12px;border:1px solid rgba(124,58,237,0.35);background:rgba(124,58,237,0.1);color:#c4b5fd;font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.1em;text-decoration:none;transition:all 0.2s">
-      📖 このタイプの詳細・あるあるを見る →
+  <!-- Hero -->
+  <section class="result-hero">
+    <div class="result-eyebrow">Your Night Signature</div>
+
+    <div class="char-orbit">
+      <div class="char-orbit-ring"></div>
+      <div class="char-orbit-ring"></div>
+      <div class="char-frame"><img id="charImg" src="" alt="" /></div>
+    </div>
+
+    <div class="type-code" id="typeCode">A1 · N-S-A-G</div>
+    <h1 class="type-name" id="typeName">—</h1>
+    <p class="type-tagline" id="typeTagline">—</p>
+    <div class="type-axes" id="typeAxes">
+      <span><strong id="axNuma">—</strong></span>
+      <span class="type-axes-divider">×</span>
+      <span><strong id="axSm">—</strong></span>
+      <span class="type-axes-divider">×</span>
+      <span><strong id="axAi">—</strong></span>
+      <span class="type-axes-divider">×</span>
+      <span><strong id="axGt">—</strong></span>
+    </div>
+  </section>
+
+  <!-- Share -->
+  <div class="share-row">
+    <button class="share-btn copy" id="btnCopy">
+      <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+      <span id="copyLabel">Copy Link</span>
+    </button>
+    <a class="share-btn" id="btnX" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      Share on X
+    </a>
+    <a class="share-btn" id="btnLine" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M19.365 9.89c.5 0 .907.41.907.91 0 .5-.407.91-.907.91h-1.626v1.045h1.626c.5 0 .907.41.907.91 0 .5-.407.91-.907.91H16.83a.91.91 0 0 1-.907-.91V9.89c0-.5.407-.91.907-.91h2.535zm-5.012 3.776a.91.91 0 0 1-.907.91.903.903 0 0 1-.727-.363l-2.44-3.324v2.777a.91.91 0 0 1-.907.91.91.91 0 0 1-.907-.91V9.89a.91.91 0 0 1 .907-.91c.279 0 .535.12.716.333l2.45 3.324V9.89c0-.5.407-.91.907-.91s.908.41.908.91v3.776zm-6.853 0a.91.91 0 0 1-.907.91.91.91 0 0 1-.907-.91V9.89c0-.5.407-.91.907-.91s.907.41.907.91v3.776zm-2.917.91H2.048a.91.91 0 0 1-.907-.91V9.89c0-.5.407-.91.907-.91s.907.41.907.91v2.866h1.628c.5 0 .907.41.907.91 0 .5-.407.91-.907.91zM24 10.31C24 4.95 18.617.5 12 .5S0 4.95 0 10.31c0 4.81 4.27 8.84 10.035 9.608.39.084.923.258 1.058.592.12.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.912-4.07 9.428-6.967C23.057 14.05 24 12.29 24 10.31z"/></svg>
+      Share on LINE
     </a>
   </div>
 
-    <!-- URL共有 -->
-    <div class="url-share-block">
-      <div class="url-share-inner">
-        <span class="url-share-text" id="shareUrl">—</span>
-        <button class="btn-copy" id="btnCopy">コピー</button>
+  <!-- Description -->
+  <section class="section-block">
+    <div class="section-eyebrow">01 · Portrait</div>
+    <h2 class="section-title">Your <em>night</em> in a single breath</h2>
+    <div class="desc-card">
+      <p class="desc-quote" id="typeQuote">—</p>
+      <div class="desc-text" id="typeDesc">—</div>
+      <div class="meta-row" id="metaRow"></div>
+    </div>
+  </section>
+
+  <!-- Aruaru -->
+  <section class="section-block">
+    <div class="section-eyebrow">02 · Tells</div>
+    <h2 class="section-title"><em>Telltales</em> only you would recognize</h2>
+    <div class="aruaru-list" id="aruaruList"></div>
+  </section>
+
+  <!-- Compatibility -->
+  <section class="section-block">
+    <div class="section-eyebrow">03 · Constellations</div>
+    <h2 class="section-title">Who <em>resonates</em>, who <em>burns</em></h2>
+    <div class="compat-grid">
+      <div class="compat-card good">
+        <div class="compat-head"><span class="dot"></span>High Resonance</div>
+        <div class="compat-list" id="goodList"></div>
+        <div class="compat-reason" id="goodReason">—</div>
+      </div>
+      <div class="compat-card bad">
+        <div class="compat-head"><span class="dot"></span>Wavelength Drift</div>
+        <div class="compat-list" id="badList"></div>
+        <div class="compat-reason" id="badReason">—</div>
       </div>
     </div>
+  </section>
 
-    <div class="compat-block">
-      <div class="compat-title"><div class="dot-good"></div>相性がいいタイプ</div>
-      <ul class="compat-list good" id="goodList"></ul>
-      <div class="compat-reason-box good-reason" id="goodReasonBox" style="display:none"></div>
-    </div>
-    <div class="compat-block" style="animation-delay:0.8s">
-      <div class="compat-title"><div class="dot-bad"></div>刺激が強すぎるタイプ</div>
-      <ul class="compat-list bad" id="badList"></ul>
-      <div class="compat-reason-box bad-reason" id="badReasonBox" style="display:none"></div>
-    </div>
-
-    <!-- 友達と比較 -->
-    <div class="friend-block">
-      <div class="friend-inner">
-        <div class="friend-title">💜 友達のタイプと比較する</div>
-        <div class="friend-grid" id="friendGrid"></div>
-        <div class="friend-result" id="friendResult">
-          <div class="fr-pair">
-            <div class="fr-char"><div id="frVis1"></div><div class="fr-name" id="frName1">—</div></div>
-            <div class="fr-arrow">×</div>
-            <div class="fr-char"><div id="frVis2"></div><div class="fr-name" id="frName2">—</div></div>
-          </div>
-          <div class="fr-hearts" id="frHearts">💜💜💜</div>
-          <div class="fr-label" id="frLabel">—</div>
-          <div class="fr-comment" id="frComment">—</div>
+  <!-- Friend compare -->
+  <section class="section-block">
+    <div class="section-eyebrow">04 · Mirror</div>
+    <h2 class="section-title">Compare with <em>someone else</em></h2>
+    <div class="friend-card">
+      <div class="friend-grid" id="friendGrid"></div>
+      <div class="friend-result" id="friendResult">
+        <div class="friend-pair">
+          <div class="fp-char"><img id="fp1Img" /><div class="fp-char-name" id="fp1Name">—</div></div>
+          <div class="fp-cross">×</div>
+          <div class="fp-char"><img id="fp2Img" /><div class="fp-char-name" id="fp2Name">—</div></div>
         </div>
-      </div>
-    </div>
-
-    <!-- シェアセクション -->
-    <div class="share-section">
-      <div class="share-title">Share your type</div>
-      <div class="share-tabs">
-        <button class="share-tab active" id="tabSquare">Square（X用）</button>
-        <button class="share-tab" id="tabStory">Story（Instagram用）</button>
-      </div>
-      <div class="card-preview-wrap">
-        <canvas id="shareCanvas"></canvas>
-      </div>
-      <div class="share-btns">
-        <button class="btn-x" id="shareX">
-          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          Xでシェアする
-        </button>
-        <a class="btn-line" id="shareLine" href="#" target="_blank">
-          <svg viewBox="0 0 24 24"><path d="M19.365 9.89c.50 0 .907.41.907.91 0 .5-.407.91-.907.91h-1.626v1.045h1.626c.5 0 .907.41.907.91 0 .5-.407.91-.907.91H16.83a.91.91 0 0 1-.907-.91V9.89c0-.5.407-.91.907-.91h2.535zm-5.012 3.776a.91.91 0 0 1-.907.91.903.903 0 0 1-.727-.363l-2.44-3.324v2.777a.91.91 0 0 1-.907.91.91.91 0 0 1-.907-.91V9.89a.91.91 0 0 1 .907-.91c.279 0 .535.12.716.333l2.45 3.324V9.89c0-.5.407-.91.907-.91s.908.41.908.91v3.776zm-6.853 0a.91.91 0 0 1-.907.91.91.91 0 0 1-.907-.91V9.89c0-.5.407-.91.907-.91s.907.41.907.91v3.776zm-2.917.91H2.048a.91.91 0 0 1-.907-.91V9.89c0-.5.407-.91.907-.91s.907.41.907.91v2.866h1.628c.5 0 .907.41.907.91 0 .5-.407.91-.907.91zM24 10.31C24 4.95 18.617.5 12 .5S0 4.95 0 10.31c0 4.81 4.27 8.84 10.035 9.608.39.084.923.258 1.058.592.12.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.912-4.07 9.428-6.967C23.057 14.05 24 12.29 24 10.31z"/></svg>
-          LINEでシェアする
-        </a>
-        <a class="btn-dl" id="downloadCard" download="my-nighttype.png">↓ 画像を保存する</a>
-      </div>
-    </div>
-
-
-    <!-- Instagram誘導 -->
-    <div class="insta-block" id="instaBlock">
-      <div class="insta-inner">
-        <div class="insta-top">
-          <div class="insta-logo">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#f09433"/>
-                  <stop offset="25%" stop-color="#e6683c"/>
-                  <stop offset="50%" stop-color="#dc2743"/>
-                  <stop offset="75%" stop-color="#cc2366"/>
-                  <stop offset="100%" stop-color="#bc1888"/>
-                </linearGradient>
-              </defs>
-              <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#ig)" stroke-width="2"/>
-              <circle cx="12" cy="12" r="4" stroke="url(#ig)" stroke-width="2"/>
-              <circle cx="17.5" cy="6.5" r="1.2" fill="url(#ig)"/>
-            </svg>
-          </div>
-          <div class="insta-text">
-            <div class="insta-title">Instagramでも更新中</div>
-            <div class="insta-handle">@nighttype.official</div>
-          </div>
+        <div class="fp-score">
+          <div class="fp-hearts" id="fpHearts">●●●</div>
+          <div class="fp-label" id="fpLabel">—</div>
         </div>
-        <p class="insta-desc">キャラクターの新情報・タイプ解説・相性コンテンツを毎日投稿。あなたのタイプをストーリーズでシェアしてタグ付けしてね🌙</p>
-        <div class="insta-preview">
-          <div class="insta-post" id="instaPost1"></div>
-          <div class="insta-post" id="instaPost2"></div>
-          <div class="insta-post" id="instaPost3"></div>
-        </div>
-        <a class="btn-insta" href="https://instagram.com/nighttype.official" target="_blank">
-          <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
-            <defs><linearGradient id="ig2" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs>
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#ig2)" stroke-width="2"/>
-            <circle cx="12" cy="12" r="4" stroke="url(#ig2)" stroke-width="2"/>
-            <circle cx="17.5" cy="6.5" r="1.2" fill="url(#ig2)"/>
-          </svg>
-          フォローする
-        </a>
-        <a class="btn-insta-story" id="btnInstaStory" href="#">
-          ストーリーズ用画像を保存してシェア →
-        </a>
+        <div class="fp-comment" id="fpComment">—</div>
       </div>
     </div>
+  </section>
 
-    <!-- タイプ詳細ページへ -->
-    <div style="margin-top:14px;opacity:0;animation:popIn 0.6s ease 1.2s forwards" id="typeDetailLink">
-      <a id="btnTypeDetail" href="#" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border-radius:14px;background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);color:var(--purple-ll);font-family:'Syne',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:0.08em;text-decoration:none;transition:all 0.2s">
-        🔍 このタイプの詳細・あるあるを見る →
-      </a>
-    </div>
-    <div class="result-actions" style="margin-top:10px">
-      <a href="compat.html" class="btn-compat">全タイプの相性を見る →</a>
-      <a href="quiz.html?restart=1" class="btn-retry" style="display:block;text-align:center;text-decoration:none;padding:17px;border-radius:14px;border:1px solid var(--border);color:var(--purple-ll);font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.08em;">もう一度診断する</a>
-    </div>
+  <!-- CTA -->
+  <div class="cta-row">
+    <a href="characters.html" class="nt-btn">
+      Browse all 16 types <span class="arrow">→</span>
+    </a>
+    <a href="quiz.html?restart=1" class="nt-btn nt-btn-primary">
+      Take it again <span class="arrow">↻</span>
+    </a>
   </div>
-</div>
 
-<script src="./types.js"></script>
-<script src="./aruraru.js"></script>
-<script src="./sharecard.js"></script>
+</main>
+
+<script src="types.js"></script>
+<script src="aruraru.js"></script>
+<script src="nighttype-shell.js"></script>
 <script>
-// ローディング
-const loadingEl=document.getElementById('loadingOverlay');
-// ローディングキャラを追加
-const loadingChars=document.getElementById('loadingChars');
-if(loadingChars){
-  Object.keys(types).slice(0,5).forEach((k,i)=>{
-    const t=types[k]; if(!t.image) return;
-    const img=document.createElement('img');
-    img.src=t.image;
-    img.style.animationDelay=i*0.12+'s';
-    loadingChars.appendChild(img);
+  // ── Get type code ──
+  const params = new URLSearchParams(location.search);
+  const code = params.get('type') || localStorage.getItem('nightTypeResult') || 'A1';
+  const t = types[code] || types.A1;
+
+  // ── Hero ──
+  document.getElementById('charImg').src = t.image || `images/${code}.png`;
+  document.getElementById('charImg').alt = t.name;
+  document.getElementById('typeCode').textContent = `${code} · ${t.axisCode || ''}`;
+  document.getElementById('typeName').textContent = t.name;
+  document.getElementById('typeTagline').textContent = `"${t.tagline || ''}"`;
+
+  // ── Axes (numa, sm, ai, gt) ──
+  const axesParts = (t.axes || '').split('×').map(s=>s.trim());
+  if(axesParts.length===4){
+    document.getElementById('axNuma').textContent = axesParts[0];
+    document.getElementById('axSm').textContent   = axesParts[1];
+    document.getElementById('axAi').textContent   = axesParts[2];
+    document.getElementById('axGt').textContent   = axesParts[3];
+  }
+
+  // ── Description ──
+  document.getElementById('typeQuote').textContent = t.quote || '';
+  const descHtml = (t.description || '')
+    .split(/\n\s*\n/)
+    .map(p => `<p>${p.replace(/\n/g,'<br/>')}</p>`)
+    .join('');
+  document.getElementById('typeDesc').innerHTML = descHtml;
+
+  // Meta row
+  const meta = [];
+  if(t.age)  meta.push(`<span class="meta-chip"><strong>Age</strong>${t.age}</span>`);
+  if(t.mbti) meta.push(`<span class="meta-chip"><strong>MBTI</strong>${t.mbti}</span>`);
+  (t.keyword || []).forEach(k=> meta.push(`<span class="meta-chip">${k}</span>`));
+  document.getElementById('metaRow').innerHTML = meta.join('');
+
+  // ── Aruaru ──
+  const aruList = (typeof aruaruData !== 'undefined' && aruaruData[code]) || [];
+  document.getElementById('aruaruList').innerHTML =
+    aruList.slice(0,7).map((a,i)=>`
+      <div class="aruaru-item">
+        <div class="aruaru-num">${String(i+1).padStart(2,'0')}</div>
+        <div>${a}</div>
+      </div>
+    `).join('');
+
+  // ── Compatibility list ──
+  function compatItem(c){
+    const tt = types[c];
+    if(!tt) return '';
+    return `
+      <a class="compat-item" href="type.html?type=${c}">
+        <img src="${tt.image || `images/${c}.png`}" alt="" onerror="this.style.display='none'"/>
+        <div class="compat-item-body">
+          <div class="compat-item-code">${c}</div>
+          <div class="compat-item-name">${tt.name}</div>
+        </div>
+      </a>
+    `;
+  }
+  document.getElementById('goodList').innerHTML = (t.good || []).map(compatItem).join('');
+  document.getElementById('badList').innerHTML  = (t.bad  || []).map(compatItem).join('');
+  document.getElementById('goodReason').textContent = t.goodReason || '';
+  document.getElementById('badReason').textContent  = t.badReason  || '';
+
+  // ── Friend grid ──
+  const friendGrid = document.getElementById('friendGrid');
+  Object.keys(types).forEach(c=>{
+    const tt = types[c];
+    const tile = document.createElement('div');
+    tile.className = 'friend-tile';
+    tile.dataset.code = c;
+    tile.innerHTML = `
+      <img src="${tt.image || `images/${c}.png`}" alt="${tt.name}" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a0f2e,#0a0a1a)'"/>
+      <div class="friend-tile-label">${c}</div>
+    `;
+    tile.addEventListener('click', ()=>compareWith(c, tile));
+    friendGrid.appendChild(tile);
   });
-}
-Object.keys(types).slice(0,5).forEach((k,i)=>{
-  const t=types[k];if(!t.image)return;
-  const img=document.createElement('img');img.src=t.image;img.style.animationDelay=(i*0.1)+'s';
-  document.getElementById('loadingChars').appendChild(img);
-});
 
-// URLパラメータから直接タイプ表示に対応
-const urlParams=new URLSearchParams(location.search);
-const typeFromUrl=urlParams.get('type');
-
-// v14: nightTypeResult（タイプコード直接）を優先、なければURLパラメータ
-let resultType=null, resultData=null;
-const savedResult=localStorage.getItem('nightTypeResult');
-
-if(typeFromUrl && types[typeFromUrl]){
-  resultType=typeFromUrl;
-} else if(savedResult && types[savedResult]){
-  resultType=savedResult;
-}
-if(resultType) resultData=types[resultType];
-
-const heartMap={5:'💜💜💜💜💜',4:'💜💜💜💜🤍',3:'💜💜💜🤍🤍',2:'💜💜🤍🤍🤍',1:'💜🤍🤍🤍🤍'};
-const heartLabel={5:'最高の相性 ★★★★★',4:'とても良い相性 ★★★★☆',3:'普通の相性 ★★★☆☆',2:'少し難しい ★★☆☆☆',1:'刺激が強い ★☆☆☆☆'};
-let currentMode='square';
-
-if(!resultData){
-  document.getElementById('typeName').textContent='診断データがありません';
-  document.getElementById('typeDesc').textContent='まず診断を受けてください。';
-  document.getElementById('charVisual').innerHTML='<div style="font-size:4rem;margin-bottom:24px">🌙</div>';
-  loadingEl.classList.add('hidden');
-  setTimeout(()=>loadingEl.classList.add('hidden-done'),700);
-} else {
-  function revealResult(){
-    loadingEl.classList.add('hidden');
-    setTimeout(()=>loadingEl.classList.add('hidden-done'),700);
-
-    // タイプ詳細リンク
-    const detailLink = document.getElementById('typeDetailLink');
-    if(detailLink) detailLink.href = 'type.html?type=' + resultType;
-
-    document.getElementById('charVisual').innerHTML=resultData.image
-      ?`<img src="${resultData.image}" alt="${resultData.name}" class="result-char-img"/>`
-      :`<div class="result-char-fallback">${resultData.icon}</div>`;
-    document.getElementById('typeTagline').textContent=`"${resultData.tagline}"`;
-    document.getElementById('typeName').textContent=resultData.name;
-    // axisCodeバッジ
-    const axisEl = document.getElementById('typeAxisCode');
-    if(axisEl && resultData.axisCode){
-      axisEl.textContent = resultData.axisCode;
-      axisEl.style.display = 'inline-block';
-    }
-    // 説明文：改行対応
-    const descEl = document.getElementById('typeDesc');
-    if(descEl){
-      const raw = resultData.description || '';
-      descEl.innerHTML = raw.replace(/\n\n/g,'</p><p class="type-desc" style="margin-top:12px">').replace(/\n/g,'<br>');
-    }
-
-    // ── URL共有 ──
-    const shareUrl=`${location.origin}${location.pathname}?type=${resultType}`;
-    document.getElementById('shareUrl').textContent=shareUrl;
-    document.getElementById('btnCopy').addEventListener('click',()=>{
-      navigator.clipboard.writeText(shareUrl).then(()=>{
-        const btn=document.getElementById('btnCopy');
-        btn.textContent='コピー済み ✓'; btn.classList.add('copied');
-        setTimeout(()=>{btn.textContent='コピー';btn.classList.remove('copied');},2000);
-      });
-    });
-
-    // OGP
-    document.getElementById('ogTitle').content=`私の夜タイプは「${resultData.name}」`;
-    document.getElementById('ogDesc').content=resultData.tagline;
-    document.getElementById('twTitle').content=`私の夜タイプは「${resultData.name}」`;
-    document.getElementById('twDesc').content=resultData.tagline;
-    if(resultData.image){
-      const ogImg=location.origin+'/'+resultData.image;
-      document.getElementById('ogImage').content=ogImg;
-      document.getElementById('twImage').content=ogImg;
-    }
-
-    // 相性リスト
-    resultData.good.forEach(code=>{
-      const li=document.createElement('li');const t=types[code];
-      li.innerHTML=`<span class="ci">${t.image?`<img src="${t.image}" style="width:28px;height:28px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:4px">`:t.icon}</span>${t.name}`;
-      document.getElementById('goodList').appendChild(li);
-    });
-    resultData.bad.forEach(code=>{
-      const li=document.createElement('li');const t=types[code];
-      li.innerHTML=`<span class="ci">${t.image?`<img src="${t.image}" style="width:28px;height:28px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:4px">`:t.icon}</span>${t.name}`;
-      document.getElementById('badList').appendChild(li);
-    });
-
-    // ── 友達比較グリッド ──
-    const friendGrid=document.getElementById('friendGrid');
-    Object.entries(types).forEach(([code,d])=>{
-      if(code===resultType)return; // 自分は除く
-      const btn=document.createElement('button');
-      btn.className='friend-type-btn'; btn.dataset.code=code;
-      btn.innerHTML=`${d.image?`<img src="${d.image}" alt="${d.name}" loading="lazy"/>`:`<div class="ftb-icon">${d.icon}</div>`}<div class="ftb-name">${d.name}</div>`;
-      btn.addEventListener('click',()=>{
-        friendGrid.querySelectorAll('.friend-type-btn').forEach(b=>b.classList.remove('selected'));
-        btn.classList.add('selected');
-        showFriendResult(code);
-      });
-      friendGrid.appendChild(btn);
-    });
-
-    // LINE
-    const lineText=`私のナイトタイプは「${resultData.name}」\n"${resultData.tagline}"\n${shareUrl}`;
-    document.getElementById('shareLine').href=`https://line.me/R/msg/text/?${encodeURIComponent(lineText)}`;
-
-
-    // ── Instagram プレビュー（相性タイプのキャラを表示） ──
-    const instaKeys = [resultType, ...resultData.good, ...resultData.bad].slice(0,3);
-    instaKeys.forEach((k,i) => {
-      const t = types[k];
-      const el = document.getElementById('instaPost'+(i+1));
-      if(el && t && t.image){
-        el.innerHTML = `<img src="${t.image}" alt="${t.name}" loading="lazy">`;
-      } else if(el && t) {
-        el.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:var(--surface)">${t.icon}</div>`;
-      }
-    });
-
-    // ストーリーズ保存ボタン
-    document.getElementById('btnInstaStory')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      // Story用カードを生成してダウンロード
-      const tmpCanvas = document.createElement('canvas');
-      tmpCanvas.width = 1080; tmpCanvas.height = 1920;
-      const tmpCtx = tmpCanvas.getContext('2d');
-      // 背景
-      const bg = tmpCtx.createRadialGradient(540,384,0,540,384,900);
-      bg.addColorStop(0,'#1a0a2e'); bg.addColorStop(0.5,'#0e0814'); bg.addColorStop(1,'#070708');
-      tmpCtx.fillStyle=bg; tmpCtx.fillRect(0,0,1080,1920);
-      const orb=tmpCtx.createRadialGradient(162,480,0,162,480,400);
-      orb.addColorStop(0,'rgba(124,58,237,0.4)'); orb.addColorStop(1,'transparent');
-      tmpCtx.fillStyle=orb; tmpCtx.fillRect(0,0,1080,1920);
-      tmpCtx.fillStyle='rgba(220,200,255,0.4)';
-      for(let i=0;i<120;i++){const x=Math.random()*1080,y=Math.random()*1920,r=Math.random()*1.5;tmpCtx.beginPath();tmpCtx.arc(x,y,r,0,Math.PI*2);tmpCtx.fill();}
-      // ロゴ
-      tmpCtx.font='bold 52px sans-serif'; tmpCtx.fillStyle='rgba(168,85,247,0.9)'; tmpCtx.textAlign='center';
-      tmpCtx.fillText('NightType',540,120);
-      tmpCtx.font='32px sans-serif'; tmpCtx.fillStyle='rgba(255,255,255,0.35)';
-      tmpCtx.fillText('ナイトタイプ診断',540,172);
-      const drawStoryText = () => {
-        tmpCtx.font='italic 38px serif'; tmpCtx.fillStyle='rgba(196,158,255,0.85)'; tmpCtx.textAlign='center';
-        tmpCtx.fillText(`"${resultData.tagline}"`,540,1192);
-        tmpCtx.font='bold 84px sans-serif';
-        const g=tmpCtx.createLinearGradient(216,0,864,0); g.addColorStop(0,'#c4b5fd'); g.addColorStop(1,'#f9a8d4');
-        tmpCtx.fillStyle=g; tmpCtx.fillText(resultData.name,540,1296);
-        tmpCtx.strokeStyle='rgba(124,58,237,0.4)'; tmpCtx.lineWidth=1;
-        tmpCtx.beginPath(); tmpCtx.moveTo(216,1344); tmpCtx.lineTo(864,1344); tmpCtx.stroke();
-        tmpCtx.font='32px sans-serif'; tmpCtx.fillStyle='rgba(255,255,255,0.4)';
-        const g1=types[resultData.good[0]];
-        tmpCtx.fillText(`相性◎ ${g1?.name??''}`,540,1392);
-        // Instagram誘導文
-        tmpCtx.font='bold 28px sans-serif'; tmpCtx.fillStyle='rgba(225,48,108,0.8)';
-        tmpCtx.fillText('@nighttype.official',540,1500);
-        tmpCtx.font='26px sans-serif'; tmpCtx.fillStyle='rgba(168,85,247,0.6)';
-        tmpCtx.fillText('nighttype.jp',540,1780);
-        const url=tmpCanvas.toDataURL('image/png');
-        const a=document.createElement('a'); a.href=url; a.download='nighttype-story.png'; a.click();
-      };
-      if(resultData.image){
-        const img=new Image(); img.crossOrigin='anonymous';
-        img.onload=()=>{
-          const cx=540,cy=730,r=280;
-          const glow=tmpCtx.createRadialGradient(cx,cy,r*0.4,cx,cy,r*1.5);
-          glow.addColorStop(0,'rgba(124,58,237,0.45)'); glow.addColorStop(1,'transparent');
-          tmpCtx.fillStyle=glow; tmpCtx.beginPath(); tmpCtx.arc(cx,cy,r*1.5,0,Math.PI*2); tmpCtx.fill();
-          tmpCtx.save(); tmpCtx.beginPath(); tmpCtx.arc(cx,cy,r,0,Math.PI*2); tmpCtx.clip();
-          tmpCtx.drawImage(img,cx-r,cy-r,r*2,r*2); tmpCtx.restore();
-          tmpCtx.strokeStyle='rgba(168,85,247,0.8)'; tmpCtx.lineWidth=5;
-          tmpCtx.beginPath(); tmpCtx.arc(cx,cy,r,0,Math.PI*2); tmpCtx.stroke();
-          drawStoryText();
-        };
-        img.onerror=drawStoryText;
-        img.src=resultData.image;
-      } else { drawStoryText(); }
-    });
-
-    generateCard(currentMode);
-    // 詳細ページリンク設定
-    const detailLink2 = document.getElementById('btnTypeDetail');
-    if(detailLink2) detailLink2.href = 'type/'+resultType+'.html';
+  // ── Compatibility scoring (simple rule) ──
+  function compatScore(a,b){
+    if(a===b) return {hearts:'●●●●●', label:'Mirror Soul', txt:`同じタイプだからこそ、深いところまで分かり合える特別な相性。お互いの暗号を読める唯一の存在です。`};
+    const at = types[a], bt = types[b];
+    if(!at || !bt) return null;
+    const aGood = (at.good||[]).includes(b), bGood = (bt.good||[]).includes(a);
+    const aBad  = (at.bad ||[]).includes(b), bBad  = (bt.bad ||[]).includes(a);
+    if(aGood && bGood) return {hearts:'●●●●●', label:'Twin Stars', txt:`お互いを最高の相手として惹かれ合う、運命的な共鳴。${at.name}の${(at.tagline||'').replace(/[「」]/g,'')}と、${bt.name}の世界が美しく重なります。`};
+    if(aGood || bGood) return {hearts:'●●●●', label:'High Resonance', txt:`一方が深く惹かれる組み合わせ。${at.name}の感性が${bt.name}に届くと、想像を超える夜になる可能性があります。`};
+    if(aBad && bBad)   return {hearts:'●', label:'Wavelength Drift', txt:`お互いの夜の哲学が真逆。同じ言葉でも全く違うものを指してしまう、難しい組み合わせです。`};
+    if(aBad || bBad)   return {hearts:'●●', label:'Friction', txt:`一方にとって刺激が強すぎる関係。注意深く距離感を取れば、新しい発見もある組み合わせ。`};
+    return {hearts:'●●●', label:'Neutral Orbit', txt:`互いの軌道は重ならないけれど、ぶつかることもない。落ち着いた距離感を保てる相性です。`};
   }
 
-  if(resultData.image){
-    const p=new Image();p.crossOrigin='anonymous';
-    p.onload=()=>setTimeout(revealResult,typeFromUrl?200:1200);
-    p.onerror=()=>setTimeout(revealResult,typeFromUrl?200:1200);
-    p.src=resultData.image;
-  } else {
-    setTimeout(revealResult,typeFromUrl?200:1200);
+  function compareWith(c, tile){
+    document.querySelectorAll('.friend-tile').forEach(t=>t.classList.remove('selected'));
+    tile.classList.add('selected');
+    const result = compatScore(code, c);
+    if(!result) return;
+    const me = types[code], you = types[c];
+    document.getElementById('fp1Img').src  = me.image  || `images/${code}.png`;
+    document.getElementById('fp2Img').src  = you.image || `images/${c}.png`;
+    document.getElementById('fp1Name').textContent = me.name;
+    document.getElementById('fp2Name').textContent = you.name;
+    document.getElementById('fpHearts').textContent = result.hearts;
+    document.getElementById('fpLabel').textContent  = result.label;
+    document.getElementById('fpComment').textContent = result.txt;
+    const fr = document.getElementById('friendResult');
+    fr.classList.remove('show'); void fr.offsetWidth; fr.classList.add('show');
   }
-}
 
-// ── 友達比較 ──
-function showFriendResult(friendCode){
-  const fd=types[friendCode];
-  const score=getCompat(resultType,friendCode);
-  const visHtml=code=>{
-    const t=types[code];
-    return t.image?`<img src="${t.image}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid rgba(124,58,237,0.4);">`:`<div class="fr-icon">${t.icon}</div>`;
-  };
-  document.getElementById('frVis1').innerHTML=visHtml(resultType);
-  document.getElementById('frName1').textContent=resultData.name;
-  document.getElementById('frVis2').innerHTML=visHtml(friendCode);
-  document.getElementById('frName2').textContent=fd.name;
-  document.getElementById('frHearts').textContent=heartMap[score];
-  document.getElementById('frLabel').textContent=heartLabel[score];
-  document.getElementById('frComment').textContent=getCompatComment(score);
-  const res=document.getElementById('friendResult');
-  res.classList.remove('show');void res.offsetWidth;res.classList.add('show');
-  res.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
+  // ── Share ──
+  const shareUrl = location.origin + location.pathname + '?type=' + code;
+  const shareText = `My NightType is ${t.name} (${code}). 「${t.tagline || ''}」`;
+  document.getElementById('btnX').href    = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+  document.getElementById('btnLine').href = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + ' ' + shareUrl)}`;
 
-// ── タブ切替 ──
-document.getElementById('tabSquare').addEventListener('click',()=>{
-  currentMode='square';
-  document.getElementById('tabSquare').classList.add('active');
-  document.getElementById('tabStory').classList.remove('active');
-  generateCard('square');
-});
-document.getElementById('tabStory').addEventListener('click',()=>{
-  currentMode='story';
-  document.getElementById('tabStory').classList.add('active');
-  document.getElementById('tabSquare').classList.remove('active');
-  generateCard('story');
-});
+  document.getElementById('btnCopy').addEventListener('click', async ()=>{
+    const btn = document.getElementById('btnCopy');
+    try{
+      await navigator.clipboard.writeText(shareUrl);
+      btn.classList.add('copied');
+      document.getElementById('copyLabel').textContent = 'Copied';
+      setTimeout(()=>{
+        btn.classList.remove('copied');
+        document.getElementById('copyLabel').textContent = 'Copy Link';
+      }, 1800);
+    }catch(e){
+      alert(shareUrl);
+    }
+  });
 
-// ── Canvas生成（sharercardエンジン使用） ──
-async function generateCard(mode){
-  if(!resultData) return;
-  const canvas = document.getElementById('shareCanvas');
-  await generateShareCard(canvas, resultType, resultData, types, mode);
-  document.getElementById('downloadCard').href = canvas.toDataURL('image/png');
-}
-
-document.getElementById('shareX')?.addEventListener('click',()=>{
-  if(!resultData)return;
-  const shareUrl=`${location.origin}${location.pathname}?type=${resultType}`;
-  const text=`私のナイトタイプは「${resultData.name}」\n"${resultData.tagline}"\n\n#NightType #夜の価値観診断\n`;
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`,'_blank');
-});
+  // ── Hide loader ──
+  setTimeout(()=>{
+    const ld = document.getElementById('loader');
+    ld.classList.add('hidden');
+    setTimeout(()=>ld.classList.add('gone'), 700);
+  }, 800);
 </script>
-<script src="./common.js"></script>
+
 </body>
 </html>

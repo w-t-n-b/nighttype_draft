@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="pageTitle">タイプ詳細｜NightType</title>
+  <!-- Dynamic OGP (updated by JS) -->
+  <meta property="og:title"       id="ogTitle"  content="ナイトタイプ"/>
+  <meta property="og:description" id="ogDesc"   content="ナイトタイプ診断"/>
+  <meta property="og:image"       id="ogImage"  content=""/>
+  <meta property="og:type"                      content="website"/>
+  <meta name="twitter:card"                     content="summary_large_image"/>
+  <meta name="description"        id="metaDesc" content="ナイトタイプ診断"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="./style.css"/>
+  <style>
+    /* ── ヒーロー ── */
+    .type-hero {
+      position: relative; width: 100%;
+      min-height: 52vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      padding-bottom: 32px; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse at 50% 20%, rgba(124,58,237,0.35) 0%, transparent 65%),
+                  radial-gradient(ellipse at 80% 80%, rgba(236,72,153,0.2) 0%, transparent 55%),
+                  var(--bg);
+    }
+    .hero-char {
+      position: relative; z-index: 2;
+      width: 200px; height: 200px;
+      border-radius: 50%; object-fit: cover;
+      border: 2px solid rgba(168,85,247,0.4);
+      box-shadow: 0 0 60px rgba(124,58,237,0.5), 0 0 120px rgba(236,72,153,0.2);
+      margin-bottom: 20px;
+      opacity: 0; animation: popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards;
+    }
+    .hero-char-fb {
+      position: relative; z-index: 2;
+      width: 200px; height: 200px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5.5rem;
+      border: 2px solid rgba(168,85,247,0.4);
+      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,0.3), rgba(10,10,15,0.9));
+      box-shadow: 0 0 60px rgba(124,58,237,0.5);
+      margin-bottom: 20px;
+      opacity: 0; animation: popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards;
+    }
+    .hero-code {
+      position: relative; z-index: 2;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.6rem;
+      letter-spacing: 0.35em; color: var(--purple-ll); margin-bottom: 6px;
+      opacity: 0; animation: popIn 0.5s ease 0.4s forwards;
+    }
+    .hero-tagline {
+      position: relative; z-index: 2;
+      font-size: 0.78rem; color: rgba(255,255,255,0.5);
+      font-style: italic; margin-bottom: 10px;
+      opacity: 0; animation: popIn 0.5s ease 0.5s forwards;
+    }
+    .hero-name {
+      position: relative; z-index: 2;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem;
+      line-height: 1.15; text-align: center; padding: 0 20px;
+      background: linear-gradient(135deg, #c4b5fd, #f9a8d4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      opacity: 0; animation: popIn 0.6s ease 0.35s forwards;
+    }
+
+    /* ── コンテンツ ── */
+    .type-content { max-width: 480px; margin: 0 auto; padding: 0 16px 80px; }
+
+    .type-section {
+      border-radius: 18px; background: var(--surface);
+      border: 1px solid var(--border); padding: 22px 20px;
+      margin-bottom: 14px;
+      opacity: 0; animation: popIn 0.5s ease forwards;
+    }
+    .type-section:nth-child(1) { animation-delay: 0.5s; }
+    .type-section:nth-child(2) { animation-delay: 0.6s; }
+    .type-section:nth-child(3) { animation-delay: 0.7s; }
+    .type-section:nth-child(4) { animation-delay: 0.8s; }
+    .type-section:nth-child(5) { animation-delay: 0.9s; }
+    .type-section:nth-child(6) { animation-delay: 1.0s; }
+
+    .section-label {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.6rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--purple-ll); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(124,58,237,0.2); }
+
+    /* プロフィールチップ */
+    .profile-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0; }
+    .p-chip {
+      padding: 6px 14px; border-radius: 999px; font-size: 0.68rem;
+      font-family: 'Syne', sans-serif; font-weight: 700;
+    }
+    .p-chip.age  { background: rgba(124,58,237,0.15); border: 1px solid rgba(168,85,247,0.3); color: var(--purple-ll); }
+    .p-chip.mbti { background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.3); color: var(--pink-l); }
+    .p-chip.kw   { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--muted); }
+
+    /* 名言 */
+    .quote-box {
+      padding: 14px 18px; border-radius: 14px;
+      background: rgba(124,58,237,0.08);
+      border-left: 3px solid var(--purple);
+      font-style: italic; font-size: 0.92rem;
+      color: var(--purple-ll); line-height: 1.7;
+    }
+
+    /* 説明文 */
+    .type-desc { font-size: 0.88rem; line-height: 1.9; color: #9d99b0; }
+    .type-detail {
+      font-size: 0.82rem; line-height: 1.85; color: #7a7690;
+      margin-top: 12px; padding: 12px 14px; border-radius: 10px;
+      background: rgba(255,255,255,0.025);
+      border-left: 2px solid rgba(124,58,237,0.35);
+    }
+
+    /* あるあるリスト */
+    .aruraru-list { display: flex; flex-direction: column; gap: 8px; }
+    .aruraru-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 14px; border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.82rem; line-height: 1.6; color: #9d99b0;
+      transition: all 0.2s; cursor: default;
+    }
+    .aruraru-item:hover { background: rgba(124,58,237,0.08); border-color: rgba(168,85,247,0.2); color: var(--white); }
+    .aruraru-num {
+      flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px;
+      background: rgba(124,58,237,0.2); display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.58rem;
+      color: var(--purple-ll); margin-top: 1px;
+    }
+
+    /* 相性 */
+    .compat-row { display: flex; flex-direction: column; gap: 8px; }
+    .compat-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px; border-radius: 14px;
+      background: var(--surface2); cursor: pointer;
+      text-decoration: none; color: var(--white);
+      transition: all 0.18s;
+    }
+    .compat-item:hover { transform: translateX(4px); }
+    .compat-item.good { border-left: 2px solid rgba(168,85,247,0.5); }
+    .compat-item.bad  { border-left: 2px solid rgba(236,72,153,0.4); }
+    .compat-img { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+    .compat-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .compat-right { flex: 1; min-width: 0; }
+    .compat-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem; margin-bottom: 2px; }
+    .compat-reason { font-size: 0.66rem; color: var(--muted); line-height: 1.5; }
+    .compat-score { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.7rem; color: var(--purple-ll); flex-shrink: 0; }
+
+    /* シェア */
+    .share-row { display: flex; flex-direction: column; gap: 10px; }
+    .btn-share-x {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px; border-radius: 14px; border: none; cursor: pointer;
+      background: #000; color: #fff; font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 0.8rem; letter-spacing: 0.08em; transition: all 0.2s;
+    }
+    .btn-share-x:hover { background: #111; transform: translateY(-2px); }
+    .btn-share-x svg { width: 16px; height: 16px; fill: #fff; }
+    .btn-copy-url {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 15px; border-radius: 14px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--purple-ll); font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 0.8rem; letter-spacing: 0.08em;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-copy-url:hover { background: rgba(124,58,237,0.12); transform: translateY(-2px); }
+    .btn-copy-url.copied { background: rgba(124,58,237,0.2); border-color: var(--purple-l); }
+
+    /* CTAバナー */
+    .cta-banner {
+      border-radius: 18px; overflow: hidden; margin-bottom: 14px;
+      position: relative;
+    }
+    .cta-banner::before { content: ''; display: block; height: 2px; background: linear-gradient(90deg, var(--purple), var(--pink)); }
+    .cta-inner {
+      padding: 20px 18px;
+      background: var(--surface); border: 1px solid var(--border); border-top: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .cta-text { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+    .btn-cta {
+      display: flex; align-items: center; justify-content: center;
+      padding: 15px; border-radius: 14px; border: none; cursor: pointer;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: #fff; font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.82rem; letter-spacing: 0.08em; text-decoration: none;
+      transition: all 0.22s;
+    }
+    .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,0.4); }
+
+    /* タイプナビ */
+    .type-nav {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      margin-bottom: 14px; padding: 16px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+    }
+    .type-nav-label { width: 100%; font-family: 'Syne', sans-serif; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 4px; }
+    .type-nav-btn {
+      padding: 5px 10px; border-radius: 8px; font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 0.62rem; letter-spacing: 0.05em;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--muted); cursor: pointer; transition: all 0.15s;
+      text-decoration: none;
+    }
+    .type-nav-btn:hover { border-color: var(--purple-l); color: var(--purple-ll); background: rgba(124,58,237,0.1); }
+    .type-nav-btn.current { border-color: var(--purple-l); color: var(--purple-ll); background: rgba(124,58,237,0.18); }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="noise"></div>
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">NightType</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer" id="drawer">
+  <a href="index.html"><span class="icon">🏠</span>ホーム</a>
+  <a href="quiz.html"><span class="icon">🌙</span>診断する</a>
+  <a href="characters.html"><span class="icon">🎴</span>キャラ一覧</a>
+  <a href="compat.html"><span class="icon">💜</span>相性チェック</a>
+  <a href="matrix.html"><span class="icon">📊</span>相性マトリクス</a>
+</div>
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<div class="page" style="padding-top:0">
+
+  <!-- ヒーロー -->
+  <div class="type-hero">
+    <div class="hero-bg"></div>
+    <div id="heroChar"></div>
+    <div class="hero-code" id="heroCode">TYPE A1</div>
+    <div class="hero-tagline" id="heroTagline">"tagline"</div>
+    <div class="hero-name" id="heroName">タイプ名</div>
+  </div>
+
+  <div class="type-content">
+
+    <!-- タイプナビ -->
+    <div class="type-nav">
+      <div class="type-nav-label">他のタイプを見る</div>
+      <div id="typeNavBtns"></div>
+    </div>
+
+    <!-- プロフィール -->
+    <div class="type-section">
+      <div class="section-label">Profile</div>
+      <div class="profile-chips" id="profileChips"></div>
+    </div>
+
+    <!-- 名言 -->
+    <div class="type-section">
+      <div class="section-label">Quote</div>
+      <div class="quote-box" id="quoteBox"></div>
+    </div>
+
+    <!-- 説明 -->
+    <div class="type-section">
+      <div class="section-label">About</div>
+      <p class="type-desc" id="typeDesc"></p>
+      <div class="type-detail" id="typeDetail"></div>
+    </div>
+
+    <!-- あるある -->
+    <div class="type-section">
+      <div class="section-label">あるある</div>
+      <div class="aruraru-list" id="aruaruList"></div>
+    </div>
+
+    <!-- 相性 -->
+    <div class="type-section">
+      <div class="section-label">Compatibility</div>
+      <div style="font-size:0.7rem;color:var(--muted);margin-bottom:10px" id="goodReason"></div>
+      <div class="compat-row" id="compatGood"></div>
+      <div style="font-size:0.7rem;color:var(--muted);margin:14px 0 10px" id="badReason"></div>
+      <div class="compat-row" id="compatBad"></div>
+    </div>
+
+    <!-- シェア -->
+    <div class="type-section">
+      <div class="section-label">Share</div>
+      <div class="share-row">
+        <button class="btn-share-x" id="btnShareX">
+          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          このタイプをXでシェア
+        </button>
+        <button class="btn-copy-url" id="btnCopyUrl">🔗 URLをコピー</button>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-banner">
+      <div class="cta-inner">
+        <div class="cta-text">自分が何タイプか、まだ分からない？24問の診断でわかります。</div>
+        <a href="quiz.html" class="btn-cta">🌙 今すぐ診断する</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="./types.js"></script>
+<script src="./aruraru.js"></script>
+<script src="./common.js"></script>
+<script>
+// URLパラメータからタイプ取得
+const params = new URLSearchParams(location.search);
+let typeCode  = params.get('type')?.toUpperCase();
+
+// パス形式対応 (/type/A1 → ?type=A1)
+if(!typeCode){
+  const m = location.pathname.match(/\/type\/([A-Da-d][1-4])/i);
+  if(m) typeCode = m[1].toUpperCase();
+}
+
+// ハッシュ形式 (#A1)
+if(!typeCode && location.hash){
+  const h = location.hash.slice(1).toUpperCase();
+  if(types[h]) typeCode = h;
+}
+
+if(!typeCode || !types[typeCode]){
+  // デフォルトA1
+  typeCode = 'A1';
+}
+
+const d = types[typeCode];
+const heartMap = {5:'💜💜💜💜💜',4:'💜💜💜💜🤍',3:'💜💜💜🤍🤍',2:'💜💜🤍🤍🤍',1:'💜🤍🤍🤍🤍'};
+
+// ── OGP・タイトル ──
+document.title = `${d.name}（${typeCode}タイプ）｜NightType`;
+document.getElementById('pageTitle').textContent = `${d.name}（${typeCode}タイプ）｜NightType`;
+document.getElementById('ogTitle').content  = `${typeCode}タイプ「${d.name}」 - NightType`;
+document.getElementById('ogDesc').content   = d.tagline + ' — ナイトタイプ診断';
+document.getElementById('metaDesc').content = `${d.name}：${d.description?.slice(0,60)}…`;
+if(d.image){
+  document.getElementById('ogImage').content = location.origin + '/' + d.image;
+}
+
+// ── ヒーロー ──
+document.getElementById('heroCode').textContent    = `TYPE ${typeCode}`;
+document.getElementById('heroTagline').textContent = `"${d.tagline}"`;
+document.getElementById('heroName').textContent    = d.name;
+document.getElementById('heroChar').innerHTML = d.image
+  ? `<img src="${d.image}" alt="${d.name}" class="hero-char"/>`
+  : `<div class="hero-char-fb">${d.icon}</div>`;
+
+// ── タイプナビ ──
+const navWrap = document.getElementById('typeNavBtns');
+Object.keys(types).forEach(code => {
+  const a = document.createElement('a');
+  a.className = 'type-nav-btn' + (code === typeCode ? ' current' : '');
+  a.href = `type.html?type=${code}`;
+  a.textContent = code;
+  navWrap.appendChild(a);
+});
+
+// ── プロフィール ──
+const chips = document.getElementById('profileChips');
+if(d.age)    chips.innerHTML += `<span class="p-chip age">推定${d.age}歳</span>`;
+if(d.mbti)   chips.innerHTML += `<span class="p-chip mbti">${d.mbti}</span>`;
+(d.keyword||[]).forEach(k => chips.innerHTML += `<span class="p-chip kw">#${k}</span>`);
+
+// ── 名言 ──
+document.getElementById('quoteBox').textContent = d.quote || `"${d.tagline}"`;
+
+// ── 説明 ──
+document.getElementById('typeDesc').textContent   = d.description || '';
+document.getElementById('typeDetail').textContent = d.detail || '';
+
+// ── あるある ──
+const aruList = document.getElementById('aruaruList');
+const items   = aruaruData[typeCode] || [];
+items.forEach((text, i) => {
+  aruList.innerHTML += `
+    <div class="aruraru-item">
+      <div class="aruraru-num">${String(i+1).padStart(2,'0')}</div>
+      <div>${text}</div>
+    </div>`;
+});
+
+// ── 相性 ──
+document.getElementById('goodReason').textContent = `◇ 相性がいいタイプ — ${d.goodReason||''}`;
+document.getElementById('badReason').textContent  = `◇ 刺激が強すぎるタイプ — ${d.badReason||''}`;
+
+function compatCard(code, cls){
+  const t = types[code];
+  const score = getCompat(typeCode, code);
+  return `<a class="compat-item ${cls}" href="type.html?type=${code}">
+    ${t.image
+      ? `<img src="${t.image}" alt="${t.name}" class="compat-img">`
+      : `<div class="compat-icon">${t.icon}</div>`}
+    <div class="compat-right">
+      <div class="compat-name">${t.name}</div>
+      <div class="compat-reason">"${t.tagline}"</div>
+    </div>
+    <div class="compat-score">${heartMap[score]}</div>
+  </a>`;
+}
+d.good.forEach(c => document.getElementById('compatGood').innerHTML += compatCard(c,'good'));
+d.bad.forEach(c  => document.getElementById('compatBad').innerHTML  += compatCard(c,'bad'));
+
+// ── シェア ──
+const shareUrl = `${location.origin}${location.pathname}?type=${typeCode}`;
+document.getElementById('btnShareX').addEventListener('click', () => {
+  const text = `私の夜タイプは「${d.name}」\n"${d.tagline}"\n\n#NightType #夜の価値観診断\n`;
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+});
+document.getElementById('btnCopyUrl').addEventListener('click', () => {
+  navigator.clipboard.writeText(shareUrl).then(() => {
+    const btn = document.getElementById('btnCopyUrl');
+    btn.textContent = '✓ コピーしました';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '🔗 URLをコピー'; btn.classList.remove('copied'); }, 2000);
+  });
+});
+</script>
+</body>
+</html>
