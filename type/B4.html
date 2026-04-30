@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>空気読解オペレーター（B4タイプ）｜NightType 夜の価値観タイプ診断</title>
+  <meta name="description" content="NightType B4タイプ「空気読解オペレーター」の詳細ページ。相手の反応を、全部受信している。特徴・相性・あるある・診断方法を解説。"/>
+  <meta property="og:title" content="空気読解オペレーター（B4）｜NightType"/>
+  <meta property="og:description" content="相手の反応を、全部受信している"/>
+  <meta property="og:image" content="../images/B4.png"/>
+  <meta property="og:type" content="article"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="空気読解オペレーター（B4）｜NightType"/>
+  <meta name="twitter:description" content="相手の反応を、全部受信している"/>
+  <meta name="twitter:image" content="../images/B4.png"/>
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    .type-hero{display:flex;flex-direction:column;align-items:center;padding:32px 20px 0;text-align:center;}
+    .type-img{width:200px;height:200px;border-radius:50%;object-fit:cover;border:2px solid var(--border);box-shadow:0 0 50px rgba(124,58,237,0.5),0 0 90px rgba(236,72,153,0.2);margin-bottom:20px;opacity:0;animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards;}
+    .type-icon-fb{width:200px;height:200px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:5rem;background:radial-gradient(circle at 30% 30%,rgba(124,58,237,0.3),rgba(10,10,15,0.8));border:2px solid var(--border);box-shadow:0 0 50px rgba(124,58,237,0.4);margin-bottom:20px;opacity:0;animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards;}
+    .type-code-badge{font-family:'Syne',sans-serif;font-weight:700;font-size:0.65rem;letter-spacing:0.3em;color:var(--purple-ll);background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);padding:5px 14px;border-radius:999px;margin-bottom:12px;}
+    .type-tagline{font-size:0.78rem;color:var(--purple-ll);font-family:'Syne',sans-serif;margin-bottom:12px;}
+    .type-name{font-family:'Syne',sans-serif;font-weight:800;font-size:1.9rem;line-height:1.15;margin-bottom:0;background:linear-gradient(135deg,var(--purple-ll),var(--pink-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .profile-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0;}
+    .profile-chip{padding:5px 14px;border-radius:999px;font-size:0.65rem;font-family:'Syne',sans-serif;font-weight:700;}
+    .chip-age{background:rgba(124,58,237,0.15);border:1px solid rgba(168,85,247,0.3);color:var(--purple-ll);}
+    .chip-mbti{background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.3);color:var(--pink-l);}
+    .keyword-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
+    .keyword-tag{padding:4px 11px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);font-size:0.62rem;color:var(--muted);}
+    .quote-block{padding:14px 18px;border-radius:14px;background:rgba(124,58,237,0.08);border-left:3px solid var(--purple);margin:16px 0;font-style:italic;font-size:0.9rem;color:var(--purple-ll);line-height:1.7;text-align:left;}
+    .type-section{max-width:480px;margin:0 auto;padding:0 16px;}
+    .section-heading{font-family:'Syne',sans-serif;font-weight:700;font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--purple-ll);margin:28px 0 12px;display:flex;align-items:center;gap:8px;}
+    .section-heading::before{content:'';display:block;width:4px;height:4px;border-radius:50%;background:var(--purple-l);}
+    .type-desc{font-size:0.86rem;line-height:1.9;color:#9d99b0;margin-bottom:12px;}
+    .type-detail{font-size:0.8rem;line-height:1.85;color:#7a7690;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.025);border-left:2px solid rgba(124,58,237,0.4);}
+    .compat-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
+    .compat-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:var(--surface2);}
+    .compat-row.good{border-left:2px solid rgba(168,85,247,0.5);}
+    .compat-row.bad{border-left:2px solid rgba(236,72,153,0.5);}
+    .compat-row img,.compat-row .c-icon{width:40px;height:40px;border-radius:10px;object-fit:cover;flex-shrink:0;}
+    .compat-row .c-icon{background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+    .compat-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.78rem;margin-bottom:2px;}
+    .compat-tag{font-size:0.65rem;color:var(--muted);}
+    .compat-reason{font-size:0.66rem;color:var(--muted);line-height:1.5;margin-top:4px;}
+    .aruaru-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;}
+    .aruaru-list li{padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--border);font-size:0.82rem;line-height:1.65;color:#9d99b0;position:relative;padding-left:38px;}
+    .aruaru-list li::before{content:'🌙';position:absolute;left:12px;top:14px;font-size:0.85rem;}
+    .cta-quiz{display:block;width:100%;padding:18px;border-radius:16px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;letter-spacing:0.1em;text-align:center;text-decoration:none;margin:24px 0 8px;transition:all 0.2s;}
+    .cta-quiz:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,0.4);}
+    .cta-chars{display:block;width:100%;padding:16px;border-radius:16px;border:1px solid var(--border);color:var(--purple-ll);font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.1em;text-align:center;text-decoration:none;margin-bottom:48px;transition:all 0.2s;}
+    .cta-chars:hover{border-color:var(--purple-l);background:rgba(124,58,237,0.1);}
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="noise"></div>
+<nav class="navbar">
+  <a href="../index.html" class="nav-logo">NightType</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer" id="drawer">
+  <a href="../index.html"><span class="icon">🏠</span>ホーム</a>
+  <a href="../quiz.html"><span class="icon">🌙</span>診断する</a>
+  <a href="../characters.html" class="active"><span class="icon">🎴</span>キャラ一覧</a>
+  <a href="../compat.html"><span class="icon">💜</span>相性チェック</a>
+  <a href="../matrix.html"><span class="icon">📊</span>相性マトリクス</a>
+</div>
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<div class="page">
+  <div class="type-hero">
+    <div class="type-code-badge">B4 TYPE</div>
+    <img src="../images/B4.png" alt="空気読解オペレーター" class="type-img"/>
+    <div class="type-tagline">"相手の反応を、全部受信している"</div>
+    <h1 class="type-name">空気読解オペレーター</h1>
+    <div class="profile-chips">
+      <span class="profile-chip chip-age">推定25歳</span>
+      <span class="profile-chip chip-mbti">ESFJ</span>
+    </div>
+    <div class="keyword-row"><span class="keyword-tag">察知</span><span class="keyword-tag">受信</span><span class="keyword-tag">自己犠牲</span></div>
+    <div class="quote-block" style="max-width:400px">「あなたの変化を、全部キャッチしている。」</div>
+  </div>
+
+  <div class="type-section">
+    <div class="section-heading">このタイプについて</div>
+    <p class="type-desc">相手のわずかな変化を逃さずキャッチして、リアルタイムで行動を最適化する。「気づいてくれる人」として愛されるが自分の欲求は後回しになりがち。</p>
+    <div class="type-detail">翌朝ひとりで消耗していることがある。本当は「読まれる側」になりたいという欲求を心の奥で抱えていることも。</div>
+
+    <div class="section-heading">相性がいいタイプ</div>
+    <div class="compat-grid"><a href="C1.html" class="compat-row good" style="text-decoration:none;color:var(--white)">
+        <img src="../images/C1.png" alt="本能解放ランナー">
+        <div><div class="compat-name">本能解放ランナー</div><div class="compat-tag">C1 TYPE</div></div>
+      </a>
+<a href="A2.html" class="compat-row good" style="text-decoration:none;color:var(--white)">
+        <img src="../images/A2.png" alt="静寂の共鳴者">
+        <div><div class="compat-name">静寂の共鳴者</div><div class="compat-tag">A2 TYPE</div></div>
+      </a></div>
+
+    <div class="section-heading">刺激が強すぎるタイプ</div>
+    <div class="compat-grid"><a href="D2.html" class="compat-row bad" style="text-decoration:none;color:var(--white)">
+        <img src="../images/D2.png" alt="妄想シナリオライター">
+        <div><div class="compat-name">妄想シナリオライター</div><div class="compat-tag">D2 TYPE</div></div>
+      </a></div>
+
+    <div class="section-heading">B4タイプあるある</div>
+    <ul class="aruaru-list"><li>相手の息のリズムが変わった瞬間、すぐ気づく</li>
+<li>「なんで分かったの？」と驚かれることが多い</li>
+<li>全力でケアした翌朝、何も聞いてもらえないとじわっと寂しい</li>
+<li>相手のために動けるが、自分が欲しいものを言葉にするのは苦手</li>
+<li>「気を遣いすぎ」と言われるが、気を遣わない方法が分からない</li></ul>
+
+    <a href="../quiz.html" class="cta-quiz">自分のタイプを診断する →</a>
+    <a href="../characters.html" class="cta-chars">全16タイプを見る</a>
+  </div>
+</div>
+
+<script src="../common.js"></script>
+</body>
+</html>

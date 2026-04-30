@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>タイプ別あるある｜NightType 夜の価値観診断</title>
+  <meta name="description" content="ナイトタイプ別あるある集。全16タイプのリアルな「分かる！」エピソードまとめ。"/>
+  <meta property="og:title" content="夜タイプ別あるある｜NightType"/>
+  <meta property="og:description" content="全16タイプのリアルなあるある。あなたのタイプは？"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="stylesheet" href="./style.css"/>
+  <style>
+    .aruaru-hero { padding:32px 20px 0; text-align:center; }
+    .aruaru-hero h1 { font-family:'Syne',sans-serif; font-weight:800; font-size:1.7rem; margin-bottom:8px;
+      background:linear-gradient(135deg,var(--purple-ll),var(--pink-l)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .aruaru-hero p { font-size:0.82rem; color:var(--muted); line-height:1.7; margin-bottom:24px; }
+
+    /* フィルタータブ */
+    .filter-tabs { display:flex; gap:8px; overflow-x:auto; padding:0 16px 12px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .filter-tabs::-webkit-scrollbar { display:none; }
+    .filter-tab { flex-shrink:0; padding:8px 16px; border-radius:999px; border:1px solid var(--border);
+      background:var(--surface); font-family:'Syne',sans-serif; font-size:0.65rem; font-weight:700;
+      letter-spacing:0.08em; color:var(--muted); cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+    .filter-tab.active { border-color:var(--purple-l); background:rgba(124,58,237,0.18); color:var(--purple-ll); }
+
+    /* カードグリッド */
+    .aruaru-grid { display:flex; flex-direction:column; gap:16px; padding:0 16px 60px; max-width:480px; margin:0 auto; }
+
+    .type-aruaru-card {
+      border-radius:20px; background:var(--surface); border:1px solid var(--border);
+      overflow:hidden; transition:all 0.22s;
+    }
+    .type-aruaru-card:hover { border-color:var(--purple-l); box-shadow:0 8px 28px rgba(124,58,237,0.2); }
+
+    .tac-header {
+      display:flex; align-items:center; gap:12px; padding:16px 16px 12px;
+      cursor:pointer; user-select:none;
+    }
+    .tac-img { width:52px; height:52px; border-radius:14px; object-fit:cover; flex-shrink:0; }
+    .tac-icon { width:52px; height:52px; border-radius:14px; background:var(--surface2);
+      display:flex; align-items:center; justify-content:center; font-size:1.6rem; flex-shrink:0; }
+    .tac-info { flex:1; min-width:0; }
+    .tac-code { font-family:'Syne',sans-serif; font-weight:700; font-size:0.58rem;
+      letter-spacing:0.2em; color:var(--purple-ll); margin-bottom:3px; }
+    .tac-name { font-family:'Syne',sans-serif; font-weight:700; font-size:0.88rem; line-height:1.2; }
+    .tac-tagline { font-size:0.62rem; color:var(--muted); margin-top:2px; }
+    .tac-toggle { font-size:0.75rem; color:var(--muted); flex-shrink:0; transition:transform 0.25s; }
+    .type-aruaru-card.open .tac-toggle { transform:rotate(180deg); }
+
+    .tac-body {
+      max-height:0; overflow:hidden;
+      transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+      padding:0 16px;
+    }
+    .type-aruaru-card.open .tac-body { max-height:400px; }
+    .tac-divider { height:1px; background:rgba(255,255,255,0.06); margin-bottom:12px; }
+    .aruaru-items { list-style:none; padding:0; margin:0 0 16px; display:flex; flex-direction:column; gap:8px; }
+    .aruaru-items li {
+      padding:12px 14px 12px 38px; border-radius:10px;
+      background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.05);
+      font-size:0.8rem; line-height:1.65; color:#9d99b0; position:relative;
+    }
+    .aruaru-items li::before { content:'🌙'; position:absolute; left:11px; top:12px; font-size:0.8rem; }
+    .tac-cta {
+      display:block; padding:12px; border-radius:10px; margin-bottom:14px;
+      background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.25);
+      color:var(--purple-ll); font-family:'Syne',sans-serif; font-weight:700;
+      font-size:0.68rem; letter-spacing:0.1em; text-align:center; text-decoration:none;
+      transition:all 0.2s;
+    }
+    .tac-cta:hover { background:rgba(124,58,237,0.2); }
+
+    /* シェアバナー */
+    .share-banner {
+      margin:0 16px 16px; padding:20px 18px; border-radius:18px;
+      background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(236,72,153,0.1));
+      border:1px solid rgba(124,58,237,0.3); text-align:center;
+    }
+    .share-banner p { font-size:0.82rem; color:var(--muted); line-height:1.6; margin-bottom:14px; }
+    .share-banner a { display:inline-block; padding:12px 28px; border-radius:12px;
+      background:linear-gradient(135deg,var(--purple),var(--pink));
+      color:#fff; font-family:'Syne',sans-serif; font-weight:700; font-size:0.75rem;
+      letter-spacing:0.1em; text-decoration:none; transition:all 0.2s; }
+    .share-banner a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(124,58,237,0.4); }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="noise"></div>
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">NightType</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer" id="drawer">
+  <a href="index.html"><span class="icon">🏠</span>ホーム</a>
+  <a href="quiz.html"><span class="icon">🌙</span>診断する</a>
+  <a href="characters.html"><span class="icon">🎴</span>キャラ一覧</a>
+  <a href="aruaru.html" class="active"><span class="icon">💬</span>あるある</a>
+  <a href="compat.html"><span class="icon">💜</span>相性チェック</a>
+  <a href="matrix.html"><span class="icon">📊</span>相性マトリクス</a>
+</div>
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<div class="page">
+  <div class="aruaru-hero">
+    <div class="hero-badge"><div class="dot"></div>16 Types · Aruaru</div>
+    <h1>タイプ別あるある</h1>
+    <p>「分かる…」と思ったらそれがあなたのタイプかも。<br>気になるタイプをタップして読んでみて。</p>
+  </div>
+
+  <!-- フィルタータブ -->
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-tab active" data-filter="all">すべて</button>
+    <button class="filter-tab" data-filter="A">A系 没入・余白</button>
+    <button class="filter-tab" data-filter="B">B系 ムード・儀式</button>
+    <button class="filter-tab" data-filter="C">C系 本能・スピード</button>
+    <button class="filter-tab" data-filter="D">D系 観察・哲学</button>
+  </div>
+
+  <!-- シェア誘導 -->
+  <div class="share-banner">
+    <p>あなたのタイプはもう診断した？<br>シェアして友達のタイプも知ろう🌙</p>
+    <a href="quiz.html">診断してみる →</a>
+  </div>
+
+  <div class="aruaru-grid" id="aruaruGrid"></div>
+</div>
+
+<script src="./types.js"></script>
+<script src="./common.js"></script>
+<script>
+const aruaruData = {
+  A1:["好きな人以外のことを考えながら夜を過ごすのが、なぜか申し訳ない","既読がついた瞬間、どんな場所にいても気づく","「今日誰かと会った？」という質問を、さりげなくしてしまう","夜のあとに「他に誰かいる？」と聞けないまま何日も過ごす","相手が自分だけを見ていると分かった瞬間、全力になれる"],
+  A2:["「なんで話してくれないの？」と言われるが、ちゃんと伝えているつもり","静かな空間で隣にいるだけで満たされた夜がある","沈黙が怖い人とは、なぜか長続きしない","言語化を求められると、なぜか気持ちが冷める","目が合っただけで「分かった」と思える瞬間がある"],
+  A3:["相手が楽しそうだと自分も楽しくなり、相手が沈んでいると自分も沈む","「あなたって何したいの？」と聞かれると一瞬困る","相性の悪い夜の後、自分のせいかと考えてしまう","気づけば相手のリズムに合わせていて、自分のペースを忘れる","本気の相手とは、信じられないくらい深い夜になる"],
+  A4:["「なんで連絡くれないの」と言われるが、むしろ待っていた","あえて既読をつけない夜がある（効果を知っている）","相手が焦り始めたころ、ようやく動く","「冷たい」と言われるが、自分では十分アピールしているつもり","引いた瞬間に相手が近づいてきた経験が複数回ある"],
+  B1:["ホテルのコンセプトルームが好きで、よく調べている","蛍光灯の下では気持ちが入らない、というのが本音","音楽・香り・温度が揃ってやっと「今夜の準備ができた」と思える","ムードを壊した相手のことは、なぜかずっと覚えている","照明を落とした瞬間、別人みたいになると言われる"],
+  B2:["付き合いたてより、慣れてきた頃の方が断然いい","初めての場所より、いつものあの店がやっぱり落ち着く","「マンネリ」と言われても、それが安心なんだと思っている","毎回同じ流れなのに、なぜか毎回違う深さがある","型が崩れると、気持ちのスイッチが入らなくなる"],
+  B3:["「今どんな気持ち？」を言葉ではなく、状況で読もうとする","相手が不満そうなのに「大丈夫」と言ったとき、そっと軌道修正する","熱くなりすぎる相手と、冷めすぎる相手、どちらも扱える","翌朝「昨日よかった」と言われることが多い","自分が満足したかどうかは、後回しになることが多い"],
+  B4:["相手の息のリズムが変わった瞬間、すぐ気づく","「なんで分かったの？」と驚かれることが多い","全力でケアした翌朝、何も聞いてもらえないとじわっと寂しい","相手のために動けるが、自分が欲しいものを言葉にするのは苦手","「気を遣いすぎ」と言われるが、気を遣わない方法が分からない"],
+  C1:["「計画してから」という発想が、夜には存在しない","気づいたら手が動いていて、後から「あ、そうなった」と思う","テンションが上がると止まれない、という自覚はある","「もう少しゆっくりで」と言われると少し困る","終わった後の充実感だけは、どのタイプにも負けない"],
+  C2:["初めて触れた瞬間に「合う/合わない」が全部分かる","言葉で語り合う夜より、ただ触れ合っている夜の方が好き","「相性って何？」と聞かれたら「触れてみれば分かる」と答える","五感が鋭すぎて、シーツの質感が気になることがある","フィジカルな相性が悪いと、どれだけ好きでも続かない"],
+  C3:["「なんで言ってくれなかったの」と後で言われることがある","欲しいと思ったら次の瞬間には動いている","「もう少し焦らして」という概念が理解できない","直球すぎると言われるが、それが誠実だと思っている","まわりくどい誘い方をされると、正直ピンとこない"],
+  C4:["「もう終わり？」と思ったことはほぼない（自分のテンポで進むから）","返信が遅い人と夜を過ごすと、なぜかテンションが下がる","「焦らし」を「技術」と呼ぶ人と、根本的に合わない","テンポが合った夜は、会話のように全部がスムーズだった","待ち時間に熱が冷めた経験が、一度や二度ではない"],
+  D1:["「何考えてるか分からない」とよく言われるが、全部分かった上で動いていない","相手のことをじっくり観察してから、初めて動く","自分から誘うより、相手が来るのを待つ方が多い","「なんでそんなこと知ってるの」と驚かれることがある","場を支配しているつもりはないが、気づけばそうなっている"],
+  D2:["メッセージが来た瞬間から、頭の中でその夜のシナリオが始まる","現実より想像の方が豊かなことがある、と認めている","「思ってたのと違う」がプラスの意味で起きると最高に興奮する","夜の前の緊張感と予感が、一番ドキドキする瞬間かもしれない","終わった後、一人で「あのシーンどうだった」と振り返る"],
+  D3:["「もっと近づいて」と言われると、逆に一歩引いてしまう","好きな人ほど、少し距離を置きたくなるのが自分の癖","「なんで壁作るの？」と聞かれると答えに詰まる","近づいた後に「引けなくなる感覚」が、少し怖い","でも、離れすぎると寂しいのも事実"],
+  D4:["夜の途中に「これはどういう関係なんだろう」と考え始める","「今夜はなんでこうなったんだろう」と一人で振り返る夜がある","相手に「難しいね」と言われたことがある","意味のない夜に、違和感を感じてしまう","二人の関係性について語り合える相手との夜が、一番好き"],
+};
+
+const grid = document.getElementById('aruaruGrid');
+let currentFilter = 'all';
+
+function buildGrid(filter){
+  grid.innerHTML = '';
+  Object.entries(types).forEach(([code, d], i) => {
+    if(filter !== 'all' && !code.startsWith(filter)) return;
+    const items = aruaruData[code] || [];
+    const card = document.createElement('div');
+    card.className = 'type-aruaru-card';
+    card.dataset.code = code;
+    card.style.cssText = `opacity:0;animation:popIn 0.45s ease ${0.04*i}s forwards`;
+    card.innerHTML = `
+      <div class="tac-header">
+        ${d.image ? `<img src="${d.image}" alt="${d.name}" class="tac-img" loading="lazy"/>` : `<div class="tac-icon">${d.icon}</div>`}
+        <div class="tac-info">
+          <div class="tac-code">${code} TYPE</div>
+          <div class="tac-name">${d.name}</div>
+          <div class="tac-tagline">${d.tagline}</div>
+        </div>
+        <div class="tac-toggle">▼</div>
+      </div>
+      <div class="tac-body">
+        <div class="tac-divider"></div>
+        <ul class="aruaru-items">
+          ${items.map(item=>`<li>${item}</li>`).join('')}
+        </ul>
+        <a href="type/${code}.html" class="tac-cta">このタイプの詳細を見る →</a>
+      </div>`;
+    card.querySelector('.tac-header').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+    grid.appendChild(card);
+  });
+}
+
+buildGrid('all');
+
+// 自分のタイプが分かっていれば自動オープン
+const savedScores = localStorage.getItem('nightTypeScores');
+if(savedScores){
+  const scores = JSON.parse(savedScores);
+  const myType = Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+  setTimeout(() => {
+    const myCard = grid.querySelector(`[data-code="${myType}"]`);
+    if(myCard){
+      myCard.classList.add('open');
+      myCard.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }, 600);
+}
+
+// フィルター
+document.getElementById('filterTabs').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-tab');
+  if(!btn) return;
+  currentFilter = btn.dataset.filter;
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.toggle('active', b===btn));
+  buildGrid(currentFilter);
+});
+</script>
+</body>
+</html>
