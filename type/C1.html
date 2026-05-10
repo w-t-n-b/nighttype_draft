@@ -1,113 +1,545 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8"/>
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>本能解放ランナー（C1タイプ）｜NightType 夜の価値観タイプ診断</title>
-  <meta name="description" content="NightType C1タイプ「本能解放ランナー」の詳細ページ。考える前に、体が動いている。特徴・相性・あるある・診断方法を解説。"/>
-  <meta property="og:title" content="本能解放ランナー（C1）｜NightType"/>
-  <meta property="og:description" content="考える前に、体が動いている"/>
-  <meta property="og:image" content="../images/C1.png"/>
-  <meta property="og:type" content="article"/>
-  <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="本能解放ランナー（C1）｜NightType"/>
-  <meta name="twitter:description" content="考える前に、体が動いている"/>
-  <meta name="twitter:image" content="../images/C1.png"/>
-  <link rel="stylesheet" href="../style.css"/>
-  <style>
-    .type-hero{display:flex;flex-direction:column;align-items:center;padding:32px 20px 0;text-align:center;}
-    .type-img{width:260px;height:260px;object-fit:contain;filter:drop-shadow(0 12px 28px rgba(124,58,237,.55)) drop-shadow(0 0 40px rgba(236,72,153,.2));margin-bottom:20px;opacity:0;animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards;}
-    .type-icon-fb{width:200px;height:200px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:5rem;background:radial-gradient(circle at 30% 30%,rgba(124,58,237,0.3),rgba(10,10,15,0.8));border:2px solid var(--border);box-shadow:0 0 50px rgba(124,58,237,0.4);margin-bottom:20px;opacity:0;animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards;}
-    .type-code-badge{font-family:'Syne',sans-serif;font-weight:700;font-size:0.65rem;letter-spacing:0.3em;color:var(--purple-ll);background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);padding:5px 14px;border-radius:999px;margin-bottom:12px;}
-    .type-tagline{font-size:0.78rem;color:var(--purple-ll);font-family:'Syne',sans-serif;margin-bottom:12px;}
-    .type-name{font-family:'Syne',sans-serif;font-weight:800;font-size:1.9rem;line-height:1.15;margin-bottom:0;background:linear-gradient(135deg,var(--purple-ll),var(--pink-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .profile-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0;}
-    .profile-chip{padding:5px 14px;border-radius:999px;font-size:0.65rem;font-family:'Syne',sans-serif;font-weight:700;}
-    .keyword-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
-    .keyword-tag{padding:4px 11px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);font-size:0.62rem;color:var(--muted);}
-    .quote-block{padding:14px 18px;border-radius:14px;background:rgba(124,58,237,0.08);border-left:3px solid var(--purple);margin:16px 0;font-style:italic;font-size:0.9rem;color:var(--purple-ll);line-height:1.7;text-align:left;}
-    .type-section{max-width:480px;margin:0 auto;padding:0 16px;}
-    .section-heading{font-family:'Syne',sans-serif;font-weight:700;font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--purple-ll);margin:28px 0 12px;display:flex;align-items:center;gap:8px;}
-    .section-heading::before{content:'';display:block;width:4px;height:4px;border-radius:50%;background:var(--purple-l);}
-    .type-desc{font-size:0.86rem;line-height:1.9;color:#9d99b0;margin-bottom:12px;}
-    .type-detail{font-size:0.8rem;line-height:1.85;color:#7a7690;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.025);border-left:2px solid rgba(124,58,237,0.4);}
-    .compat-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:8px;}
-    .compat-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:var(--surface2);}
-    .compat-row.good{border-left:2px solid rgba(168,85,247,0.5);}
-    .compat-row.bad{border-left:2px solid rgba(236,72,153,0.5);}
-    .compat-row img,.compat-row .c-icon{width:46px;height:46px;border-radius:12px;object-fit:contain;flex-shrink:0;background:radial-gradient(ellipse at 50% 65%, rgba(124,58,237,.18) 0%, rgba(0,0,0,.4) 70%);}
-    .compat-row .c-icon{background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
-    .compat-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.78rem;margin-bottom:2px;}
-    .compat-tag{font-size:0.65rem;color:var(--muted);}
-    .compat-reason{font-size:0.66rem;color:var(--muted);line-height:1.5;margin-top:4px;}
-    .aruaru-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;}
-    .aruaru-list li{padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--border);font-size:0.82rem;line-height:1.65;color:#9d99b0;position:relative;padding-left:38px;}
-    .aruaru-list li::before{content:'🌙';position:absolute;left:12px;top:14px;font-size:0.85rem;}
-    .cta-quiz{display:block;width:100%;padding:18px;border-radius:16px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;letter-spacing:0.1em;text-align:center;text-decoration:none;margin:24px 0 8px;transition:all 0.2s;}
-    .cta-quiz:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,0.4);}
-    .cta-chars{display:block;width:100%;padding:16px;border-radius:16px;border:1px solid var(--border);color:var(--purple-ll);font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.1em;text-align:center;text-decoration:none;margin-bottom:48px;transition:all 0.2s;}
-    .cta-chars:hover{border-color:var(--purple-l);background:rgba(124,58,237,0.1);}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title id="pageTitle">Type — NightType</title>
+<meta property="og:title" id="ogTitle" content="NightType" />
+<meta property="og:description" id="ogDesc" content="" />
+<meta property="og:image" id="ogImage" content="" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../nighttype-shell.css" />
+<style>
+
+  /* ── Cinematic hero ── */
+  .type-hero{
+    position:relative; min-height:80vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:120px 24px 60px;
+    overflow:hidden;
+    z-index:5;
+  }
+  .hero-blur-img{
+    position:absolute; inset:-50px;
+    z-index:-1; opacity:.35;
+    background-size:cover; background-position:center;
+    filter:blur(80px) saturate(1.2);
+    pointer-events:none;
+  }
+  .hero-blur-img::after{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(ellipse at center, transparent 0%, var(--bg) 75%);
+  }
+
+  .type-hero-inner{
+    position:relative; z-index:2;
+    text-align:center;
+    max-width:680px;
+  }
+
+  .breadcrumb{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.3em; text-transform:uppercase;
+    color:var(--ink-mute); margin-bottom:36px;
+  }
+  .breadcrumb a{ color:inherit; transition:color .25s; }
+  .breadcrumb a:hover{ color:var(--violet); }
+  .breadcrumb span{ color:var(--ink-faint); }
+
+  .hero-orbit{
+    position:relative;
+    width:280px; height:280px;
+    margin:0 auto 32px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hero-orbit-ring{
+    position:absolute; border-radius:50%;
+    border:1px solid rgba(155,124,248,.18);
+    animation:slowRotate 50s linear infinite;
+  }
+  .hero-orbit-ring:nth-child(1){
+    inset:0;
+  }
+  .hero-orbit-ring:nth-child(2){
+    inset:24px;
+    border-color:rgba(34,211,238,.12);
+    animation-direction:reverse; animation-duration:65s;
+  }
+  .hero-orbit-ring:nth-child(3){
+    inset:50px;
+    border-color:rgba(244,114,182,.1);
+    animation-duration:40s;
+  }
+  .hero-orbit-ring::after{
+    content:""; position:absolute; top:-3px; left:50%;
+    transform:translateX(-50%);
+    width:6px; height:6px; border-radius:50%;
+    background:var(--violet);
+    box-shadow:0 0 14px var(--violet);
+  }
+  .hero-orbit-ring:nth-child(2)::after{
+    background:var(--cyan); box-shadow:0 0 14px var(--cyan);
+  }
+  .hero-orbit-ring:nth-child(3)::after{
+    background:var(--pink); box-shadow:0 0 14px var(--pink);
+  }
+  @keyframes slowRotate{ to{transform:rotate(360deg)} }
+
+  .hero-char-frame{
+    position:relative;
+    width:220px; height:220px; border-radius:50%;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:
+      0 0 80px rgba(155,124,248,.5),
+      0 0 160px rgba(34,211,238,.2),
+      inset 0 0 50px rgba(0,0,0,.4);
+    animation:ntPop .9s cubic-bezier(.34,1.56,.64,1) .2s both;
+  }
+  .hero-char-frame img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .hero-char-frame::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse at 30% 30%, transparent 30%, rgba(155,124,248,.12) 90%);
+  }
+
+  .hero-code{
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.4em; color:var(--violet);
+    margin-bottom:14px;
+    animation:ntFadeUp .6s ease .4s both;
+  }
+  .hero-name{
+    font-family:"Cormorant Garamond",serif;
+    font-size:clamp(44px, 7vw, 72px);
+    font-weight:500; line-height:1.1;
+    background:linear-gradient(135deg,#fff,var(--violet) 50%,var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:18px; letter-spacing:-.01em;
+    text-wrap:balance;
+    animation:ntFadeUp .7s cubic-bezier(.4,0,.2,1) .5s both;
+  }
+  .hero-tagline{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:clamp(18px,3vw,24px);
+    color:var(--ink-mute);
+    margin-bottom:24px; text-wrap:pretty;
+    animation:ntFadeUp .7s ease .6s both;
+  }
+  .hero-axes{
+    display:inline-flex; flex-wrap:wrap; align-items:center; gap:12px;
+    padding:10px 22px; border-radius:99px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    backdrop-filter:blur(8px);
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.18em; color:var(--ink-mute);
+    animation:ntFadeUp .6s ease .7s both;
+  }
+  .hero-axes strong{ color:var(--ink); font-weight:700; }
+  .hero-axes-divider{ color:var(--ink-faint); }
+
+  /* ── Content sections ── */
+  .type-content{
+    max-width:760px; margin:0 auto;
+    padding:0 24px 100px;
+    position:relative; z-index:5;
+  }
+
+  .ts-block{
+    margin-bottom:50px;
+  }
+  .ts-eyebrow{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.4em; text-transform:uppercase;
+    color:var(--cyan); margin-bottom:14px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .ts-eyebrow::before{
+    content:""; width:24px; height:1px; background:var(--cyan); opacity:.5;
+  }
+  .ts-title{
+    font-family:"Cormorant Garamond",serif;
+    font-size:30px; font-weight:500;
+    margin-bottom:24px; line-height:1.2;
+    text-wrap:balance;
+  }
+  .ts-title em{
+    font-style:italic;
+    color:var(--violet);
+  }
+
+  .ts-card{
+    padding:36px 32px;
+    border-radius:24px;
+    border:1px solid var(--line);
+    background:var(--glass);
+    backdrop-filter:blur(20px) saturate(140%);
+    position:relative;
+  }
+  .ts-card::before{
+    content:""; position:absolute; top:0; left:24px; right:24px; height:1px;
+    background:linear-gradient(90deg,transparent,rgba(155,124,248,.6),rgba(34,211,238,.4),transparent);
+  }
+
+  .ts-quote{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:24px; line-height:1.5; color:var(--ink);
+    padding-left:24px; border-left:2px solid var(--violet);
+    margin-bottom:28px; text-wrap:pretty;
+  }
+  .ts-text{
+    font-size:15px; line-height:1.95; color:var(--ink-mute);
+    text-wrap:pretty;
+  }
+  .ts-text p{ margin-bottom:16px; }
+  .ts-text p:last-child{ margin-bottom:0; }
+
+  .ts-meta{
+    display:flex; gap:10px; flex-wrap:wrap;
+    margin-top:28px; padding-top:24px;
+    border-top:1px solid var(--line);
+  }
+  .ts-meta-chip{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.18em; text-transform:uppercase;
+    padding:6px 12px; border-radius:99px;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    color:var(--ink-mute);
+  }
+  .ts-meta-chip strong{ color:var(--violet); margin-right:6px; font-weight:700; }
+
+  /* Aruaru list */
+  .aruaru-list{
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .aruaru-item{
+    display:flex; gap:14px;
+    padding:18px 22px;
+    border-radius:14px;
+    background:rgba(255,255,255,.02);
+    border:1px solid var(--line);
+    font-size:14.5px; line-height:1.7; color:var(--ink-mute);
+    transition:all .25s;
+    text-wrap:pretty;
+  }
+  .aruaru-item:hover{
+    border-color:rgba(155,124,248,.3);
+    background:rgba(155,124,248,.04);
+    transform:translateX(2px);
+  }
+  .aruaru-num{
+    flex-shrink:0;
+    font-family:"Space Mono",monospace; font-size:11px;
+    color:var(--violet); padding-top:2px;
+    letter-spacing:.1em;
+  }
+
+  /* Compatibility split */
+  .compat-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:18px;
+  }
+  .compat-card{
+    padding:28px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:var(--glass);
+    backdrop-filter:blur(16px);
+    position:relative; overflow:hidden;
+  }
+  .compat-card.good::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(244,114,182,.7), transparent);
+  }
+  .compat-card.bad::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(99,102,241,.7), transparent);
+  }
+  .compat-head{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.3em; text-transform:uppercase;
+    margin-bottom:16px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .compat-card.good .compat-head{ color:var(--pink); }
+  .compat-card.bad  .compat-head{ color:#a5b4fc; }
+  .compat-head .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:currentColor;
+    box-shadow:0 0 10px currentColor;
+  }
+  .compat-list{
+    display:flex; flex-direction:column; gap:10px;
+    margin-bottom:18px;
+  }
+  .compat-item{
+    display:flex; align-items:center; gap:12px;
+    padding:10px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    cursor:pointer;
+    transition:all .25s;
+    text-decoration:none; color:inherit;
+  }
+  .compat-item:hover{
+    border-color:rgba(155,124,248,.4);
+    background:rgba(155,124,248,.06);
+    transform:translateX(2px);
+  }
+  .compat-item img{
+    width:44px; height:44px; border-radius:50%;
+    object-fit:cover; flex-shrink:0;
+    border:1px solid var(--line);
+  }
+  .compat-item-body{ flex:1; min-width:0; }
+  .compat-item-code{
+    font-family:"Space Mono",monospace; font-size:9px;
+    letter-spacing:.18em; color:var(--violet); margin-bottom:2px;
+  }
+  .compat-item-name{
+    font-family:"Cormorant Garamond",serif; font-size:16px;
+    font-weight:500; color:var(--ink);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .compat-reason{
+    font-size:13.5px; line-height:1.85; color:var(--ink-mute);
+    text-wrap:pretty;
+    padding:16px 18px;
+    border-radius:12px;
+    background:rgba(255,255,255,.02);
+    border-left:2px solid;
+  }
+  .compat-card.good .compat-reason{ border-left-color:var(--pink); }
+  .compat-card.bad  .compat-reason{ border-left-color:#a5b4fc; }
+
+  /* Bottom CTA */
+  .ts-cta{
+    display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+    margin-top:60px;
+  }
+
+  @media (max-width:600px){
+    .type-hero{padding:100px 18px 50px; min-height:70vh}
+    .hero-orbit{width:240px; height:240px}
+    .hero-char-frame{width:190px; height:190px}
+    .type-content{padding:0 18px 80px}
+    .ts-card{padding:26px 22px}
+    .ts-quote{font-size:20px}
+    .ts-title{font-size:24px}
+    .compat-grid{grid-template-columns:1fr; gap:14px}
+  }
+</style>
 </head>
 <body>
-<canvas id="bg-canvas"></canvas>
-<div class="noise"></div>
-<nav class="navbar">
-  <a href="../index.html" class="nav-logo">NightType</a>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+
+<canvas id="stars"></canvas>
+<div class="nebula"></div>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<!-- Top Nav -->
+<nav class="nt-nav">
+  <a href="../index.html" class="nt-brand"><span class="nt-brand-mark"></span>NightType</a>
+  <div class="nt-nav-links" id="navLinks">
+    <a href="../index.html">Home</a>
+    <a href="../quiz.html">Quiz</a>
+    <a href="../characters.html" class="active">Characters</a>
+    <a href="index.html#about">About</a>
+  </div>
+  <button class="nt-burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
+  <div class="nt-overlay" id="navOverlay"></div>
 </nav>
-<div class="drawer" id="drawer">
-  <a href="../index.html"><span class="icon">🏠</span>ホーム</a>
-  <a href="../quiz.html"><span class="icon">🌙</span>診断する</a>
-  <a href="../characters.html" class="active"><span class="icon">🎴</span>キャラ一覧</a>
-  <a href="../compat.html"><span class="icon">💜</span>相性チェック</a>
-  <a href="../matrix.html"><span class="icon">📊</span>相性マトリクス</a>
-</div>
-<div class="drawer-overlay" id="drawer-overlay"></div>
 
-<div class="page">
-  <div class="type-hero">
-    <div class="type-code-badge">C1 TYPE</div>
-    <img src="../images/C1.png" alt="本能解放ランナー" class="type-img"/>
-    <div class="type-tagline">"考える前に、体が動いている"</div>
-    <h1 class="type-name">本能解放ランナー</h1>    <div class="keyword-row"><span class="keyword-tag">本能</span><span class="keyword-tag">衝動</span><span class="keyword-tag">熱量</span></div>
-    <div class="quote-block" style="max-width:400px">「理性より先に、体が答えを出す。」</div>
+<!-- Hero -->
+<section class="type-hero">
+  <div class="hero-blur-img" id="heroBg"></div>
+
+  <div class="type-hero-inner">
+    <div class="breadcrumb">
+      <a href="../characters.html">All Characters</a>
+      <span>/</span>
+      <span id="bcCode">—</span>
+    </div>
+
+    <div class="hero-orbit">
+      <div class="hero-orbit-ring"></div>
+      <div class="hero-orbit-ring"></div>
+      <div class="hero-orbit-ring"></div>
+      <div class="hero-char-frame">
+        <img id="charImg" alt="" />
+      </div>
+    </div>
+
+    <div class="hero-code" id="heroCode">A1 · N-S-A-G</div>
+    <h1 class="hero-name" id="heroName">—</h1>
+    <p class="hero-tagline" id="heroTagline">—</p>
+    <div class="hero-axes" id="heroAxes">
+      <span><strong id="axNuma">—</strong></span>
+      <span class="hero-axes-divider">×</span>
+      <span><strong id="axSm">—</strong></span>
+      <span class="hero-axes-divider">×</span>
+      <span><strong id="axAi">—</strong></span>
+      <span class="hero-axes-divider">×</span>
+      <span><strong id="axGt">—</strong></span>
+    </div>
+  </div>
+</section>
+
+<!-- Content -->
+<div class="type-content">
+
+  <!-- Portrait -->
+  <section class="ts-block">
+    <div class="ts-eyebrow">01 · Portrait</div>
+    <h2 class="ts-title">Their <em>night</em>, in essence</h2>
+    <div class="ts-card">
+      <p class="ts-quote" id="typeQuote">—</p>
+      <div class="ts-text" id="typeDesc">—</div>
+      <div class="ts-meta" id="metaRow"></div>
+    </div>
+  </section>
+
+  <!-- Detail -->
+  <section class="ts-block" id="detailBlock">
+    <div class="ts-eyebrow">02 · Deeper</div>
+    <h2 class="ts-title">The <em>texture</em> of how they love</h2>
+    <div class="ts-card">
+      <div class="ts-text" id="typeDetail">—</div>
+    </div>
+  </section>
+
+  <!-- Aruaru -->
+  <section class="ts-block">
+    <div class="ts-eyebrow">03 · Tells</div>
+    <h2 class="ts-title"><em>Telltales</em> only they would do</h2>
+    <div class="aruaru-list" id="aruaruList"></div>
+  </section>
+
+  <!-- Compatibility -->
+  <section class="ts-block">
+    <div class="ts-eyebrow">04 · Constellations</div>
+    <h2 class="ts-title">Who <em>resonates</em>, who <em>burns</em></h2>
+    <div class="compat-grid">
+      <div class="compat-card good">
+        <div class="compat-head"><span class="dot"></span>High Resonance</div>
+        <div class="compat-list" id="goodList"></div>
+        <div class="compat-reason" id="goodReason">—</div>
+      </div>
+      <div class="compat-card bad">
+        <div class="compat-head"><span class="dot"></span>Wavelength Drift</div>
+        <div class="compat-list" id="badList"></div>
+        <div class="compat-reason" id="badReason">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="ts-cta">
+    <a href="../characters.html" class="nt-btn">
+      ← All 16 types
+    </a>
+    <a href="../quiz.html" class="nt-btn nt-btn-primary">
+      Find your own <span class="arrow">→</span>
+    </a>
   </div>
 
-  <div class="type-section">
-    <div class="section-heading">このタイプについて</div>
-    <p class="type-desc">理性より先に本能が動く。夜は計画するものではなく走り切るもの。勢いと熱量が正義。</p>
-    <div class="type-detail">終わった後の充実感が他のタイプより圧倒的に高い。悪意はないが丁寧さより速度を選ぶ傾向がある。</div>
+</div>
 
-    <div class="section-heading">相性がいいタイプ</div>
-    <div class="compat-grid"><a href="C2.html" class="compat-row good" style="text-decoration:none;color:var(--white)">
-        <img src="../images/C2.png" alt="フィジカル優位者">
-        <div><div class="compat-name">フィジカル優位者</div><div class="compat-tag">C2 TYPE</div></div>
+<script src="../types.js"></script>
+<script src="../aruraru.js"></script>
+<script src="../nighttype-shell.js"></script>
+<script>
+  // ── Get type code ──
+  const params = new URLSearchParams(location.search);
+  const code = 'C1';
+  const t = types[code] || types.A1;
+
+  // ── Page meta ──
+  document.title = `${t.name}（${code}）— NightType`;
+  document.getElementById('pageTitle').textContent = `${t.name}（${code}）— NightType`;
+  document.getElementById('ogTitle').setAttribute('content', `${t.name}｜NightType`);
+  document.getElementById('ogDesc').setAttribute('content', t.tagline || '');
+  if(t.image) document.getElementById('ogImage').setAttribute('content', t.image);
+
+  // ── Hero ──
+  const imgSrc = t.image || `../images/${code}.png`;
+  const charImg = document.getElementById('charImg');
+  charImg.src = imgSrc.startsWith("images/")?"../"+imgSrc:imgSrc; charImg.alt = t.name;
+  document.getElementById('heroBg').style.backgroundImage = `url("${imgSrc.startsWith("images/")?"../"+imgSrc:imgSrc}")`;
+
+  document.getElementById('bcCode').textContent = code;
+  document.getElementById('heroCode').textContent = `${code} · ${t.axisCode || ''}`;
+  document.getElementById('heroName').textContent = t.name;
+  document.getElementById('heroTagline').textContent = `"${t.tagline || ''}"`;
+
+  const axesParts = (t.axes || '').split('×').map(s=>s.trim());
+  if(axesParts.length===4){
+    document.getElementById('axNuma').textContent = axesParts[0];
+    document.getElementById('axSm').textContent   = axesParts[1];
+    document.getElementById('axAi').textContent   = axesParts[2];
+    document.getElementById('axGt').textContent   = axesParts[3];
+  }
+
+  // ── Description ──
+  document.getElementById('typeQuote').textContent = t.quote || '';
+  function paragraphify(text){
+    return (text || '')
+      .split(/\n\s*\n/)
+      .map(p => `<p>${p.replace(/\n/g,'<br/>')}</p>`)
+      .join('');
+  }
+  document.getElementById('typeDesc').innerHTML = paragraphify(t.description);
+
+  // ── Detail ──
+  if(t.detail){
+    document.getElementById('typeDetail').innerHTML = paragraphify(t.detail);
+  } else {
+    document.getElementById('detailBlock').style.display = 'none';
+  }
+
+  // Meta row
+  const meta = [];
+  (t.keyword || []).forEach(k=> meta.push(`<span class="ts-meta-chip">${k}</span>`));
+  document.getElementById('metaRow').innerHTML = meta.join('');
+
+  // ── Aruaru ──
+  const aruList = (typeof aruaruData !== 'undefined' && aruaruData[code]) || [];
+  document.getElementById('aruaruList').innerHTML =
+    aruList.map((a,i)=>`
+      <div class="aruaru-item">
+        <div class="aruaru-num">${String(i+1).padStart(2,'0')}</div>
+        <div>${a}</div>
+      </div>
+    `).join('');
+
+  // ── Compatibility ──
+  function compatItem(c){
+    const tt = types[c];
+    if(!tt) return '';
+    return `
+      <a class="compat-item" href="${c}.html">
+        <img src="${(tt.image||"").startsWith("images/")?"../"+tt.image:(tt.image||`../images/${c}.png`)}" alt=""
+             onerror="this.style.display='none'"/>
+        <div class="compat-item-body">
+          <div class="compat-item-code">${c}</div>
+          <div class="compat-item-name">${tt.name}</div>
+        </div>
       </a>
-<a href="B4.html" class="compat-row good" style="text-decoration:none;color:var(--white)">
-        <img src="../images/B4.png" alt="空気読解オペレーター">
-        <div><div class="compat-name">空気読解オペレーター</div><div class="compat-tag">B4 TYPE</div></div>
-      </a></div>
+    `;
+  }
+  document.getElementById('goodList').innerHTML = (t.good || []).map(compatItem).join('');
+  document.getElementById('badList').innerHTML  = (t.bad  || []).map(compatItem).join('');
+  document.getElementById('goodReason').textContent = t.goodReason || '';
+  document.getElementById('badReason').textContent  = t.badReason  || '';
+</script>
 
-    <div class="section-heading">刺激が強すぎるタイプ</div>
-    <div class="compat-grid"><a href="A4.html" class="compat-row bad" style="text-decoration:none;color:var(--white)">
-        <img src="../images/A4.png" alt="余白支配者">
-        <div><div class="compat-name">余白支配者</div><div class="compat-tag">A4 TYPE</div></div>
-      </a></div>
-
-    <div class="section-heading">C1タイプあるある</div>
-    <ul class="aruaru-list"><li>「計画してから」という発想が、夜には存在しない</li>
-<li>気づいたら手が動いていて、後から「あ、そうなった」と思う</li>
-<li>テンションが上がると止まれない、という自覚はある</li>
-<li>「もう少しゆっくりで」と言われると少し困る</li>
-<li>終わった後の充実感だけは、どのタイプにも負けない</li></ul>
-
-    <a href="../quiz.html" class="cta-quiz">自分のタイプを診断する →</a>
-    <a href="../characters.html" class="cta-chars">全16タイプを見る</a>
-  </div>
-</div>
-
-<script src="../common.js"></script>
 </body>
 </html>
