@@ -92,17 +92,13 @@
 
   .hero-char-frame{
     position:relative;
-    width:260px; height:260px; border-radius:32px;
-    overflow:hidden;
-    background:radial-gradient(ellipse at 50% 60%, rgba(124,58,237,.18) 0%, rgba(0,0,0,0) 70%);
-    box-shadow:
-      0 0 100px rgba(155,124,248,.4),
-      0 0 200px rgba(34,211,238,.15);
+    width:280px; height:280px;
+    display:flex; align-items:center; justify-content:center;
     animation:ntPop .9s cubic-bezier(.34,1.56,.64,1) .2s both;
   }
   .hero-char-frame img{
     width:100%; height:100%; object-fit:contain; display:block;
-    filter:drop-shadow(0 8px 24px rgba(124,58,237,.35));
+    filter:drop-shadow(0 12px 32px rgba(155,124,248,.55)) drop-shadow(0 0 48px rgba(34,211,238,.2));
   }
 
   .hero-code{
@@ -326,7 +322,7 @@
   @media (max-width:600px){
     .type-hero{padding:100px 18px 50px; min-height:70vh}
     .hero-orbit{width:240px; height:240px}
-    .hero-char-frame{width:220px; height:220px; border-radius:24px;}
+    .hero-char-frame{width:240px; height:240px;}
     .type-content{padding:0 18px 80px}
     .ts-card{padding:26px 22px}
     .ts-quote{font-size:20px}
