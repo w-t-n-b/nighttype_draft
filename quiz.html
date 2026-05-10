@@ -185,28 +185,30 @@
     color:var(--violet);
   }
 
-  /* Swipe labels overlay */
+  /* Swipe labels overlay (heart/star icons) */
   .swipe-label{
-    position:absolute; top:24px; z-index:10;
-    padding:8px 16px; border-radius:8px;
-    font-family:"Space Mono",monospace; font-weight:700;
-    font-size:13px; letter-spacing:.18em;
+    position:absolute; top:50%; z-index:10;
+    width:64px; height:64px; padding:0;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:50%;
     opacity:0; pointer-events:none;
     transition:opacity .05s;
     backdrop-filter:blur(8px);
   }
+  .swipe-label svg{ width:36px; height:36px; }
   .swipe-label.like{
-    left:18px; transform:rotate(-8deg);
+    left:18px; transform:translateY(-50%) rotate(-8deg);
     border:2px solid var(--pink);
-    color:var(--pink);
-    background:rgba(244,114,182,.1);
-    box-shadow:0 0 24px rgba(244,114,182,.3);
+    color:rgba(244,114,182,.95);
+    background:rgba(244,114,182,.12);
+    box-shadow:0 0 28px rgba(244,114,182,.45);
   }
   .swipe-label.nope{
-    right:18px; transform:rotate(8deg);
-    border:2px solid var(--ink-mute);
-    color:var(--ink-mute);
-    background:rgba(255,255,255,.03);
+    right:18px; transform:translateY(-50%) rotate(8deg);
+    border:2px solid rgba(34,211,238,.7);
+    color:rgba(34,211,238,.85);
+    background:rgba(34,211,238,.12);
+    box-shadow:0 0 28px rgba(34,211,238,.4);
   }
 
   /* ── Scale buttons ── */
@@ -464,8 +466,8 @@
 
     <div class="qcard" id="qcard">
       <div class="qcard-body">
-        <div class="swipe-label like" id="lblLike">響く</div>
-        <div class="swipe-label nope" id="lblNope">違う</div>
+        <div class="swipe-label like" id="lblLike"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><path d="M12 21s-9-5.5-9-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-9 11-9 11z"/></svg></div>
+        <div class="swipe-label nope" id="lblNope"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z"/></svg></div>
 
         <div class="qcard-head">
           <div class="qcard-axis">
