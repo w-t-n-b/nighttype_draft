@@ -152,13 +152,15 @@
     animation:orbBreathe 5s ease-in-out infinite;
   }
   .type-orb::after{
-    /* faint ring */
-    content:"";position:absolute;inset:14%;border-radius:50%;
-    border:1px solid rgba(155,124,248,.18);
-    box-shadow:inset 0 0 40px rgba(155,124,248,.08),0 0 30px rgba(34,211,238,.06);
+    /* subtle floor highlight */
+    content:"";position:absolute;inset:auto 22% 8% 22%;height:8px;border-radius:50%;
+    background:radial-gradient(ellipse,rgba(155,124,248,.35),transparent 70%);
+    filter:blur(6px);
   }
   @keyframes orbBreathe{0%,100%{opacity:.7;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
-  .type-img{position:relative;width:78%;height:78%;object-fit:contain;
+  .type-img{position:relative;width:88%;height:88%;object-fit:contain;
+    -webkit-mask-image:radial-gradient(circle at 50% 50%, #000 55%, transparent 78%);
+    mask-image:radial-gradient(circle at 50% 50%, #000 55%, transparent 78%);
     filter:drop-shadow(0 18px 38px rgba(155,124,248,.55)) drop-shadow(0 0 30px rgba(34,211,238,.25)) brightness(1.06) contrast(1.05);
     animation:orbFloat 6s ease-in-out infinite;
     will-change:transform;
@@ -269,7 +271,7 @@
 
   <section class="block" id="about">
     <div class="reveal">
-      <div class="section-eyebrow">[ 01 / overview ]</div>
+      <div class="section-eyebrow">01 · 概要</div>
       <h2 class="section-title">夜の自分を、<em>座標</em>で読み解く。</h2>
     </div>
     <div class="stats reveal-stagger">
@@ -312,7 +314,7 @@
 
   <section class="block" id="axes">
     <div class="reveal">
-      <div class="section-eyebrow">[ 02 / four axes ]</div>
+      <div class="section-eyebrow">02 · 4つの軸</div>
       <h2 class="section-title">4つの軸から<em>あなたの夜</em>を紐解く。</h2>
     </div>
     <div class="axes-grid reveal-stagger">
@@ -345,14 +347,14 @@
 
   <section class="block" id="types">
     <div class="reveal">
-      <div class="section-eyebrow">[ 03 / sixteen types ]</div>
+      <div class="section-eyebrow">03 · 16タイプ</div>
       <h2 class="section-title">16の<em>夜の座標</em>。</h2>
     </div>
     <div class="types-grid reveal-stagger" id="typesGrid"></div>
   </section>
 
   <section class="final reveal">
-    <div class="section-eyebrow" style="text-align:center;color:var(--cyan)">[ 04 / begin ]</div>
+    <div class="section-eyebrow" style="text-align:center;color:var(--cyan)">04 · はじめる</div>
     <h2 class="final-title">あなたの夜の正体を、<br/>今夜、明かす。</h2>
     <p class="final-jp">20問、3分。<br/>直感で選んだ答えが、あなたの座標になる。</p>
     <a class="btn btn-primary btn-glow" href="quiz.html">
