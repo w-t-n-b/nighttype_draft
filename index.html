@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="nighttype-shell.css" />
 <style>
   :root{
     --bg:#04040e;
@@ -59,17 +60,7 @@
   main{position:relative;z-index:5}
 
   /* === Nav === */
-  .nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:16px 36px;backdrop-filter:blur(16px) saturate(140%);background:rgba(4,4,14,0.55);border-bottom:1px solid var(--line)}
-  .brand{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:600;letter-spacing:.06em;background:linear-gradient(90deg,#fff,var(--violet),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;display:flex;align-items:center;gap:10px}
-  .brand-mark{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--violet);box-shadow:0 0 12px var(--violet),0 0 24px rgba(155,124,248,.6);animation:pulse 2.4s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
-  .nav-links{display:flex;gap:28px;font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute)}
-  .nav-links a{transition:color .25s}
-  .nav-links a:hover{color:var(--ink)}
-  @media (max-width:720px){
-    .nav{padding:14px 18px}
-    .nav-links{display:none}
-  }
 
   /* === Hero === */
   .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 24px 80px;text-align:center;position:relative}
@@ -240,14 +231,18 @@
 <div class="grain"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
 
-<nav class="nav">
-  <div class="brand"><span class="brand-mark"></span>NightType</div>
-  <div class="nav-links">
+<nav class="nt-nav">
+  <a href="index.html" class="nt-brand"><span class="nt-brand-mark"></span>NightType</a>
+  <div class="nt-nav-links" id="navLinks">
     <a href="#about">About</a>
     <a href="#axes">Axes</a>
     <a href="#types">16 Types</a>
+    <a href="characters.html">Characters</a>
+    <a href="https://nighttype.base.shop/" target="_blank" rel="noopener">Items</a>
     <a href="quiz.html">Diagnose →</a>
   </div>
+  <button class="nt-burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
+  <div class="nt-overlay" id="navOverlay"></div>
 </nav>
 
 <main>
@@ -532,29 +527,30 @@ const TYPES = [
   // Persistent, fixed positions, fixed-position layer is viewport-sized
   const placements = [
     // tier: 'near' (大・はっきり), 'mid' (中位), 'far' (小・ぼやけ)
+    // 配置は「左上原点・領域はみ出ない」を考慮し、tier-near=top<=60, tier-mid=top<=72, tier-far=top<=88
     // near (3個) — 手前に大きく
-    {x:6,  y:18, s:1.5, d:0,  tier:'near'},
-    {x:78, y:62, s:1.4, d:7,  tier:'near'},
-    {x:42, y:90, s:1.6, d:14, tier:'near'},
+    {x:4,  y:14, s:1.5, d:0,  tier:'near'},
+    {x:78, y:48, s:1.4, d:7,  tier:'near'},
+    {x:36, y:60, s:1.55,d:14, tier:'near'},
     // mid (7個) — 中距離
     {x:88, y:8,  s:.85,d:1,  tier:'mid'},
-    {x:18, y:42, s:.9, d:2,  tier:'mid'},
-    {x:75, y:30, s:.8, d:3,  tier:'mid'},
-    {x:48, y:14, s:.95,d:4,  tier:'mid'},
-    {x:30, y:65, s:.85,d:5,  tier:'mid'},
-    {x:90, y:88, s:.8, d:8,  tier:'mid'},
-    {x:14, y:78, s:.9, d:11, tier:'mid'},
-    // far (10個) — 遠くで小さくぼやけて漂う
-    {x:25, y:8,  s:.4, d:9,  tier:'far'},
-    {x:60, y:48, s:.45,d:10, tier:'far'},
-    {x:35, y:32, s:.42,d:13, tier:'far'},
-    {x:55, y:75, s:.38,d:6,  tier:'far'},
-    {x:82, y:48, s:.36,d:12, tier:'far'},
-    {x:8,  y:55, s:.4, d:15, tier:'far'},
-    {x:68, y:84, s:.45,d:2,  tier:'far'},
+    {x:18, y:38, s:.9, d:2,  tier:'mid'},
+    {x:62, y:24, s:.8, d:3,  tier:'mid'},
+    {x:48, y:8,  s:.95,d:4,  tier:'mid'},
+    {x:8,  y:62, s:.85,d:5,  tier:'mid'},
+    {x:88, y:72, s:.8, d:8,  tier:'mid'},
+    {x:60, y:78, s:.9, d:11, tier:'mid'},
+    // far (10個) — 遠くで小さく漂う
+    {x:25, y:6,  s:.4, d:9,  tier:'far'},
+    {x:50, y:42, s:.45,d:10, tier:'far'},
+    {x:30, y:30, s:.42,d:13, tier:'far'},
+    {x:70, y:62, s:.38,d:6,  tier:'far'},
+    {x:82, y:38, s:.36,d:12, tier:'far'},
+    {x:6,  y:50, s:.4, d:15, tier:'far'},
+    {x:42, y:84, s:.4, d:2,  tier:'far'},
     {x:96, y:24, s:.32,d:8,  tier:'far'},
-    {x:2,  y:36, s:.36,d:11, tier:'far'},
-    {x:46, y:56, s:.3, d:5,  tier:'far'},
+    {x:2,  y:32, s:.36,d:11, tier:'far'},
+    {x:74, y:90, s:.3, d:5,  tier:'far'},
   ];
   placements.forEach((p,i)=>{
     const t = TYPES[i % TYPES.length];
@@ -625,5 +621,6 @@ const TYPES = [
 })();
 </script>
 
+<script src="nighttype-shell.js"></script>
 </body>
 </html>
