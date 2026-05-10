@@ -671,6 +671,12 @@
   // ── Hero ──
   document.getElementById('charImg').src = t.image || `images/${code}.png`;
   document.getElementById('charImg').alt = t.name;
+  // Items CTA: same character image
+  const itemsCtaImg = document.getElementById('itemsCtaImg');
+  if(itemsCtaImg){
+    itemsCtaImg.src = t.image || `images/${code}.png`;
+    itemsCtaImg.alt = t.name;
+  }
   document.getElementById('typeCode').textContent = `${code} · ${t.axisCode || ''}`;
   document.getElementById('typeName').textContent = t.name;
   document.getElementById('typeTagline').textContent = `"${t.tagline || ''}"`;
