@@ -689,7 +689,7 @@
   (function renderAxisGauges(){
     const scores = JSON.parse(localStorage.getItem('nightTypeScores') || 'null');
     if(!scores) { document.getElementById('axisGauges').style.display='none'; return; }
-    const MAX = 8; // sum of weights per axis (2+2+2+1+1)
+    const MAX = 16; // max score per axis: val(±2) × weight, sum: 2*2*3 + 2*1*2 = 16
     const axes = [
       { key:'numa', left:'塩',   right:'沼'   },
       { key:'sm',   left:'M',    right:'S'    },

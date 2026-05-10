@@ -575,6 +575,7 @@
   function undoAxisScore(q,val){
     axisScores[q.axis] -= val * q.weight;
   }
+  // (val is now passed directly: -2/-1/0/+1/+2 instead of sign ±1)
   function getFinalTypeCode(){
     const judge = ax=>{
       const s = axisScores[ax];
@@ -734,7 +735,7 @@
     const q = questions[idx];
     const sign = val>0 ? 1 : val<0 ? -1 : 0;
     history.push({axis:q.axis, weight:q.weight, sign, val});
-    if(sign!==0) addAxisScore(q, sign);
+    if(val!==0) addAxisScore(q, val);
     sound(val);
     const r = card.getBoundingClientRect();
     spawnParts(val, r.left+r.width/2, r.top+r.height/2);
@@ -778,7 +779,7 @@
     if(!history.length) return;
     const last = history.pop();
     idx--;
-    if(last.sign!==0) undoAxisScore({axis:last.axis,weight:last.weight}, last.sign);
+    if(last.val!==0) undoAxisScore({axis:last.axis,weight:last.weight}, last.val);
     card.style.transition = 'transform .38s cubic-bezier(.34,1.3,.64,1), opacity .26s';
     card.style.transform  = 'scale(.94) translateY(10px)';
     card.style.opacity    = '0.45';
