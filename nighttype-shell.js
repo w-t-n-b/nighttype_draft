@@ -2,8 +2,8 @@
 (function(){
   // === Stars canvas ===
   const canvas = document.getElementById('stars');
-  if(canvas){
-    const ctx = canvas.getContext('2d');
+  const ctx = canvas ? canvas.getContext('2d') : null;
+  if(canvas && ctx){
     let stars = [], shootingStars = [];
     function resize(){
       canvas.width = innerWidth * devicePixelRatio;
