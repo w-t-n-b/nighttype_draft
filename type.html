@@ -507,8 +507,6 @@
 
   // Meta row
   const meta = [];
-  if(t.age)  meta.push(`<span class="ts-meta-chip"><strong>Age</strong>${t.age}</span>`);
-  if(t.mbti) meta.push(`<span class="ts-meta-chip"><strong>MBTI</strong>${t.mbti}</span>`);
   (t.keyword || []).forEach(k=> meta.push(`<span class="ts-meta-chip">${k}</span>`));
   document.getElementById('metaRow').innerHTML = meta.join('');
 
