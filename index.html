@@ -36,7 +36,10 @@
   }
   /* Constellation of all 16 characters drifting in the deep background */
   .constellation{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
-  .const-char{position:absolute;width:140px;height:140px;opacity:.10;filter:grayscale(.4) brightness(.85) saturate(.7) drop-shadow(0 0 20px rgba(155,124,248,.4));mix-blend-mode:screen;animation:driftFloat 22s ease-in-out infinite;will-change:transform}
+  .const-char{position:absolute;mix-blend-mode:screen;animation:driftFloat 22s ease-in-out infinite;will-change:transform}
+  .const-char.tier-near{opacity:.32;filter:saturate(.95) brightness(1);z-index:2}
+  .const-char.tier-mid{opacity:.16;filter:grayscale(.25) brightness(.9) saturate(.8)}
+  .const-char.tier-far{opacity:.07;filter:grayscale(.6) brightness(.7) saturate(.5) blur(1.5px)}
   .const-char img{width:100%;height:100%;object-fit:contain}
   @keyframes driftFloat{
     0%,100%{transform:translate(0,0) rotate(0deg) scale(1)}
@@ -528,26 +531,43 @@ const TYPES = [
   // Place ~24 chars (each appears ~1.5 times) at scattered viewport positions
   // Persistent, fixed positions, fixed-position layer is viewport-sized
   const placements = [
-    {x:6,  y:14, s:.8, d:0},  {x:88, y:8,  s:.6, d:1},
-    {x:18, y:38, s:.5, d:2},  {x:75, y:32, s:.7, d:3},
-    {x:48, y:18, s:.55,d:4},  {x:30, y:62, s:.6, d:5},
-    {x:8,  y:78, s:.7, d:6},  {x:66, y:72, s:.8, d:7},
-    {x:90, y:55, s:.55,d:8},  {x:42, y:88, s:.6, d:9},
-    {x:55, y:48, s:.45,d:10}, {x:14, y:55, s:.5, d:11},
-    {x:82, y:88, s:.55,d:12}, {x:25, y:25, s:.4, d:13},
-    {x:60, y:8,  s:.5, d:14}, {x:38, y:72, s:.55,d:15},
-    {x:72, y:18, s:.45,d:0},  {x:5,  y:38, s:.45,d:6},
+    // tier: 'near' (大・はっきり), 'mid' (中位), 'far' (小・ぼやけ)
+    // near (3個) — 手前に大きく
+    {x:6,  y:18, s:1.5, d:0,  tier:'near'},
+    {x:78, y:62, s:1.4, d:7,  tier:'near'},
+    {x:42, y:90, s:1.6, d:14, tier:'near'},
+    // mid (7個) — 中距離
+    {x:88, y:8,  s:.85,d:1,  tier:'mid'},
+    {x:18, y:42, s:.9, d:2,  tier:'mid'},
+    {x:75, y:30, s:.8, d:3,  tier:'mid'},
+    {x:48, y:14, s:.95,d:4,  tier:'mid'},
+    {x:30, y:65, s:.85,d:5,  tier:'mid'},
+    {x:90, y:88, s:.8, d:8,  tier:'mid'},
+    {x:14, y:78, s:.9, d:11, tier:'mid'},
+    // far (10個) — 遠くで小さくぼやけて漂う
+    {x:25, y:8,  s:.4, d:9,  tier:'far'},
+    {x:60, y:48, s:.45,d:10, tier:'far'},
+    {x:35, y:32, s:.42,d:13, tier:'far'},
+    {x:55, y:75, s:.38,d:6,  tier:'far'},
+    {x:82, y:48, s:.36,d:12, tier:'far'},
+    {x:8,  y:55, s:.4, d:15, tier:'far'},
+    {x:68, y:84, s:.45,d:2,  tier:'far'},
+    {x:96, y:24, s:.32,d:8,  tier:'far'},
+    {x:2,  y:36, s:.36,d:11, tier:'far'},
+    {x:46, y:56, s:.3, d:5,  tier:'far'},
   ];
   placements.forEach((p,i)=>{
     const t = TYPES[i % TYPES.length];
     const node = document.createElement('div');
-    node.className='const-char';
+    node.className='const-char tier-'+p.tier;
     node.style.left = p.x+'%';
     node.style.top  = p.y+'%';
     node.style.width  = (140 * p.s)+'px';
     node.style.height = (140 * p.s)+'px';
     node.style.animationDelay = (-p.d*1.4)+'s';
-    node.style.animationDuration = (18+i%6*2)+'s';
+    // Vary animation duration per tier for parallax feel: near = slower, far = faster
+    const baseDur = p.tier==='near'?32 : p.tier==='mid'?22 : 16;
+    node.style.animationDuration = (baseDur + (i%5)*1.5)+'s';
     node.innerHTML = `<img src="images/${t.code}.png" alt="" loading="lazy"/>`;
     root.appendChild(node);
   });
