@@ -170,9 +170,9 @@
     font-size:13px; line-height:1.55; color:var(--ink-mute);
   }
     .qopt-text{
-    font-size:14px; line-height:1.7;
+    font-size:14px; line-height:1.6;
     color:#fff; font-weight:500;
-    text-wrap:balance;
+    text-wrap:pretty;
     word-break:auto-phrase;
     line-break:strict;
     overflow-wrap:break-word;
@@ -217,7 +217,8 @@
 
   /* ── Scale buttons ── */
   .scale-row{
-    display:flex; gap:8px; margin-top:18px;
+    display:flex; gap:10px; margin-top:18px;
+    align-items:center; justify-content:center;
   }
   .sbtn{
     flex:1; cursor:pointer;
@@ -266,44 +267,71 @@
     overflow-wrap:break-word;
   }
 
-  /* color variants - 5 step scale violet→cyan→neutral→pink→hot pink */
-  .sb-1{
-    border-color:rgba(34,211,238,.45);
-    background:linear-gradient(135deg, rgba(34,211,238,.12), rgba(99,102,241,.08));
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+  /* ── 6-button star scale: 3 pink (like) + 3 cyan (nope) ── */
+  /* Common button reset for new system */
+  .sbtn{
+    flex:0 0 auto;
+    width:auto; padding:8px;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:50%;
+    border:1.5px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.02);
+    transition:transform .22s cubic-bezier(.34,1.56,.64,1), border-color .2s, box-shadow .2s, background .2s;
+    position:relative; overflow:hidden;
   }
-  .sb-1:hover{
-    transform:translateY(-4px) scale(1.02);
-    border-color:rgba(34,211,238,.85);
-    box-shadow:0 12px 36px rgba(34,211,238,.3);
+  .sbtn:hover{ transform:translateY(-3px) scale(1.05); }
+  .sbtn:active{ transform:scale(.92)!important; }
+  .sbtn-icon{ display:flex; align-items:center; justify-content:center; }
+  .sbtn-icon svg{ width:100%; height:100%; }
+
+  /* sizes: large=64px, medium=52px, small=40px */
+  .s-l3, .s-n3{ width:64px; height:64px; }
+  .s-l3 .sbtn-icon, .s-n3 .sbtn-icon{ width:34px; height:34px; }
+  .s-l2, .s-n2{ width:52px; height:52px; }
+  .s-l2 .sbtn-icon, .s-n2 .sbtn-icon{ width:28px; height:28px; }
+  .s-l1, .s-n1{ width:40px; height:40px; }
+  .s-l1 .sbtn-icon, .s-n1 .sbtn-icon{ width:22px; height:22px; }
+
+  /* PINK (like) — strong fill at outer, outline at inner */
+  .s-l3{
+    border-color:rgba(244,114,182,.6);
+    background:rgba(244,114,182,.12);
+    box-shadow:0 0 28px rgba(244,114,182,.35);
+    color:rgba(244,114,182,1);
   }
-  .sb-1 svg{ stroke:rgba(165,243,252,.95); fill:rgba(34,211,238,.85); }
-  .sb-1 .sbtn-label{ color:rgba(165,243,252,.8); }
-
-  .sb-2{ border-color:rgba(34,211,238,.18); }
-  .sb-2:hover{ border-color:rgba(34,211,238,.5); }
-  .sb-2 svg{ stroke:rgba(165,243,252,.7); fill:none; }
-
-  .sb-3{ border-color:rgba(255,255,255,.08); }
-  .sb-3:hover{ background:rgba(255,255,255,.05); }
-  .sb-3 svg{ stroke:rgba(255,255,255,.4); }
-
-  .sb-4{ border-color:rgba(244,114,182,.2); }
-  .sb-4:hover{ border-color:rgba(244,114,182,.5); }
-  .sb-4 svg{ stroke:rgba(244,114,182,.7); }
-
-  .sb-5{
+  .s-l3:hover{ border-color:rgba(244,114,182,.95); box-shadow:0 8px 28px rgba(244,114,182,.5); }
+  .s-l2{
     border-color:rgba(244,114,182,.45);
-    background:linear-gradient(135deg, rgba(244,114,182,.12), rgba(155,124,248,.08));
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    background:rgba(244,114,182,.06);
+    color:rgba(244,114,182,.9);
   }
-  .sb-5:hover{
-    transform:translateY(-4px) scale(1.02);
-    border-color:rgba(244,114,182,.85);
-    box-shadow:0 12px 36px rgba(244,114,182,.32);
+  .s-l2:hover{ border-color:rgba(244,114,182,.8); }
+  .s-l1{
+    border-color:rgba(244,114,182,.3);
+    color:rgba(244,114,182,.7);
   }
-  .sb-5 svg{ stroke:rgba(252,165,209,.95); fill:rgba(244,114,182,.9); }
-  .sb-5 .sbtn-label{ color:rgba(252,165,209,.8); }
+  .s-l1:hover{ border-color:rgba(244,114,182,.6); }
+
+  /* CYAN (nope) — same scale, different color */
+  .s-n3{
+    border-color:rgba(34,211,238,.6);
+    background:rgba(34,211,238,.12);
+    box-shadow:0 0 28px rgba(34,211,238,.32);
+    color:rgba(34,211,238,1);
+  }
+  .s-n3:hover{ border-color:rgba(34,211,238,.95); box-shadow:0 8px 28px rgba(34,211,238,.45); }
+  .s-n2{
+    border-color:rgba(34,211,238,.45);
+    background:rgba(34,211,238,.06);
+    color:rgba(34,211,238,.9);
+  }
+  .s-n2:hover{ border-color:rgba(34,211,238,.8); }
+  .s-n1{
+    border-color:rgba(34,211,238,.3);
+    color:rgba(34,211,238,.7);
+  }
+  .s-n1:hover{ border-color:rgba(34,211,238,.6); }
 
   /* Back button */
   .back-row{
@@ -426,9 +454,15 @@
     .quiz-wrap{padding-top:72px}
     .qcard-body{padding:26px 22px 22px}
     .qcard-text{font-size:21px;min-height:100px;margin-bottom:22px}
-    .qopt{padding:12px 14px;font-size:12px}
+    .qopt{padding:10px 12px;font-size:12px}
+    .qopt-text{font-size:13px;line-height:1.55}
     .scale-row{gap:6px}
-    .sbtn{padding:12px 4px 10px}
+    .s-l3,.s-n3{width:54px;height:54px}
+    .s-l2,.s-n2{width:44px;height:44px}
+    .s-l1,.s-n1{width:34px;height:34px}
+    .s-l3 .sbtn-icon,.s-n3 .sbtn-icon{width:28px;height:28px}
+    .s-l2 .sbtn-icon,.s-n2 .sbtn-icon{width:24px;height:24px}
+    .s-l1 .sbtn-icon,.s-n1 .sbtn-icon{width:18px;height:18px}
     .meter-count{font-size:28px}
   }
 </style>
@@ -505,33 +539,23 @@
   </div>
 
   <div class="scale-row">
-    <button class="sbtn sb-5 sbtn-extreme" data-val="2" aria-label="strongly like">
-      <span class="sbtn-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-9-5.5-9-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-9 11-9 11z" stroke="currentColor"/></svg>
-      </span>
-      <span class="sbtn-label" id="lblBtnLike">こちら</span>
+<button class="sbtn s-l3" data-val="3" aria-label="like strong">
+      <span class="sbtn-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z"/></svg></span>
     </button>
-    <button class="sbtn sb-4" data-val="1" aria-label="lean like">
-      <span class="sbtn-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 21s-9-5.5-9-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-9 11-9 11z"/></svg>
-      </span>
+    <button class="sbtn s-l2" data-val="2" aria-label="like medium">
+      <span class="sbtn-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z"/></svg></span>
     </button>
-    <button class="sbtn sb-3" data-val="0" aria-label="neutral">
-      <span class="sbtn-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/></svg>
-      </span>
-      <span class="sbtn-label">どちらも</span>
+    <button class="sbtn s-l1" data-val="1" aria-label="like weak">
+      <span class="sbtn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z"/></svg></span>
     </button>
-    <button class="sbtn sb-2" data-val="-1" aria-label="lean other">
-      <span class="sbtn-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z"/></svg>
-      </span>
+    <button class="sbtn s-n1" data-val="-1" aria-label="nope weak">
+      <span class="sbtn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z"/></svg></span>
     </button>
-    <button class="sbtn sb-1 sbtn-extreme" data-val="-2" aria-label="strongly other">
-      <span class="sbtn-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z" stroke="currentColor"/></svg>
-      </span>
-      <span class="sbtn-label" id="lblBtnNope">こちら</span>
+    <button class="sbtn s-n2" data-val="-2" aria-label="nope medium">
+      <span class="sbtn-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z"/></svg></span>
+    </button>
+    <button class="sbtn s-n3" data-val="-3" aria-label="nope strong">
+      <span class="sbtn-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z"/></svg></span>
     </button>
   </div>
 
@@ -836,10 +860,10 @@
     if(Math.abs(cx)<TAP_MAX && Date.now()-tapT<TAP_MS){
       answer(0); return;
     }
-    if(cx<-T2)     answer(2);    // strong left swipe = strong like
-    else if(cx<-T1)answer(1);    // mild left swipe = lean like
-    else if(cx>T2) answer(-2);   // strong right swipe = strong nope
-    else if(cx>T1) answer(-1);   // mild right swipe = lean nope
+    if(cx<-T2)     answer(3);    // strong left swipe = strong like (+3)
+    else if(cx<-T1)answer(2);    // mild left swipe = medium like (+2)
+    else if(cx>T2) answer(-3);   // strong right swipe = strong nope (-3)
+    else if(cx>T1) answer(-2);   // mild right swipe = medium nope (-2)
     else rc();
   }
   card.addEventListener('touchstart', e=>ds(e.touches[0].clientX,e.touches[0].clientY), {passive:true});

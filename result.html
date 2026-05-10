@@ -283,6 +283,79 @@
     letter-spacing:.1em;
   }
 
+  /* ── Items CTA ── */
+  .items-cta{
+    position:relative; overflow:hidden;
+    border-radius:28px;
+    padding:48px 36px;
+    background:
+      radial-gradient(circle at 18% 30%, rgba(244,114,182,.18), transparent 55%),
+      radial-gradient(circle at 82% 70%, rgba(34,211,238,.14), transparent 55%),
+      linear-gradient(135deg, rgba(124,58,237,.12), rgba(8,6,22,.5));
+    border:1px solid rgba(155,124,248,.25);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 30px 80px rgba(0,0,0,.4);
+    margin-bottom:60px;
+  }
+  .items-cta::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(244,114,182,.15), transparent 60%);
+    pointer-events:none;
+  }
+  .items-cta-inner{
+    position:relative; z-index:1;
+    display:flex; gap:32px; align-items:center;
+    flex-wrap:wrap; justify-content:center;
+  }
+  .items-cta-img{
+    width:160px; height:160px; object-fit:contain;
+    flex-shrink:0;
+    filter:drop-shadow(0 12px 32px rgba(244,114,182,.55))
+           drop-shadow(0 0 40px rgba(155,124,248,.3));
+    animation:itemsCtaFloat 4s ease-in-out infinite;
+  }
+  @keyframes itemsCtaFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+  }
+  .items-cta-body{
+    flex:1; min-width:240px; max-width:440px;
+  }
+  .items-cta-eyebrow{
+    font-family:"Space Mono",monospace;
+    font-size:11px; letter-spacing:.32em;
+    color:var(--cyan); text-transform:uppercase;
+    margin-bottom:14px; opacity:.85;
+  }
+  .items-cta-title{
+    font-family:"Cormorant Garamond","Noto Serif JP",serif;
+    font-size:clamp(28px,4.5vw,42px);
+    font-weight:500; line-height:1.25;
+    margin-bottom:16px;
+    text-wrap:balance;
+  }
+  .items-cta-title em{
+    font-style:italic;
+    background:linear-gradient(135deg,var(--violet),var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .items-cta-sub{
+    font-size:13.5px; line-height:1.85;
+    color:var(--ink-mute); margin-bottom:24px;
+    text-wrap:pretty;
+  }
+  .items-cta-btn{
+    display:inline-flex; gap:8px;
+  }
+  @media(max-width:560px){
+    .items-cta{ padding:36px 24px; }
+    .items-cta-inner{ gap:18px; flex-direction:column; }
+    .items-cta-img{ width:140px; height:140px; }
+    .items-cta-body{ text-align:center; }
+    .items-cta-btn{ width:100%; justify-content:center; }
+  }
+
   /* ── Friend compare ── */
   .friend-card{
     padding:28px;
@@ -608,6 +681,21 @@
     <div class="aruaru-list" id="aruaruList"></div>
   </section>
 
+  <!-- Items CTA -->
+  <section class="section-block items-cta">
+    <div class="items-cta-inner">
+      <img class="items-cta-img" id="itemsCtaImg" src="" alt="" />
+      <div class="items-cta-body">
+        <div class="items-cta-eyebrow">— Items —</div>
+        <h2 class="items-cta-title">夜のあなたを<em>お迎え</em>。</h2>
+        <p class="items-cta-sub">診断で出会った夜の自分を、形のあるぬいぐるみとして。</p>
+        <a class="nt-btn nt-btn-primary items-cta-btn" href="https://nighttype.base.shop/" target="_blank" rel="noopener">
+          Items を見る <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- Compatibility -->
   <section class="section-block">
     <div class="section-eyebrow">03 · 相性</div>
@@ -695,7 +783,7 @@
   (function renderAxisGauges(){
     const scores = JSON.parse(localStorage.getItem('nightTypeScores') || 'null');
     if(!scores) { document.getElementById('axisGauges').style.display='none'; return; }
-    const MAX = 16; // max score per axis: val(±2) × weight, sum: 2*2*3 + 2*1*2 = 16
+    const MAX = 24; // max score per axis: val(±3) × weight, sum: 3*2*3 + 3*1*2 = 24
     const axes = [
       { key:'numa', left:'塩',   right:'沼'   },
       { key:'sm',   left:'M',    right:'S'    },
