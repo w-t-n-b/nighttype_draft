@@ -77,12 +77,14 @@
     font-family:"Cormorant Garamond",serif;
     font-weight:500;
     font-size:clamp(72px,16vw,232px);
-    line-height:.92;letter-spacing:-0.02em;
+    line-height:1.05;letter-spacing:-0.02em;
+    padding-bottom:.12em;
     background:linear-gradient(180deg,#fff 0%,#d6c8ff 30%,var(--violet) 60%,var(--cyan) 100%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
     text-shadow:0 0 80px rgba(155,124,248,.20);
     animation:floaty 6s ease-in-out infinite;
     position:relative;z-index:2;
+    display:inline-block;
   }
   .hero-glow{position:absolute;inset:-30%;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(155,124,248,.35),transparent 60%);filter:blur(40px);z-index:1;animation:floaty 6s ease-in-out infinite}
   @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
@@ -159,8 +161,6 @@
   }
   @keyframes orbBreathe{0%,100%{opacity:.7;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
   .type-img{position:relative;width:88%;height:88%;object-fit:contain;
-    -webkit-mask-image:radial-gradient(circle at 50% 50%, #000 55%, transparent 78%);
-    mask-image:radial-gradient(circle at 50% 50%, #000 55%, transparent 78%);
     filter:drop-shadow(0 18px 38px rgba(155,124,248,.55)) drop-shadow(0 0 30px rgba(34,211,238,.25)) brightness(1.06) contrast(1.05);
     animation:orbFloat 6s ease-in-out infinite;
     will-change:transform;
@@ -579,8 +579,7 @@ const TYPES = [
   TYPES.forEach((t,i)=>{
     const a = document.createElement('a');
     a.className='type-card reveal';
-    a.href = `https://sakko410-svg.github.io/type-fixed-15/type/${t.code}.html`;
-    a.target = '_blank'; a.rel='noopener';
+    a.href = `type/${t.code}.html`;
     a.style.transitionDelay = (i*0.04)+'s';
     a.innerHTML = `
       <div class="type-orb">
