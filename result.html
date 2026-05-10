@@ -35,7 +35,7 @@
   }
 
   .char-orbit{
-    position:relative; width:240px; height:240px;
+    position:relative; width:300px; height:300px;
     margin:0 auto 24px;
     display:flex; align-items:center; justify-content:center;
   }
@@ -62,21 +62,17 @@
   @keyframes slowRotate{ to{transform:rotate(360deg)} }
 
   .char-frame{
-    position:relative; width:200px; height:200px; border-radius:50%;
+    position:relative; width:240px; height:240px; border-radius:32px;
     overflow:hidden;
-    border:1px solid rgba(255,255,255,.12);
+    background:radial-gradient(ellipse at 50% 60%, rgba(124,58,237,.16) 0%, rgba(0,0,0,0) 70%);
     box-shadow:
-      0 0 60px rgba(155,124,248,.4),
-      0 0 120px rgba(34,211,238,.18),
-      inset 0 0 40px rgba(0,0,0,.4);
+      0 0 80px rgba(155,124,248,.35),
+      0 0 160px rgba(34,211,238,.12);
     animation:ntPop .8s cubic-bezier(.34,1.56,.64,1) .2s both;
   }
   .char-frame img{
-    width:100%; height:100%; object-fit:cover; display:block;
-  }
-  .char-frame::before{
-    content:""; position:absolute; inset:0; pointer-events:none;
-    background:radial-gradient(ellipse at 30% 30%, transparent 30%, rgba(155,124,248,.15) 90%);
+    width:100%; height:100%; object-fit:contain; display:block;
+    filter:drop-shadow(0 8px 24px rgba(124,58,237,.35));
   }
 
   .type-code{
@@ -236,8 +232,9 @@
     transform:translateX(2px);
   }
   .compat-item img{
-    width:42px; height:42px; border-radius:50%;
-    object-fit:cover; flex-shrink:0;
+    width:48px; height:48px; border-radius:14px;
+    object-fit:contain; flex-shrink:0;
+    background:radial-gradient(ellipse at 50% 65%, rgba(124,58,237,.18) 0%, rgba(0,0,0,.4) 70%);
     border:1px solid var(--line);
   }
   .compat-item-body{ flex:1; min-width:0; }
@@ -386,6 +383,63 @@
     text-wrap:pretty;
   }
 
+
+  /* ── 4-Axis Score Gauges ── */
+  .axis-gauges{
+    max-width:480px; margin:0 auto 28px; padding:0 4px;
+  }
+  .axis-gauges-eyebrow{
+    font-family:"Syne",sans-serif; font-size:.62rem;
+    letter-spacing:.32em; color:var(--cyan);
+    text-align:center; text-transform:uppercase;
+    margin-bottom:18px; opacity:.75;
+  }
+  .axis-gauge{
+    display:grid;
+    grid-template-columns:48px 1fr 48px 56px;
+    align-items:center; gap:10px;
+    margin-bottom:14px;
+    font-family:"Syne",sans-serif; font-size:.78rem;
+  }
+  .axis-gauge-label-l,.axis-gauge-label-r{
+    color:rgba(255,255,255,.45); font-weight:600;
+  }
+  .axis-gauge-label-l{ text-align:right; }
+  .axis-gauge-label-r{ text-align:left; }
+  .axis-gauge-label-l.active,.axis-gauge-label-r.active{
+    color:#fff; font-weight:800;
+  }
+  .axis-gauge-track{
+    position:relative; height:8px;
+    background:rgba(255,255,255,.06);
+    border-radius:999px;
+  }
+  .axis-gauge-track::before{
+    content:''; position:absolute;
+    left:50%; top:-4px;
+    width:1px; height:16px;
+    background:rgba(255,255,255,.2);
+    transform:translateX(-.5px);
+  }
+  .axis-gauge-fill{
+    position:absolute; top:0; height:100%;
+    border-radius:999px;
+    transition:width .8s cubic-bezier(.2,.7,.3,1);
+  }
+  .axis-gauge-fill.right{
+    left:50%;
+    background:linear-gradient(90deg,#7c3aed,#ec4899);
+  }
+  .axis-gauge-fill.left{
+    right:50%;
+    background:linear-gradient(270deg,#7c3aed,#22d3ee);
+  }
+  .axis-gauge-score{
+    text-align:center; font-size:.7rem; font-weight:800;
+    color:rgba(255,255,255,.85);
+    font-variant-numeric:tabular-nums;
+  }
+
   /* ── Share strip ── */
   .share-row{
     display:flex; gap:12px; flex-wrap:wrap;
@@ -458,8 +512,8 @@
     .friend-grid{ grid-template-columns:repeat(4,1fr); gap:6px }
     .friend-card{ padding:22px 18px; }
     .section-title{ font-size:24px; }
-    .char-orbit{ width:200px; height:200px }
-    .char-frame{ width:170px; height:170px; }
+    .char-orbit{ width:240px; height:240px }
+    .char-frame{ width:200px; height:200px; border-radius:24px; }
   }
 </style>
 </head>
@@ -513,6 +567,13 @@
       <span class="type-axes-divider">×</span>
       <span><strong id="axGt">—</strong></span>
     </div>
+  </section>
+
+
+  <!-- 4-Axis Score Gauges -->
+  <section class="axis-gauges" id="axisGauges">
+    <div class="axis-gauges-eyebrow">— Score Profile —</div>
+    <div class="axis-gauge-list" id="axisGaugeList"></div>
   </section>
 
   <!-- Share -->
@@ -624,6 +685,38 @@
     document.getElementById('axAi').textContent   = axesParts[2];
     document.getElementById('axGt').textContent   = axesParts[3];
   }
+
+
+  // ── 4-Axis Score Gauges ──
+  (function renderAxisGauges(){
+    const scores = JSON.parse(localStorage.getItem('nightTypeScores') || 'null');
+    if(!scores) { document.getElementById('axisGauges').style.display='none'; return; }
+    const MAX = 8; // sum of weights per axis (2+2+2+1+1)
+    const axes = [
+      { key:'numa', left:'塩',   right:'沼'   },
+      { key:'sm',   left:'M',    right:'S'    },
+      { key:'ai',   left:'欲',   right:'愛'   },
+      { key:'gt',   left:'Take', right:'Give' }
+    ];
+    const list = document.getElementById('axisGaugeList');
+    list.innerHTML = axes.map(a => {
+      const s = Math.max(-MAX, Math.min(MAX, scores[a.key] || 0));
+      const pct = Math.abs(s) / MAX * 50;       // 0〜50%
+      const isRight = s > 0;
+      const isLeft  = s < 0;
+      const sign = s>0 ? '+' : (s<0 ? '−' : '±');
+      const fillClass = isRight ? 'right' : (isLeft ? 'left' : '');
+      return `
+        <div class="axis-gauge">
+          <div class="axis-gauge-label-l${isLeft?' active':''}">${a.left}</div>
+          <div class="axis-gauge-track">
+            ${pct>0 ? `<div class="axis-gauge-fill ${fillClass}" style="width:${pct}%"></div>` : ''}
+          </div>
+          <div class="axis-gauge-label-r${isRight?' active':''}">${a.right}</div>
+          <div class="axis-gauge-score">${sign}${Math.abs(s)}/${MAX}</div>
+        </div>`;
+    }).join('');
+  })();
 
   // ── Description ──
   document.getElementById('typeQuote').textContent = t.quote || '';
