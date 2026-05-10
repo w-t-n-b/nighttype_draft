@@ -169,13 +169,12 @@
     background:rgba(255,255,255,.02);
     font-size:13px; line-height:1.55; color:var(--ink-mute);
   }
-  .qopt-label{
-    font-family:"Space Mono",monospace; font-size:9px;
-    letter-spacing:.28em; text-transform:uppercase;
-    margin-bottom:6px;
+    .qopt-text{
+    font-size:14px; line-height:1.6;
+    color:var(--ink); font-weight:500;
   }
-  .qopt-nope .qopt-label{ color:var(--ink-faint); }
-  .qopt-like .qopt-label{ color:var(--pink); }
+  .qopt-nope .qopt-text{ color:var(--ink-mute); }
+  .qopt-like .qopt-text{ color:#fff; }
 
   .qcard-foot{
     display:flex; justify-content:space-between; align-items:center;
@@ -467,8 +466,8 @@
 
     <div class="qcard" id="qcard">
       <div class="qcard-body">
-        <div class="swipe-label like" id="lblLike">Resonates</div>
-        <div class="swipe-label nope" id="lblNope">Distant</div>
+        <div class="swipe-label like" id="lblLike">響く</div>
+        <div class="swipe-label nope" id="lblNope">違う</div>
 
         <div class="qcard-head">
           <div class="qcard-axis">
@@ -483,12 +482,10 @@
 
         <div class="qcard-options">
           <div class="qopt qopt-nope">
-            <div class="qopt-label">A · Distant</div>
-            <div id="optNope">…</div>
+            <div class="qopt-text" id="optNope">…</div>
           </div>
           <div class="qopt qopt-like">
-            <div class="qopt-label">B · Resonates</div>
-            <div id="optLike">…</div>
+            <div class="qopt-text" id="optLike">…</div>
           </div>
         </div>
 
