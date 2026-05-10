@@ -681,8 +681,9 @@
   function spawnParts(val,x,y){
     const pos = val>0;
     const palette = pos
-      ? ['#F472B6','#fda4af','#c084fc','#9B7CF8','#fff']
-      : val===0 ? ['#a5b4fc','#94a3b8'] : ['#64748b','#9B7CF8'];
+      ? ['#F472B6','#fda4af','#c084fc','#9B7CF8','#fff']      // like = ♥ pink/purple
+      : val===0 ? ['#a5b4fc','#94a3b8']                        // neutral = soft blue
+                : ['#22d3ee','#67e8f9','#a5f3fc','#9B7CF8'];   // nope = ★ cyan
     const n = pos ? (val===2?32:22) : val===0 ? 10 : 16;
     for(let i=0;i<n;i++){
       const a = (Math.PI*2/n)*i + Math.random()*.7;
@@ -749,13 +750,13 @@
     requestAnimationFrame(animP);
     idx++;
     if(idx<questions.length){
-      fly(val>=0, ()=>show(true));
+      fly(val<0, ()=>show(true));   // val<0 = nope (★ on right) → fly right
     } else {
       // finish
       const code = getFinalTypeCode();
       localStorage.setItem('nightTypeResult', code);
       localStorage.setItem('nightTypeScores', JSON.stringify(axisScores));
-      fly(val>=0, ()=>{
+      fly(val<0, ()=>{   // val<0 = nope (★ on right) → fly right
         reveal.classList.add('show');
         let p = 0;
         const iv = setInterval(()=>{
