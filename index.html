@@ -568,14 +568,7 @@ const TYPES = [
     root.appendChild(node);
   });
 
-  // gentle parallax on scroll
-  let scrollY = 0;
-  window.addEventListener('scroll',()=>{scrollY=window.scrollY},{passive:true});
-  function tick(){
-    root.style.transform = `translateY(${scrollY*-0.08}px)`;
-    requestAnimationFrame(tick);
-  }
-  tick();
+  // (parallax removed: was translating the fixed constellation off-screen on long pages)
 })();
 
 /* === IntersectionObserver reveal === */
