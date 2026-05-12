@@ -822,6 +822,12 @@
       // finish
       const code = getFinalTypeCode();
       localStorage.setItem('nightTypeResult', code);
+      localStorage.setItem('nighttype_completed', code);
+      // Analytics: quiz_completed
+      if(typeof window.dispatchEvent === 'function'){
+        window.dispatchEvent(new CustomEvent('quiz_completed', {detail:{type:code, from: new URLSearchParams(location.search).get('from') || null}}));
+      }
+      if(typeof gtag === 'function'){ try{ gtag('event', 'quiz_completed', {type:code}); }catch(_){} }
       localStorage.setItem('nightTypeScores', JSON.stringify(axisScores));
       fly(val<0, ()=>{   // val<0 = nope (★ on right) → fly right
         reveal.classList.add('show');
@@ -925,6 +931,15 @@
   document.getElementById('cno').addEventListener('click', ()=>covl.classList.remove('show'));
 
   show(false);
+
+  // Analytics: quiz_started (実装指示#3 §9)
+  (function fireQuizStarted(){
+    const fromParam = new URLSearchParams(location.search).get('from');
+    if(typeof window.dispatchEvent === 'function'){
+      window.dispatchEvent(new CustomEvent('quiz_started', {detail:{from: fromParam}}));
+    }
+    if(typeof gtag === 'function'){ try{ gtag('event', 'quiz_started', {from: fromParam}); }catch(_){} }
+  })();
 
   // Show invite banner if ?from= is present
   (function showInviteBanner(){

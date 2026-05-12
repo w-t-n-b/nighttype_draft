@@ -4,6 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Result — NightType</title>
+<meta property="og:title" id="ogTitle" content="あなたのナイトタイプ診断結果">
+<meta property="og:description" id="ogDesc" content="あなたのナイトタイプも診断して、相性を見てみよう">
+<meta property="og:image" id="ogImage" content="images/A1.png">
+<meta property="og:url" id="ogUrl" content="">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" id="twTitle" content="あなたのナイトタイプ診断結果">
+<meta name="twitter:description" id="twDesc" content="あなたのナイトタイプも診断して、相性を見てみよう">
+<meta name="twitter:image" id="twImage" content="images/A1.png">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
@@ -615,6 +624,125 @@
     .inv-cta-row .nt-btn{ width:100%; }
   }
 
+  /* ── Visitor mode (招待された訪問者向け表示) ── */
+  .visitor-hero{
+    max-width:560px; margin:24px auto 24px;
+    padding:24px 22px; text-align:center;
+  }
+  .vh-eyebrow{
+    font-family:"Space Mono",monospace;
+    font-size:10px; letter-spacing:.32em;
+    color:var(--cyan); text-transform:uppercase;
+    margin-bottom:18px; opacity:.75;
+  }
+  .vh-char-wrap{
+    width:200px; height:200px; margin:0 auto 18px;
+    display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at 50% 60%, rgba(124,58,237,.16) 0%, rgba(0,0,0,0) 70%);
+    border-radius:32px;
+  }
+  .vh-char-img{
+    width:100%; height:100%; object-fit:contain;
+    filter:drop-shadow(0 12px 28px rgba(155,124,248,.5));
+    animation:vhFloat 3s ease-in-out infinite;
+  }
+  @keyframes vhFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .vh-code{
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.34em; color:var(--violet);
+    margin-bottom:8px;
+  }
+  .vh-name{
+    font-family:"Cormorant Garamond","Noto Serif JP",serif;
+    font-size:clamp(28px,5vw,36px);
+    font-weight:500; line-height:1.2;
+    background:linear-gradient(135deg,var(--violet),var(--pink),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:10px;
+    padding-bottom:.15em;
+    display:inline-block;
+  }
+  .vh-tagline{
+    font-size:13px; color:var(--ink-mute);
+    font-style:italic; line-height:1.6;
+  }
+
+  .visitor-cta{
+    max-width:520px; margin:0 auto 28px;
+    padding:36px 28px; text-align:center;
+    border-radius:24px;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(244,114,182,.28), transparent 60%),
+      radial-gradient(circle at 80% 70%, rgba(155,124,248,.22), transparent 60%),
+      linear-gradient(135deg, rgba(60,30,80,.55), rgba(8,6,22,.75));
+    border:1px solid rgba(244,114,182,.45);
+    box-shadow:0 24px 64px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+  }
+  .vc-title{
+    font-family:"Cormorant Garamond","Noto Serif JP",serif;
+    font-size:clamp(24px,5vw,32px);
+    font-weight:500; line-height:1.3;
+    margin-bottom:12px; color:#fff;
+    padding-bottom:.1em;
+  }
+  .vc-title em{
+    font-style:italic;
+    background:linear-gradient(135deg,var(--pink),var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    padding-bottom:.12em; display:inline-block;
+  }
+  .vc-sub{
+    font-size:13px; line-height:1.85;
+    color:var(--ink-mute); margin-bottom:20px;
+    text-wrap:pretty;
+  }
+  .vc-sub span{ color:var(--pink); font-weight:600; }
+  .vc-btn{
+    width:100%; max-width:320px;
+    padding:16px 24px; font-size:13px;
+  }
+  .vc-time{
+    margin-top:14px; font-size:11px;
+    font-family:"Space Mono",monospace;
+    letter-spacing:.18em; color:var(--ink-faint);
+  }
+
+  .visitor-aruaru-preview{
+    max-width:560px; margin:0 auto 36px;
+    padding:24px 22px;
+    border-radius:18px;
+    background:rgba(155,124,248,.04);
+    border:1px solid var(--line);
+  }
+  .vap-eyebrow{
+    font-family:"Space Mono",monospace;
+    font-size:10px; letter-spacing:.3em;
+    color:var(--cyan); text-transform:uppercase;
+    margin-bottom:14px; text-align:center; opacity:.8;
+  }
+  .vap-list{ display:flex; flex-direction:column; gap:10px; }
+  .vap-item{
+    padding:14px 16px;
+    border-radius:12px;
+    background:rgba(255,255,255,.03);
+    font-size:13.5px; line-height:1.6;
+    color:var(--ink); border-left:2px solid var(--violet);
+  }
+  .vap-more{
+    margin-top:14px; text-align:center;
+    font-size:12px; color:var(--ink-faint);
+    font-style:italic;
+  }
+
+  /* Hide certain sections in visitor mode to streamline */
+  body.visitor-mode .axis-gauges,
+  body.visitor-mode .invite-back-cta,
+  body.visitor-mode #shareT1,
+  body.visitor-mode .items-cta{
+    /* keep visible but push down — use order */
+  }
+  body.visitor-mode .result-hero{ display:none; }
+
   /* ── T4: Invite-back CTA ── */
   .invite-back-cta{
     max-width:560px; margin:0 auto 24px;
@@ -1001,12 +1129,74 @@
 <script>
   // ── Get type code ──
   const params = new URLSearchParams(location.search);
-  const code = params.get('type') || localStorage.getItem('nightTypeResult') || 'A1';
+  // Visitor mode detection (実装指示#3 §6)
+  const hasCompletedQuiz = !!localStorage.getItem('nightTypeResult');
+  const urlTypeCode = params.get('type');
+  const urlFromCode = params.get('from');
+  const isVisitorMode = !hasCompletedQuiz && urlTypeCode && types[urlTypeCode];
+  const code = isVisitorMode
+    ? urlTypeCode
+    : (params.get('type') || localStorage.getItem('nightTypeResult') || 'A1');
   const t = types[code] || types.A1;
+
+  // ── OGP / Twitter meta tags (dynamic) ──
+  (function setOGP(){
+    const ogTitle = `${t.name}さんはナイトタイプ「${t.name}」`;
+    const ogDesc = 'あなたのナイトタイプも診断して、相性を見てみよう';
+    const ogImage = location.origin + location.pathname.replace(/result\.html$/, '') + (t.image || ('images/' + code + '.png'));
+    const ogUrl = location.href;
+    const set = (id, val)=> { const el = document.getElementById(id); if(el) el.setAttribute('content', val); };
+    set('ogTitle', ogTitle);
+    set('ogDesc', ogDesc);
+    set('ogImage', ogImage);
+    set('ogUrl', ogUrl);
+    set('twTitle', ogTitle);
+    set('twDesc', ogDesc);
+    set('twImage', ogImage);
+    document.title = `${t.name}(${code}) — NightType`;
+  })();
+
+  // ── Analytics events (実装指示#3 §9) ──
+  function trackEvent(name, params){
+    // Dispatch as CustomEvent for future GA4/Mixpanel integration
+    window.dispatchEvent(new CustomEvent(name, {detail: params || {}}));
+    // If gtag is available (GA4), forward
+    if(typeof gtag === 'function'){ try{ gtag('event', name, params || {}); }catch(_){} }
+  }
+  // Fire visitor_arrival or result_viewed
+  if(urlFromCode) trackEvent('visitor_arrival', {from: urlFromCode, type: code});
+  trackEvent('result_viewed', {type: code, mode: isVisitorMode ? 'visitor' : 'normal', from: urlFromCode || null});
 
   // ── Hero ──
   document.getElementById('charImg').src = t.image || `images/${code}.png`;
   document.getElementById('charImg').alt = t.name;
+
+  // ── Visitor mode UI setup ──
+  if(isVisitorMode){
+    document.body.classList.add('visitor-mode');
+    document.getElementById('visitorHero').style.display = 'block';
+    document.getElementById('visitorCta').style.display = 'block';
+    document.getElementById('visitorAruaruPreview').style.display = 'block';
+    // Populate hero
+    document.getElementById('vhCharImg').src = t.image || `images/${code}.png`;
+    document.getElementById('vhCharImg').alt = t.name;
+    document.getElementById('vhCode').textContent = code + ' · ' + (t.axisCode || '');
+    document.getElementById('vhName').textContent = t.name;
+    document.getElementById('vhTagline').textContent = '"' + (t.tagline || '') + '"';
+    // CTA: pass inviter type to quiz
+    document.getElementById('vcBtn').href = 'quiz.html?from=' + code;
+    document.getElementById('vcInviterName').textContent = t.name;
+    document.getElementById('vcBtn').addEventListener('click', ()=>{
+      trackEvent('visitor_cta_clicked', {inviter: code});
+    });
+    // Aruaru preview (1-2 items)
+    if(typeof aruaruData !== 'undefined' && aruaruData[code]){
+      const items = aruaruData[code].slice(0, 2);
+      document.getElementById('vapList').innerHTML = items.map((a,i)=>`<div class="vap-item">${a}</div>`).join('');
+    } else {
+      document.getElementById('visitorAruaruPreview').style.display = 'none';
+    }
+  }
   // Items CTA: same character image
   const itemsCtaImg = document.getElementById('itemsCtaImg');
   if(itemsCtaImg){
