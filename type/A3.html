@@ -336,6 +336,77 @@
     .ts-title{font-size:24px}
     .compat-grid{grid-template-columns:1fr; gap:14px}
   }
+
+  /* Mirror compare (05) */
+  .mirror-card{ padding:24px; }
+  .mirror-grid{
+    display:grid;
+    grid-template-columns:repeat(8,1fr); gap:8px;
+    margin-bottom:22px;
+  }
+  @media(max-width:640px){
+    .mirror-grid{ grid-template-columns:repeat(4,1fr); }
+  }
+  .mr-cell{
+    position:relative; aspect-ratio:1;
+    border-radius:12px; overflow:hidden;
+    cursor:pointer;
+    border:1px solid var(--line);
+    background:radial-gradient(ellipse at 50% 70%, rgba(124,58,237,.22) 0%, #0a0a1a 70%);
+    transition:transform .2s, border-color .2s, box-shadow .2s;
+  }
+  .mr-cell:hover{ transform:translateY(-2px); border-color:rgba(155,124,248,.5); }
+  .mr-cell.active{
+    border-color:var(--violet);
+    box-shadow:0 0 0 1px var(--violet),0 0 24px rgba(155,124,248,.5);
+  }
+  .mr-cell img{ width:100%; height:100%; object-fit:contain; padding:6px; }
+  .mr-cell-code{
+    position:absolute; bottom:0; left:0; right:0;
+    padding:4px;
+    background:linear-gradient(transparent, rgba(0,0,0,.85));
+    font-family:'Space Mono',monospace; font-size:9px; letter-spacing:.2em;
+    text-align:center; color:#fff;
+  }
+  .mirror-result{ display:none; border-top:1px solid var(--line); padding-top:22px; }
+  .mirror-result.show{ display:block; }
+  .mr-pair{
+    display:flex; align-items:center; justify-content:center;
+    gap:22px; margin-bottom:18px;
+  }
+  .mr-char{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .mr-char img{
+    width:72px; height:72px; border-radius:16px; object-fit:contain;
+    background:radial-gradient(ellipse at 50% 65%, rgba(124,58,237,.18) 0%, rgba(0,0,0,.4) 70%);
+    border:1px solid var(--line);
+  }
+  .mr-name{ font-family:"Cormorant Garamond",serif; font-size:14px; }
+  .mr-cross{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:32px;
+    background:linear-gradient(135deg,var(--violet),var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .mr-score{ text-align:center; margin-bottom:14px; }
+  .mr-hearts{
+    font-size:24px; letter-spacing:4px;
+    background:linear-gradient(135deg,var(--violet),var(--pink),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:6px;
+  }
+  .mr-label{
+    font-family:"Noto Sans JP",sans-serif; font-size:14px; font-weight:700;
+    background:linear-gradient(135deg,var(--violet),var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .mr-comment{
+    font-size:13.5px; line-height:1.85; color:var(--ink-mute);
+    padding:16px 18px; border-radius:12px;
+    background:rgba(155,124,248,.06);
+    border-left:2px solid var(--violet);
+    text-wrap:pretty;
+  }
+
 </style>
 </head>
 <body>
@@ -353,6 +424,7 @@
     <a href="../quiz.html">Quiz</a>
     <a href="../characters.html" class="active">Characters</a>
     <a href="index.html#about">About</a>
+    <a href="../compat.html">Compat</a>
     <a href="https://nighttype.base.shop/" target="_blank" rel="noopener">Items</a>
   </div>
   <button class="nt-burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
@@ -438,7 +510,28 @@
     </div>
   </section>
 
-  <!-- CTA -->
+
+  <!-- Mirror compare (05) -->
+  <section class="ts-block">
+    <h2 class="ts-title">05 · 他のタイプと<em>比べる</em></h2>
+    <div class="ts-card mirror-card">
+      <div class="mirror-grid" id="mirrorGrid"></div>
+      <div id="mirrorResult" class="mirror-result">
+        <div class="mr-pair">
+          <div class="mr-char"><img id="mr1Img" /><div class="mr-name" id="mr1Name">—</div></div>
+          <div class="mr-cross">×</div>
+          <div class="mr-char"><img id="mr2Img" /><div class="mr-name" id="mr2Name">—</div></div>
+        </div>
+        <div class="mr-score">
+          <div class="mr-hearts" id="mrHearts">★★★☆☆</div>
+          <div class="mr-label" id="mrLabel">—</div>
+        </div>
+        <div class="mr-comment" id="mrComment">—</div>
+      </div>
+    </div>
+  </section>
+
+    <!-- CTA -->
   <div class="ts-cta">
     <a href="../characters.html" class="nt-btn">
       ← All 16 types
@@ -536,6 +629,53 @@
   document.getElementById('badList').innerHTML  = (t.bad  || []).map(compatItem).join('');
   document.getElementById('goodReason').textContent = t.goodReason || '';
   document.getElementById('badReason').textContent  = t.badReason  || '';
+
+  // ── 05 · Mirror compare ──
+  (function setupMirror(){
+    const order = ['A1','A2','A3','A4','B1','B2','B3','B4','C1','C2','C3','C4','D1','D2','D3','D4'];
+    const grid = document.getElementById('mirrorGrid');
+    if(!grid) return;
+    grid.innerHTML = order.filter(c=>c!==code).map(c=>{
+      const tt = types[c]; if(!tt) return '';
+      const imgSrc = (tt.image||'').startsWith('images/') ? '../'+tt.image : (tt.image || '../images/'+c+'.png');
+      return `<div class="mr-cell" data-code="${c}"><img src="${imgSrc}" alt="${tt.name}" onerror="this.style.display='none'"><div class="mr-cell-code">${c}</div></div>`;
+    }).join('');
+    function axisCompare(myCode, other){
+      const me = types[myCode], you = types[other];
+      if(!me || !you || !me.axisCode || !you.axisCode) return null;
+      if(myCode === other) return {hearts:5, label:'同じ夜', txt:'同じタイプだからこそ、深いところまで分かり合える特別な相性。'};
+      const a = me.axisCode.split('-'), b = you.axisCode.split('-');
+      const sN = a[0]===b[0], sS = a[1]===b[1], sA = a[2]===b[2], sG = a[3]===b[3];
+      if(sN && !sS && sA && !sG) return {hearts:5, label:'運命の二人', txt:`同じ感情の深さ・愛の質感を持ちながら、主導権と燃える瞬間は対照的——${me.name}と${you.name}は互いの欠けている部分を埋め合う、最高の相性です。`};
+      if(!sN && sS && !sA && sG) return {hearts:1, label:'すれ違いがち', txt:`感情の深さも愛の動機も真逆なのに、主導権の取り方とイく瞬間だけ同じ——会話の根っこがすれ違いやすい組み合わせ。`};
+      const cnt = [sN,sS,sA,sG].filter(Boolean).length;
+      if(cnt===3) return {hearts:4, label:'深く響き合う', txt:`軸の3つが一致していて、根っこの価値観は近い相性。自然と長く付き合える組み合わせです。`};
+      if(cnt===2) return {hearts:3, label:'穏やかな距離感', txt:`半分は似ていて、半分は違う。安心と刺激のバランスが取れた、落ち着いた相性です。`};
+      if(cnt===1) return {hearts:2, label:'刺激的な関係', txt:`1軸だけ重なる、温度差のある相性。違いを楽しめば視野が広がる組み合わせ。`};
+      return {hearts:2, label:'対照的な二人', txt:`4軸すべてが違う相性。お互いの夜は完全に別の言語を話しているようなもの。`};
+    }
+    grid.querySelectorAll('.mr-cell').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        grid.querySelectorAll('.mr-cell').forEach(e=>e.classList.remove('active'));
+        el.classList.add('active');
+        const other = el.dataset.code;
+        const r = axisCompare(code, other);
+        if(!r) return;
+        const me = types[code], you = types[other];
+        const myImg = (me.image||'').startsWith('images/') ? '../'+me.image : (me.image || '../images/'+code+'.png');
+        const youImg = (you.image||'').startsWith('images/') ? '../'+you.image : (you.image || '../images/'+other+'.png');
+        document.getElementById('mr1Img').src = myImg;
+        document.getElementById('mr2Img').src = youImg;
+        document.getElementById('mr1Name').textContent = me.name;
+        document.getElementById('mr2Name').textContent = you.name;
+        document.getElementById('mrHearts').textContent = '★'.repeat(r.hearts) + '☆'.repeat(5-r.hearts);
+        document.getElementById('mrLabel').textContent = r.label;
+        document.getElementById('mrComment').textContent = r.txt;
+        document.getElementById('mirrorResult').classList.add('show');
+      });
+    });
+  })();
+
 </script>
 
 </body>
