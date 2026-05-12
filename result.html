@@ -587,6 +587,33 @@
     .section-title{ font-size:24px; }
     .char-orbit{ width:240px; height:240px }
     .char-frame{ width:220px; height:220px; }
+    /* Share buttons: stack vertically with full width on mobile */
+    .share-row{
+      flex-direction:column;
+      gap:10px;
+      margin-bottom:28px;
+    }
+    .share-btn{
+      flex:1 1 100%;
+      min-width:0;
+      padding:14px 18px;
+      font-size:11.5px;
+      letter-spacing:.2em;
+    }
+    /* Make share buttons more visually distinct on mobile */
+    .share-btn.copy{
+      background:rgba(34,211,238,.06);
+      border-color:rgba(34,211,238,.25);
+    }
+    #btnX{
+      background:rgba(255,255,255,.04);
+      border-color:rgba(255,255,255,.12);
+    }
+    #btnLine{
+      background:rgba(6,199,85,.06);
+      border-color:rgba(6,199,85,.25);
+      color:#06c755;
+    }
   }
 </style>
 </head>
