@@ -844,6 +844,23 @@
     }
   }
 
+  // ── Auto-apply Q1 answer from visitor landing (実装指示#3 §6) ──
+  (function consumeQ1Answer(){
+    try{
+      const stored = sessionStorage.getItem('nighttype_q1_answer');
+      if(!stored) return;
+      const val = parseInt(stored, 10);
+      sessionStorage.removeItem('nighttype_q1_answer');
+      if(isNaN(val) || val < -3 || val > 3) return;
+      // Apply as if user answered Q1 with this val
+      const q = questions[0];
+      const sign = val>0 ? 1 : val<0 ? -1 : 0;
+      history.push({axis:q.axis, weight:q.weight, sign, val});
+      if(val !== 0) addAxisScore(q, val);
+      idx = 1; // skip to Q2
+    }catch(_){}
+  })();
+
   // ── Buttons + ripple ──
   document.querySelectorAll('.sbtn').forEach(b=>{
     b.addEventListener('click', e=>{
