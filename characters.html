@@ -266,19 +266,19 @@
 <!-- Hero -->
 <section class="ch-hero">
   <div class="ch-eyebrow">16 Night Constellations</div>
-  <h1 class="ch-title"><em>All Night Types</em></h1>
-  <p class="ch-sub">4軸の交差から生まれる16のタイプ。それぞれが、夜という時間に対する独自の「感性」を持っている。</p>
+  <h1 class="ch-title">16タイプ、<br/>それぞれが<em>ひとつの言語</em>。</h1>
+  <p class="ch-sub">4軸の交差から生まれる16のタイプ。それぞれが、夜という時間に対する独自の「文法」を持っている。あなたの星と、誰の星が共鳴するか——。</p>
 </section>
 
 <!-- Filters -->
 <div class="ch-filters" id="chFilters">
   <button class="ch-filter active" data-filter="all">All 16</button>
-  <button class="ch-filter" data-filter="numa">沼</button>
-  <button class="ch-filter" data-filter="shio">塩</button>
+  <button class="ch-filter" data-filter="numa">Numa · 沼</button>
+  <button class="ch-filter" data-filter="shio">Shio · 塩</button>
   <button class="ch-filter" data-filter="S">S</button>
   <button class="ch-filter" data-filter="M">M</button>
-  <button class="ch-filter" data-filter="ai">愛</button>
-  <button class="ch-filter" data-filter="yoku">欲</button>
+  <button class="ch-filter" data-filter="ai">Ai · 愛</button>
+  <button class="ch-filter" data-filter="yoku">Yoku · 欲</button>
   <button class="ch-filter" data-filter="G">Give</button>
   <button class="ch-filter" data-filter="T">Take</button>
 </div>
@@ -288,8 +288,8 @@
 
 <!-- Footer CTA -->
 <section class="ch-footer">
-  <h2 class="ch-footer-title"><em>あなたの</em>タイプを見つける。</h2>
-  <p class="ch-footer-sub">20問の診断であなたの夜のタイプを発見しよう。</p>
+  <h2 class="ch-footer-title"><em>あなたの</em>星座を見つける。</h2>
+  <p class="ch-footer-sub">20問の診断であなたの夜の星座を発見しよう。</p>
   <a href="quiz.html" class="nt-btn nt-btn-primary">
     Start the Quiz <span class="arrow">→</span>
   </a>
@@ -341,10 +341,13 @@
       const t = types[c];
       const group = c.charAt(0); // A/B/C/D
       const axisShort = (t.axisCode || '').replace(/-/g,'·');
+      const kws = (t.keyword || []).slice(0,3)
+        .map(k=>`<span class="ch-card-kw">${k}</span>`).join('');
       return `
         <a class="ch-card" data-group="${group}" href="type.html?type=${c}"
            style="animation-delay:${Math.min(i*0.04, 0.6)}s">
           <div class="ch-card-img-wrap">
+            <span class="ch-card-code">${c}</span>
             <span class="ch-card-axes">${axisShort}</span>
             <img class="ch-card-img" src="${t.image || `images/${c}.png`}" alt="${t.name}"
                  onerror="this.style.display='none';this.parentElement.style.background='radial-gradient(circle at 30% 30%, rgba(155,124,248,.4), #0a0a1a)'"/>
@@ -352,6 +355,7 @@
           <div class="ch-card-body">
             <div class="ch-card-name">${t.name}</div>
             <div class="ch-card-tagline">"${t.tagline || ''}"</div>
+            <div class="ch-card-keywords">${kws}</div>
             <div class="ch-card-foot">
               <span>${t.axes || ''}</span>
               <span class="arrow">→</span>

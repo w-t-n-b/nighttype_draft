@@ -643,7 +643,7 @@
     function axisCompare(myCode, other){
       const me = types[myCode], you = types[other];
       if(!me || !you || !me.axisCode || !you.axisCode) return null;
-      if(myCode === other) return {hearts:5, label:'同じ夜', txt:'同じタイプだからこそ、深いところまで分かり合える特別な相性。'};
+      
       const a = me.axisCode.split('-'), b = you.axisCode.split('-');
       const sN = a[0]===b[0], sS = a[1]===b[1], sA = a[2]===b[2], sG = a[3]===b[3];
       if(sN && !sS && sA && !sG) return {hearts:5, label:'運命の二人', txt:`同じ感情の深さ・愛の質感を持ちながら、主導権と燃える瞬間は対照的——${me.name}と${you.name}は互いの欠けている部分を埋め合う、最高の相性です。`};

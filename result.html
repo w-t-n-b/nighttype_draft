@@ -900,7 +900,7 @@
   // ── Compatibility scoring (simple rule) ──
   function compatScore(a,b){
     function makeStars(n){ return '★'.repeat(n) + '☆'.repeat(5-n); }
-    if(a===b) return {hearts:makeStars(5), label:'同じ夜', txt:`同じタイプだからこそ、深いところまで分かり合える特別な相性。お互いの暗号を読める唯一の存在です。`};
+    // same-char (a===b) falls through to sameCount===4 branch below
     const at = types[a], bt = types[b];
     if(!at || !bt) return null;
     if(!at.axisCode || !bt.axisCode) return null;
@@ -919,7 +919,7 @@
     if(isBad)  return {hearts:makeStars(1), label:'すれ違いがち', txt:`感情の深さも愛の動機も真逆なのに、主導権の取り方とイく瞬間だけ同じ——会話の根っこがすれ違いやすく、夜の温度を合わせるのが難しい組み合わせ。`};
     // Count axis matches for intermediate scores
     const sameCount = [sameNuma,sameSM,sameAi,sameGT].filter(Boolean).length;
-    if(sameCount===4) return {hearts:makeStars(5), label:'同じ夜', txt:`全く同じタイプ。鏡を見るような相性で、深く理解し合える反面、新鮮味は少ないかもしれません。`};
+    if(sameCount===4) return {hearts:makeStars(3), label:'似た者同士', txt:`感情の深さも愛の動機も似ているのに、主導権の取り方とイく瞬間まで同じ——居心地はいいけれど、刺激は少なめ。`};
     if(sameCount===3) return {hearts:makeStars(4), label:'深く響き合う', txt:`軸の3つが一致していて、根っこの価値観は近い相性。${at.name}と${bt.name}は、自然と長く付き合える組み合わせです。`};
     if(sameCount===2) return {hearts:makeStars(3), label:'穏やかな距離感', txt:`半分は似ていて、半分は違う。安心と刺激のバランスが取れた、落ち着いた相性です。`};
     if(sameCount===1) return {hearts:makeStars(2), label:'刺激的な関係', txt:`1軸だけ重なる、温度差のある相性。違いを楽しめば視野が広がる組み合わせ。`};

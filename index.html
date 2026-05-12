@@ -255,7 +255,8 @@
       <h1 class="hero-title">NightType</h1>
     </div>
     <div class="hero-sub reveal">— what kind of night are you, really?</div>
-    <p class="hero-jp reveal">20問であなたの夜のタイプを診断</p>
+    <p class="hero-jp reveal">あなたの夜の価値観タイプは？<br/>
+      4軸×20問。深夜の自分を構成する成分を、<br/>16タイプの座標に解き明かす。</p>
     <div class="hero-cta reveal-stagger">
       <a class="btn btn-primary" href="quiz.html">
         診断をはじめる<span class="arrow">→</span>
@@ -286,7 +287,7 @@
       <div class="stat-card">
         <div class="stat-num">∞</div>
         <div class="stat-label">Compatibility</div>
-        <div class="stat-desc">タイプ × タイプの<br/>相性パターンを診断。</div>
+        <div class="stat-desc">タイプ × タイプの<br/>相性パターンを可視化。</div>
       </div>
     </div>
   </section>
@@ -294,15 +295,15 @@
   <div class="marquee">
     <div class="marquee-track">
       <span>
-        沼 &nbsp;·&nbsp; 塩 <span class="star"></span>
+        Numa &nbsp;·&nbsp; Shio <span class="star"></span>
         S &nbsp;·&nbsp; M <span class="star"></span>
-        愛 &nbsp;·&nbsp; 欲 <span class="star"></span>
+        Ai &nbsp;·&nbsp; Yoku <span class="star"></span>
         Give &nbsp;·&nbsp; Take <span class="star"></span>
         16 Types <span class="star"></span>
         20 Questions <span class="star"></span>
-        沼 &nbsp;·&nbsp; 塩 <span class="star"></span>
+        Numa &nbsp;·&nbsp; Shio <span class="star"></span>
         S &nbsp;·&nbsp; M <span class="star"></span>
-        愛 &nbsp;·&nbsp; 欲 <span class="star"></span>
+        Ai &nbsp;·&nbsp; Yoku <span class="star"></span>
         Give &nbsp;·&nbsp; Take <span class="star"></span>
         16 Types <span class="star"></span>
         20 Questions <span class="star"></span>
@@ -320,13 +321,13 @@
         <div class="axis-tag">Axis 01 · Emotional Depth</div>
         <div class="axis-glyph"><span class="a">沼</span><span class="slash">/</span><span class="b">塩</span></div>
         <div class="axis-name">Numa or Shio — 感情の深さ</div>
-        <p class="axis-desc">引きずるか、切り替えるか。<br/>沼は感情を深く沈める。塩はクールに距離を保つ。</p>
+        <p class="axis-desc">引きずるか、切り替わるか。<br/>沼は感情を深く沈める。塩はクールに距離を保つ。<br/>どちらが正しいではなく、夜の温度の出発点。</p>
       </div>
       <div class="axis-card">
         <div class="axis-tag">Axis 02 · Initiative</div>
         <div class="axis-glyph"><span class="a">S</span><span class="slash">/</span><span class="b">M</span></div>
         <div class="axis-name">S or M — 主導権</div>
-        <p class="axis-desc">引き出す側か、委ねる側か。<br/>夜の場で「どちらに回るのが自然か」を測る軸。<br/>支配と従属、両方が夜の流れを作る。</p>
+        <p class="axis-desc">引き出す側か、委ねる側か。<br/>夜の場で「どちらに回るのが自然か」を測る軸。<br/>支配と受容、両方が夜の構造を作る。</p>
       </div>
       <div class="axis-card">
         <div class="axis-tag">Axis 03 · Motivation</div>
@@ -346,7 +347,7 @@
   <section class="block" id="types">
     <div class="reveal">
       <div class="section-eyebrow">03 · 16タイプ</div>
-      <h2 class="section-title">16の<em>夜のタイプ</em>。</h2>
+      <h2 class="section-title">16の<em>夜の座標</em>。</h2>
     </div>
     <div class="types-grid reveal-stagger" id="typesGrid"></div>
   </section>
@@ -362,7 +363,7 @@
       <a class="btn btn-ghost" href="characters.html">
         キャラ一覧<span class="arrow">→</span>
       </a>
-      <a class="btn btn-ghost" href="match.html">
+      <a class="btn btn-ghost" href="characters.html">
         相性チェック<span class="arrow">→</span>
       </a>
     </div>
@@ -596,6 +597,7 @@ const TYPES = [
         <div class="type-shadow"></div>
       </div>
       <div class="type-meta">
+        <div class="type-code"><span class="glyph">${t.sym}</span> ${t.code}</div>
         <div class="type-name">${t.name}</div>
         <div class="type-axis">${t.axes}</div>
       </div>
