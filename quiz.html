@@ -474,6 +474,31 @@
     .s-l1 .sbtn-icon,.s-n1 .sbtn-icon{width:18px;height:18px}
     .meter-count{font-size:28px}
   }
+
+  /* Invite banner — shown when ?from= is set */
+  .invite-banner{
+    margin:0 auto 18px; max-width:560px;
+    padding:14px 20px;
+    border-radius:14px;
+    background:linear-gradient(135deg, rgba(244,114,182,.18), rgba(155,124,248,.12));
+    border:1px solid rgba(244,114,182,.35);
+    text-align:center;
+  }
+  .invite-banner .ib-text{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:13.5px; color:#fff;
+    line-height:1.6;
+  }
+  .invite-banner .ib-from-name{
+    color:var(--pink); font-weight:700;
+  }
+  .invite-banner .ib-sub{
+    display:block;
+    font-size:11px; color:var(--ink-mute);
+    letter-spacing:.06em;
+    margin-top:2px;
+  }
+
 </style>
 </head>
 <body>
@@ -501,6 +526,12 @@
 
 <!-- Quiz body -->
 <div class="quiz-wrap">
+  <div class="invite-banner" id="inviteBanner" style="display:none">
+    <div class="ib-text">
+      <span class="ib-from-name" id="ibFromName">—</span>から招待されました
+      <span class="ib-sub">診断後に相性が表示されます</span>
+    </div>
+  </div>
   <div class="meter-row">
     <div class="meter-label">
       <span class="dot"></span>
@@ -800,7 +831,7 @@
           revealBar.style.width = p+'%';
           if(p>=100){
             clearInterval(iv);
-            setTimeout(()=>location.href='result.html', 600);
+            setTimeout(()=>location.href = 'result.html' + (new URLSearchParams(location.search).get('from') ? '?from=' + new URLSearchParams(location.search).get('from') : ''), 600);
           }
         }, 30);
       });
@@ -894,6 +925,19 @@
   document.getElementById('cno').addEventListener('click', ()=>covl.classList.remove('show'));
 
   show(false);
+
+  // Show invite banner if ?from= is present
+  (function showInviteBanner(){
+    const params = new URLSearchParams(location.search);
+    const fromCode = params.get('from');
+    if(!fromCode || typeof types === 'undefined') return;
+    const fromT = types[fromCode];
+    if(!fromT) return;
+    const banner = document.getElementById('inviteBanner');
+    if(!banner) return;
+    document.getElementById('ibFromName').textContent = fromT.name + '(' + fromCode + ')';
+    banner.style.display = 'block';
+  })();
 </script>
 </body>
 </html>

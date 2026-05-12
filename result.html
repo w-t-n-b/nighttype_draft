@@ -1091,7 +1091,7 @@
   }
 
   // ── Share (with ?from={my code} for viral invite) ──
-  const shareUrl = location.origin + location.pathname + '?type=' + code + '&from=' + code;
+  const shareUrl = location.origin + location.pathname.replace(/result\.html$/, 'quiz.html') + '?from=' + code;
   const shareText = `私のナイトタイプは「${t.name}」だった！\nあなたのナイトタイプは？`;
   document.getElementById('btnX').href    = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
   document.getElementById('btnLine').href = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + '\n' + shareUrl)}`;
