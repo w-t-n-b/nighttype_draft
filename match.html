@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Match — NightType</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="nighttype-shell.css" />
+<style>
+  .cp-hero{
+    max-width:920px; margin:0 auto;
+    padding:130px 24px 30px;
+    text-align:center; position:relative; z-index:5;
+  }
+  .cp-eyebrow{
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.4em; text-transform:uppercase;
+    color:var(--cyan); margin-bottom:22px;
+    display:inline-flex; align-items:center; gap:12px;
+  }
+  .cp-eyebrow::before, .cp-eyebrow::after{
+    content:""; width:36px; height:1px; background:var(--cyan); opacity:.5;
+  }
+  .cp-title{
+    font-family:"Cormorant Garamond",serif; font-weight:500;
+    font-size:clamp(40px,7vw,68px); line-height:1.05;
+    margin-bottom:18px; text-wrap:balance;
+  }
+  .cp-title em{
+    font-style:italic;
+    background:linear-gradient(135deg,var(--violet),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .cp-sub{
+    font-size:14.5px; line-height:1.85; color:var(--ink-mute);
+    max-width:520px; margin:0 auto; text-wrap:pretty;
+  }
+
+  /* ── Slots arena ── */
+  .arena{
+    max-width:1100px; margin:0 auto;
+    padding:40px 24px 24px;
+    position:relative; z-index:5;
+  }
+  .slot-row{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:24px; align-items:center;
+    margin-bottom:20px;
+  }
+  .vs-mark{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:56px; line-height:1;
+    background:linear-gradient(135deg,var(--violet),var(--pink),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 40px rgba(155,124,248,.3);
+    user-select:none;
+  }
+
+  .slot{
+    position:relative;
+    aspect-ratio:1/1.18;
+    border-radius:24px;
+    border:1.5px dashed var(--line);
+    background:rgba(255,255,255,.02);
+    backdrop-filter:blur(12px);
+    overflow:hidden;
+    cursor:pointer;
+    transition:all .35s cubic-bezier(.2,.8,.2,1);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .slot:hover{ border-color:rgba(155,124,248,.5); }
+  .slot.active{
+    border-style:solid;
+    border-color:rgba(155,124,248,.6);
+    box-shadow:
+      0 0 0 1px rgba(155,124,248,.3),
+      0 0 60px rgba(155,124,248,.25),
+      inset 0 0 60px rgba(155,124,248,.05);
+  }
+  .slot[data-side="1"].active{
+    border-color:rgba(244,114,182,.6);
+    box-shadow:
+      0 0 0 1px rgba(244,114,182,.3),
+      0 0 60px rgba(244,114,182,.25),
+      inset 0 0 60px rgba(244,114,182,.05);
+  }
+  .slot[data-side="2"].active{
+    border-color:rgba(34,211,238,.6);
+    box-shadow:
+      0 0 0 1px rgba(34,211,238,.3),
+      0 0 60px rgba(34,211,238,.25),
+      inset 0 0 60px rgba(34,211,238,.05);
+  }
+  .slot.target{
+    border-color:var(--violet);
+    border-style:solid;
+    box-shadow:0 0 0 1px var(--violet), 0 0 80px rgba(155,124,248,.4);
+    animation:slotPulse 2s ease infinite;
+  }
+  @keyframes slotPulse{
+    0%,100%{ box-shadow:0 0 0 1px var(--violet), 0 0 80px rgba(155,124,248,.4); }
+    50%   { box-shadow:0 0 0 1px var(--violet), 0 0 110px rgba(155,124,248,.65); }
+  }
+
+  .slot-empty{
+    text-align:center;
+    color:var(--ink-faint);
+    padding:24px;
+  }
+  .slot-empty-icon{
+    width:60px; height:60px; border-radius:50%;
+    margin:0 auto 16px;
+    border:1.5px dashed currentColor;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:32px; opacity:.6;
+  }
+  .slot-empty-label{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.3em; text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  .slot-empty-hint{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:14px; color:var(--ink-mute);
+  }
+
+  .slot-fill{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column;
+    animation:slotFill .5s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes slotFill{
+    from{ opacity:0; transform:scale(.92); }
+    to  { opacity:1; transform:scale(1); }
+  }
+  .slot-fill img{
+    flex:1; width:100%;
+    object-fit:cover; min-height:0;
+    filter:saturate(1.05);
+  }
+  .slot-fill-info{
+    padding:14px 16px 16px;
+    background:linear-gradient(180deg, transparent, rgba(4,4,14,.95) 30%);
+    margin-top:-60px; position:relative; z-index:2;
+  }
+  .slot-fill-code{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.3em; color:var(--violet);
+    margin-bottom:4px;
+  }
+  .slot-fill-name{
+    font-family:"Cormorant Garamond",serif; font-size:20px;
+    line-height:1.25; color:var(--ink);
+    text-wrap:balance;
+  }
+  .slot-fill-clear{
+    position:absolute; top:10px; right:10px;
+    width:28px; height:28px; border-radius:50%;
+    background:rgba(4,4,14,.7); backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.15);
+    color:#fff; cursor:pointer;
+    font-size:14px;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .2s; z-index:3;
+  }
+  .slot-fill-clear:hover{
+    background:rgba(244,114,182,.3);
+    border-color:var(--pink);
+  }
+
+  .arena-status{
+    text-align:center;
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.3em; text-transform:uppercase;
+    color:var(--ink-mute);
+    padding:18px 0 26px;
+  }
+  .arena-status .dot-blink{
+    display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--violet); margin:0 8px;
+    box-shadow:0 0 10px var(--violet);
+    animation:blink 1s ease infinite;
+    vertical-align:middle;
+  }
+  @keyframes blink{ 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* ── Roster ── */
+  .roster-wrap{
+    max-width:1100px; margin:0 auto;
+    padding:0 24px 50px;
+    position:relative; z-index:5;
+  }
+  .roster-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:20px;
+    flex-wrap:wrap; gap:14px;
+  }
+  .roster-label{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.4em; text-transform:uppercase;
+    color:var(--cyan);
+    display:flex; align-items:center; gap:12px;
+  }
+  .roster-label::before{
+    content:""; width:24px; height:1px; background:var(--cyan); opacity:.5;
+  }
+  .roster-actions{
+    display:flex; gap:8px;
+  }
+  .rt-btn{
+    padding:8px 16px; border-radius:99px;
+    border:1px solid var(--line); background:rgba(255,255,255,.02);
+    color:var(--ink-mute); cursor:pointer;
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.18em; text-transform:uppercase;
+    transition:all .2s;
+  }
+  .rt-btn:hover{ border-color:rgba(155,124,248,.5); color:var(--ink); }
+
+  .roster{
+    display:grid;
+    grid-template-columns:repeat(8, 1fr);
+    gap:10px;
+  }
+  @media (max-width:880px){
+    .roster{ grid-template-columns:repeat(4,1fr); }
+  }
+  .roster-cell{
+    position:relative;
+    aspect-ratio:1;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:linear-gradient(135deg,#1a0f2e,#0a0a1a);
+    overflow:hidden;
+    cursor:pointer;
+    transition:all .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .roster-cell img{
+    width:100%; height:100%; object-fit:cover;
+    transition:transform .4s, filter .4s;
+    filter:saturate(.9) brightness(.95);
+  }
+  .roster-cell:hover{
+    transform:translateY(-3px);
+    border-color:rgba(155,124,248,.6);
+    box-shadow:0 12px 32px rgba(155,124,248,.2);
+  }
+  .roster-cell:hover img{
+    transform:scale(1.08); filter:saturate(1.1) brightness(1);
+  }
+  .roster-cell-code{
+    position:absolute; bottom:0; left:0; right:0;
+    padding:6px 8px;
+    background:linear-gradient(transparent, rgba(0,0,0,.9));
+    font-family:"Cormorant Garamond",serif;
+    font-size:11px; line-height:1.15;
+    letter-spacing:.02em; text-align:center; color:#fff;
+    text-wrap:balance;
+  }
+  .roster-cell.picked-1{
+    border-color:var(--pink);
+    box-shadow:0 0 0 1px var(--pink),0 0 24px rgba(244,114,182,.45);
+  }
+  .roster-cell.picked-2{
+    border-color:var(--cyan);
+    box-shadow:0 0 0 1px var(--cyan),0 0 24px rgba(34,211,238,.45);
+  }
+  .roster-cell.picked-1::after,
+  .roster-cell.picked-2::after{
+    content:""; position:absolute; top:6px; right:6px;
+    width:18px; height:18px; border-radius:50%;
+    font-family:"Space Mono",monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .roster-cell.picked-1::after{
+    content:"1"; background:var(--pink); color:#fff;
+  }
+  .roster-cell.picked-2::after{
+    content:"2"; background:var(--cyan); color:#04040e;
+  }
+
+  /* ── Result ── */
+  .result-wrap{
+    max-width:880px; margin:0 auto;
+    padding:30px 24px 100px;
+    position:relative; z-index:5;
+  }
+  .result-card{
+    padding:40px 36px;
+    border-radius:28px;
+    border:1px solid var(--line);
+    background:var(--glass);
+    backdrop-filter:blur(20px) saturate(140%);
+    position:relative; overflow:hidden;
+    opacity:0;
+    transition:opacity .6s, transform .6s;
+    transform:translateY(20px);
+  }
+  .result-card.show{ opacity:1; transform:translateY(0); }
+  .result-card::before{
+    content:""; position:absolute; top:0; left:24px; right:24px; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(244,114,182,.7), rgba(34,211,238,.7), transparent);
+  }
+  .result-eyebrow{
+    text-align:center;
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.4em; text-transform:uppercase;
+    color:var(--cyan); margin-bottom:22px;
+  }
+  .result-hearts{
+    text-align:center;
+    font-size:38px; letter-spacing:8px;
+    background:linear-gradient(135deg,var(--violet),var(--pink),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:8px;
+  }
+  .result-label{
+    text-align:center;
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:clamp(28px,4.5vw,42px);
+    line-height:1.15; margin-bottom:24px;
+    background:linear-gradient(135deg,#fff,var(--violet) 60%,var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-wrap:balance;
+  }
+  .result-pair{
+    display:flex; align-items:center; justify-content:center;
+    gap:24px; margin-bottom:24px;
+  }
+  .rp-char{
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .rp-char img{
+    width:80px; height:80px; border-radius:50%;
+    object-fit:cover; border:1px solid var(--line);
+  }
+  .rp-char-name{
+    font-family:"Cormorant Garamond",serif; font-size:14px;
+    color:var(--ink); text-align:center;
+    max-width:120px; text-wrap:balance; line-height:1.3;
+  }
+  .rp-cross{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:40px;
+    background:linear-gradient(135deg,var(--violet),var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .result-comment{
+    font-size:14.5px; line-height:1.95;
+    color:var(--ink-mute); text-wrap:pretty;
+    padding:20px 22px;
+    border-radius:14px;
+    background:rgba(155,124,248,.06);
+    border-left:2px solid var(--violet);
+  }
+
+  /* ── CTA ── */
+  .arena-cta{
+    display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+    margin-top:32px;
+  }
+
+  @media (max-width:600px){
+    /* compact hero */
+    .cp-hero{padding:80px 18px 12px}
+    .cp-eyebrow{font-size:9px; letter-spacing:.3em; margin-bottom:10px}
+    .cp-eyebrow::before, .cp-eyebrow::after{width:20px}
+    .cp-title{font-size:24px; line-height:1.15; margin-bottom:6px}
+    .cp-title br{display:none}
+    .cp-sub{display:none}
+
+    /* compact slot row */
+    .arena{padding:8px 14px 8px; position:sticky; top:56px; z-index:30;
+      background:linear-gradient(180deg, rgba(4,4,14,.92) 70%, transparent);
+      backdrop-filter:blur(14px);
+    }
+    .slot-row{gap:10px; margin-bottom:0}
+    .slot{aspect-ratio:1.4/1; border-radius:14px}
+    .slot-empty{padding:6px}
+    .slot-empty-icon{width:28px; height:28px; font-size:16px; margin:0 auto 4px; border-width:1px}
+    .slot-empty-label{font-size:8px; letter-spacing:.18em; margin-bottom:0}
+    .slot-empty-hint{display:none}
+    .vs-mark{font-size:24px}
+
+    /* slot filled compact */
+    .slot-fill{flex-direction:row !important; gap:8px; padding:8px !important; align-items:center}
+    .slot-fill img{width:36px !important; height:36px !important; border-radius:10px}
+    .slot-fill-info{text-align:left !important; flex:1; min-width:0}
+    .slot-fill-code{font-size:8px !important; letter-spacing:.18em; margin-bottom:1px !important}
+    .slot-fill-name{font-size:11px !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.15 !important}
+    .slot-fill-clear{top:4px !important; right:4px !important; width:18px !important; height:18px !important; font-size:13px !important}
+
+    /* roster compact 4x4 */
+    .roster-wrap{padding:10px 14px 40px}
+    .roster-head{margin-bottom:10px}
+    .roster-label{font-size:8px; letter-spacing:.24em}
+    .roster-label::before{width:14px}
+    .rt-btn{padding:5px 10px; font-size:8px; letter-spacing:.14em}
+    .roster{gap:6px}
+    .roster-cell{border-radius:10px}
+    .roster-cell-code{font-size:8.5px; line-height:1.1; letter-spacing:.01em; padding:3px 3px}
+    .roster-cell.picked-1::after,
+    .roster-cell.picked-2::after{
+      top:3px; right:3px; width:14px; height:14px; font-size:8px;
+    }
+
+    .result-card{padding:30px 24px}
+    .result-hearts{font-size:30px; letter-spacing:5px}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="nebula"></div>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<!-- Top Nav -->
+<nav class="nt-nav">
+  <a href="index.html" class="nt-brand"><span class="nt-brand-mark"></span>NightType</a>
+  <div class="nt-nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="characters.html">Characters</a>
+    <a href="match.html" class="active">Compat</a>
+  </div>
+  <button class="nt-burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
+  <div class="nt-overlay" id="navOverlay"></div>
+</nav>
+
+<!-- Hero -->
+<section class="cp-hero">
+  <div class="cp-eyebrow">Compatibility Arena</div>
+  <h1 class="cp-title">Pick <em>two</em>.<br/>See how their nights collide.</h1>
+  <p class="cp-sub">2人のキャラを選んで、その夜の相性を診断する。<br/>下の16タイプから直感で選んでみて。</p>
+</section>
+
+<!-- Arena -->
+<section class="arena">
+  <div class="slot-row">
+    <div class="slot target" data-side="1" id="slot1">
+      <div class="slot-empty">
+        <div class="slot-empty-icon">1</div>
+        <div class="slot-empty-label">Pick Player 1</div>
+        <div class="slot-empty-hint">下から選択</div>
+      </div>
+    </div>
+    <div class="vs-mark">×</div>
+    <div class="slot" data-side="2" id="slot2">
+      <div class="slot-empty">
+        <div class="slot-empty-icon">2</div>
+        <div class="slot-empty-label">Pick Player 2</div>
+        <div class="slot-empty-hint">次にここ</div>
+      </div>
+    </div>
+  </div>
+  <div class="arena-status" id="arenaStatus">
+    <span class="dot-blink"></span>Choose your first character<span class="dot-blink"></span>
+  </div>
+</section>
+
+<!-- Roster -->
+<section class="roster-wrap">
+  <div class="roster-head">
+    <div class="roster-label">16 Night Constellations</div>
+    <div class="roster-actions">
+      <button class="rt-btn" id="btnRandom">Random</button>
+      <button class="rt-btn" id="btnClear">Clear</button>
+    </div>
+  </div>
+  <div class="roster" id="roster"></div>
+</section>
+
+<!-- Result -->
+<section class="result-wrap">
+  <div class="result-card" id="resultCard">
+    <div class="result-eyebrow" id="resEyebrow">Compatibility Reading</div>
+    <div class="result-hearts" id="resHearts">●●●</div>
+    <div class="result-label" id="resLabel">—</div>
+    <div class="result-pair">
+      <div class="rp-char">
+        <img id="rp1Img" alt=""/>
+        <div class="rp-char-name" id="rp1Name">—</div>
+      </div>
+      <div class="rp-cross">×</div>
+      <div class="rp-char">
+        <img id="rp2Img" alt=""/>
+        <div class="rp-char-name" id="rp2Name">—</div>
+      </div>
+    </div>
+    <div class="result-comment" id="resComment">—</div>
+    <div class="arena-cta">
+      <a href="characters.html" class="nt-btn">Browse characters</a>
+      <a href="quiz.html" class="nt-btn nt-btn-primary">Find your own <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<script src="types.js"></script>
+<script src="nighttype-shell.js"></script>
+<script>
+  const order = ['A1','A2','A3','A4','B1','B2','B3','B4','C1','C2','C3','C4','D1','D2','D3','D4'];
+
+  // ── Render roster ──
+  const roster = document.getElementById('roster');
+  roster.innerHTML = order.map(c=>{
+    const t = types[c];
+    return `
+      <div class="roster-cell" data-code="${c}">
+        <img src="${t.image || `images/${c}.png`}" alt="${t.name}"
+             onerror="this.style.display='none'"/>
+        <div class="roster-cell-code">${t.name}</div>
+      </div>
+    `;
+  }).join('');
+
+  // ── State ──
+  let picks = [null, null];  // [side1, side2]
+  let target = 0;            // which slot is currently active for the next pick
+
+  function setTargetIndicator(){
+    document.getElementById('slot1').classList.toggle('target', target===0 && !picks[0]);
+    document.getElementById('slot2').classList.toggle('target', target===1 && !picks[1]);
+    document.getElementById('slot1').classList.toggle('active', !!picks[0]);
+    document.getElementById('slot2').classList.toggle('active', !!picks[1]);
+  }
+
+  function renderSlot(side){
+    const slot = document.getElementById(side===0 ? 'slot1' : 'slot2');
+    const code = picks[side];
+    if(!code){
+      slot.innerHTML = `
+        <div class="slot-empty">
+          <div class="slot-empty-icon">${side+1}</div>
+          <div class="slot-empty-label">Pick Player ${side+1}</div>
+          <div class="slot-empty-hint">${side===0?'下から選択':'次にここ'}</div>
+        </div>
+      `;
+      return;
+    }
+    const t = types[code];
+    slot.innerHTML = `
+      <div class="slot-fill">
+        <img src="${t.image || `images/${code}.png`}" alt="${t.name}"/>
+        <div class="slot-fill-info">
+          <div class="slot-fill-code">${code} · ${t.axisCode || ''}</div>
+          <div class="slot-fill-name">${t.name}</div>
+        </div>
+      </div>
+      <button class="slot-fill-clear" data-side="${side}" aria-label="clear">×</button>
+    `;
+  }
+
+  function refreshRosterPicks(){
+    document.querySelectorAll('.roster-cell').forEach(el=>{
+      el.classList.remove('picked-1','picked-2');
+      const c = el.dataset.code;
+      if(picks[0]===c) el.classList.add('picked-1');
+      if(picks[1]===c) el.classList.add('picked-2');
+    });
+  }
+
+  function updateStatus(){
+    const s = document.getElementById('arenaStatus');
+    if(!picks[0] && !picks[1]){
+      s.innerHTML = `<span class="dot-blink"></span>Choose your first character<span class="dot-blink"></span>`;
+    } else if(picks[0] && !picks[1]){
+      s.innerHTML = `<span class="dot-blink"></span>Now pick the second<span class="dot-blink"></span>`;
+    } else if(!picks[0] && picks[1]){
+      s.innerHTML = `<span class="dot-blink"></span>Now pick the first<span class="dot-blink"></span>`;
+    } else {
+      s.innerHTML = `Reading their orbits…`;
+    }
+  }
+
+  function pickCode(code){
+    // If already picked, toggle off
+    if(picks[0]===code){ picks[0]=null; target=0; updateAll(); return; }
+    if(picks[1]===code){ picks[1]=null; target=1; updateAll(); return; }
+    // Place into target slot
+    picks[target] = code;
+    // Advance target
+    if(target===0 && !picks[1]) target = 1;
+    else if(target===1 && !picks[0]) target = 0;
+    updateAll();
+  }
+
+  function clearAll(){
+    picks = [null,null]; target = 0; updateAll();
+  }
+
+  function clearSide(side){
+    picks[side] = null; target = side; updateAll();
+  }
+
+  function randomPick(){
+    const shuffled = [...order].sort(()=>Math.random()-.5);
+    picks = [shuffled[0], shuffled[1]];
+    target = 0;
+    updateAll();
+  }
+
+  function updateAll(){
+    renderSlot(0); renderSlot(1);
+    setTargetIndicator();
+    refreshRosterPicks();
+    updateStatus();
+    renderResult();
+  }
+
+  // ── Compatibility scoring ──
+function compatScore(a, b){
+    const at = types[a], bt = types[b];
+    if(!at || !bt || !at.axisCode || !bt.axisCode) return null;
+    if(a === b) return {hearts:5, label:'同じ夜', txt:`同じタイプだからこそ、深いところまで分かり合える特別な相性。お互いの暗号を読める唯一の存在です。`, type:'mirror'};
+    const ax = at.axisCode.split('-');  // [N/S, S/M, A/Y, G/T]
+    const bx = bt.axisCode.split('-');
+    const sameNuma = ax[0]===bx[0];
+    const sameSM   = ax[1]===bx[1];
+    const sameAi   = ax[2]===bx[2];
+    const sameGT   = ax[3]===bx[3];
+    // GOOD: numa同 / SM違 / 愛欲同 / GT違
+    const isGood = sameNuma && !sameSM && sameAi && !sameGT;
+    // BAD : numa違 / SM同 / 愛欲違 / GT同
+    const isBad  = !sameNuma && sameSM && !sameAi && sameGT;
+    if(isGood) return {hearts:5, label:'運命の二人', txt:`同じ感情の深さ・愛の質感を持ちながら、主導権と燃える瞬間は対照的——その絶妙な噛み合わせが、互いの欠けている部分を埋め合う、最高の相性です。`, type:'twin'};
+    if(isBad)  return {hearts:1, label:'すれ違いがち', txt:`感情の深さも愛の動機も真逆なのに、主導権の取り方とイく瞬間だけ同じ——会話の根っこがすれ違いやすく、夜の温度を合わせるのが難しい組み合わせ。`, type:'drift'};
+    const sameCount = [sameNuma,sameSM,sameAi,sameGT].filter(Boolean).length;
+    if(sameCount===3) return {hearts:4, label:'深く響き合う', txt:`軸の3つが一致していて、根っこの価値観は近い相性。${at.name}と${bt.name}は、自然と長く付き合える組み合わせです。`, type:'resonate'};
+    if(sameCount===2) return {hearts:3, label:'穏やかな距離感', txt:`半分は似ていて、半分は違う。安心と刺激のバランスが取れた、落ち着いた相性です。`, type:'neutral'};
+    if(sameCount===1) return {hearts:2, label:'刺激的な関係', txt:`1軸だけ重なる、温度差のある相性。違いを楽しめば視野が広がる組み合わせ。`, type:'friction'};
+    return {hearts:2, label:'対照的な二人', txt:`4軸すべてが違う相性。お互いの夜は完全に別の言語を話しているようなもの。違いを面白がれるかが鍵。`, type:'opposite'};
+  }
+
+  function renderResult(){
+    const card = document.getElementById('resultCard');
+    if(!picks[0] || !picks[1]){ card.classList.remove('show'); return; }
+    const a = picks[0], b = picks[1];
+    const r = compatScore(a, b);
+    const at = types[a], bt = types[b];
+    document.getElementById('rp1Img').src = at.image || `images/${a}.png`;
+    document.getElementById('rp2Img').src = bt.image || `images/${b}.png`;
+    document.getElementById('rp1Name').textContent = at.name;
+    document.getElementById('rp2Name').textContent = bt.name;
+    document.getElementById('resHearts').textContent = '★'.repeat(r.hearts) + '☆'.repeat(5-r.hearts);
+    document.getElementById('resLabel').textContent = r.label;
+    document.getElementById('resComment').textContent = r.txt;
+    card.classList.remove('show'); void card.offsetWidth;
+    requestAnimationFrame(()=>card.classList.add('show'));
+  }
+
+  // ── Events ──
+  roster.addEventListener('click', e=>{
+    const cell = e.target.closest('.roster-cell');
+    if(!cell) return;
+    pickCode(cell.dataset.code);
+  });
+  document.getElementById('slot1').addEventListener('click', e=>{
+    if(e.target.closest('.slot-fill-clear')){ clearSide(0); return; }
+    target = 0; setTargetIndicator();
+  });
+  document.getElementById('slot2').addEventListener('click', e=>{
+    if(e.target.closest('.slot-fill-clear')){ clearSide(1); return; }
+    target = 1; setTargetIndicator();
+  });
+  document.getElementById('btnRandom').addEventListener('click', randomPick);
+  document.getElementById('btnClear').addEventListener('click', clearAll);
+
+  updateAll();
+</script>
+</body>
+</html>
