@@ -619,26 +619,10 @@
 
   // ── Compatibility scoring ──
 function compatScore(a, b){
-    const at = types[a], bt = types[b];
-    if(!at || !bt || !at.axisCode || !bt.axisCode) return null;
-    const ax = at.axisCode.split('-');  // [N/S, S/M, A/Y, G/T]
-    const bx = bt.axisCode.split('-');
-    const sameNuma = ax[0]===bx[0];
-    const sameSM   = ax[1]===bx[1];
-    const sameAi   = ax[2]===bx[2];
-    const sameGT   = ax[3]===bx[3];
-    // GOOD: numa同 / SM違 / 愛欲同 / GT違
-    const isGood = sameNuma && !sameSM && sameAi && !sameGT;
-    // BAD : numa違 / SM同 / 愛欲違 / GT同
-    const isBad  = !sameNuma && sameSM && !sameAi && sameGT;
-    if(isGood) return {hearts:5, label:'運命の二人', txt:`同じ感情の深さ・愛の質感を持ちながら、主導権と燃える瞬間は対照的——その絶妙な噛み合わせが、互いの欠けている部分を埋め合う、最高の相性です。`, type:'twin'};
-    if(isBad)  return {hearts:1, label:'すれ違いがち', txt:`感情の深さも愛の動機も真逆なのに、主導権の取り方とイく瞬間だけ同じ——会話の根っこがすれ違いやすく、夜の温度を合わせるのが難しい組み合わせ。`, type:'drift'};
-    const sameCount = [sameNuma,sameSM,sameAi,sameGT].filter(Boolean).length;
-    if(sameCount===3) return {hearts:4, label:'深く響き合う', txt:`軸の3つが一致していて、根っこの価値観は近い相性。${at.name}と${bt.name}は、自然と長く付き合える組み合わせです。`, type:'resonate'};
-    if(sameCount===2) return {hearts:3, label:'穏やかな距離感', txt:`半分は似ていて、半分は違う。安心と刺激のバランスが取れた、落ち着いた相性です。`, type:'neutral'};
-    if(sameCount===1) return {hearts:2, label:'刺激的な関係', txt:`1軸だけ重なる、温度差のある相性。違いを楽しめば視野が広がる組み合わせ。`, type:'friction'};
-    if(sameCount===4) return {hearts:3, label:'似た者同士', txt:`感情の深さも愛の動機も似ているのに、主導権の取り方とイく瞬間まで同じ——居心地はいいけれど、夜の主導権を奪い合うか、お互い受け身になりすぎるか、刺激は少なめ。`, type:'mirror'};
-    return {hearts:2, label:'対照的な二人', txt:`4軸すべてが違う相性。お互いの夜は完全に別の言語を話しているようなもの。違いを面白がれるかが鍵。`, type:'opposite'};
+    const tier = getCompatTier(a, b);
+    if(!tier) return null;
+    const c = TIER_COPY[tier];
+    return {hearts: tier, label: c.label, txt: c.comment, summary: c.summary, taunt: c.taunt, type: 'tier-'+tier};
   }
 
   function renderResult(){
@@ -652,6 +636,18 @@ function compatScore(a, b){
     document.getElementById('rp1Name').textContent = at.name;
     document.getElementById('rp2Name').textContent = bt.name;
     document.getElementById('resHearts').textContent = '★'.repeat(r.hearts) + '☆'.repeat(5-r.hearts);
+    // Also show summary if it exists
+    if(r.summary){
+      let sumEl = document.querySelector('.res-summary');
+      const labelEl = document.getElementById('resLabel');
+      if(!sumEl && labelEl){
+        sumEl = document.createElement('div');
+        sumEl.className = 'res-summary';
+        sumEl.style.cssText = 'font-family:"Noto Sans JP",sans-serif;font-size:14px;color:#fff;margin:6px 0 12px;text-wrap:balance';
+        labelEl.parentNode.insertBefore(sumEl, labelEl.nextSibling);
+      }
+      if(sumEl) sumEl.textContent = '「' + r.summary + '」';
+    }
     document.getElementById('resLabel').textContent = r.label;
     document.getElementById('resComment').textContent = r.txt;
     card.classList.remove('show'); void card.offsetWidth;

@@ -585,6 +585,17 @@
     font-size:14px; font-weight:700;
     color:var(--pink);
   }
+  .inv-summary{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:13px; color:var(--ink);
+    margin:8px 0 0; font-weight:500;
+    text-wrap:balance;
+  }
+  .inv-share-muted{
+    opacity:.55; background:transparent !important;
+    border-color:var(--line) !important; color:var(--ink-mute) !important;
+  }
+  .inv-share-muted::before{ display:none !important; }
   .inv-comment{
     font-size:13.5px; line-height:1.85;
     color:var(--ink-mute);
@@ -994,10 +1005,37 @@
       </a>
     `;
   }
-  document.getElementById('goodList').innerHTML = (t.good || []).map(compatItem).join('');
+  // ── Section 03 · 響き合う相手 / すれ違う相手 (top 2 by tier) ──
+  (function renderCompat03(){
+    const others = Object.keys(types).filter(c=>c!==code && types[c].axisCode);
+    const scored = others.map(c=>({code:c, tier:getCompatTier(code,c)})).filter(x=>x.tier);
+    scored.sort((a,b)=>b.tier-a.tier);
+    const top = scored.slice(0,2);
+    const bottom = scored.slice(-2).reverse();
+    const renderItem = ({code:c, tier})=>{
+      const tt = types[c]; if(!tt) return '';
+      const info = TIER_COPY[tier];
+      return `<a class="compat-item" href="type/${c}.html"><img src="${tt.image || 'images/'+c+'.png'}" alt=""><div class="compat-item-body"><div class="compat-item-code">${c} · ${info.label}</div><div class="compat-item-name">${tt.name}</div></div></a>`;
+    };
+    document.getElementById('goodList').innerHTML = top.map(renderItem).join('');
+    document.getElementById('badList').innerHTML  = bottom.map(renderItem).join('');
+    // Reasons: use tier comment of each pair
+    if(top[0]){
+      const info = TIER_COPY[top[0].tier];
+      document.getElementById('goodReason').textContent = info.comment;
+    }
+    if(bottom[0]){
+      const info = TIER_COPY[bottom[0].tier];
+      document.getElementById('badReason').textContent = info.comment;
+    }
+  })();
+  // legacy stub (so deletion below doesn't break)
+  if(false) {
+    document.getElementById('goodList').innerHTML = (t.good || []).map(compatItem).join('');
   document.getElementById('badList').innerHTML  = (t.bad  || []).map(compatItem).join('');
   document.getElementById('goodReason').textContent = t.goodReason || '';
   document.getElementById('badReason').textContent  = t.badReason  || '';
+  }
 
   // ── Friend grid ──
   const friendGrid = document.getElementById('friendGrid');
@@ -1013,6 +1051,68 @@
     tile.addEventListener('click', ()=>compareWith(c, tile));
     friendGrid.appendChild(tile);
   });
+
+  // === 5-tier compatibility copy (specific scene-based, no abstract metaphors) ===
+  const TIER_COPY = {
+    5: {
+      label: '夜の双子',
+      summary: '初対面で朝5時まで気まずさゼロ',
+      comment: '笑うタイミング、酔うタイミング、帰りたくなるタイミングまで全部一致。会って3時間でベスフレ確定の相性。',
+      taunt: 'これマジで運命'
+    },
+    4: {
+      label: '波長一致',
+      summary: '気づいたら終電なくなってるタイプ',
+      comment: '2軒目以降のテンションが揃う。酔い方の方向性が同じで、朝まで語れる。',
+      taunt: 'これ運命では?'
+    },
+    3: {
+      label: '並ぶ夜',
+      summary: '酒は飲めるけど話は深まらない',
+      comment: '黙って隣で飲める関係。盛り上がりはしないけど、別に嫌でもない。普通の飲み友ポジション。',
+      taunt: ''
+    },
+    2: {
+      label: '微妙なすれ違い',
+      summary: '終電の使い方で価値観バトル',
+      comment: 'あなたが二件目行きたい時、相手はタクシー呼んでる。夜の終わり方が合わない人。',
+      taunt: 'これ意外と当たってて泣いた'
+    },
+    1: {
+      label: '天敵レベル',
+      summary: '居酒屋の2時間がまるで永遠',
+      comment: 'あなたが乾杯したい瞬間、相手はもう帰りたい。テンションのタイミングが完全に真逆。気まずい沈黙のオンパレード。',
+      taunt: 'これ友達と試したら絶望した'
+    }
+  };
+  // Map (a, b) axisCode patterns → tier number 1-5
+  function getCompatTier(a, b){
+    if(!a || !b) return null;
+    const at = types[a], bt = types[b];
+    if(!at || !bt || !at.axisCode || !bt.axisCode) return null;
+    const ax = at.axisCode.split('-'), bx = bt.axisCode.split('-');
+    const sN = ax[0]===bx[0], sS = ax[1]===bx[1], sA = ax[2]===bx[2], sG = ax[3]===bx[3];
+    // Specific patterns first
+    if(sN && !sS && sA && !sG) return 5;  // GOOD pattern
+    if(!sN && sS && !sA && sG) return 1;  // BAD pattern
+    const cnt = [sN,sS,sA,sG].filter(Boolean).length;
+    if(cnt===3) return 4;
+    if(cnt===2 || cnt===4) return 3;
+    return 2;  // cnt===0 or cnt===1
+  }
+  function getCompatInfo(a, b){
+    const tier = getCompatTier(a, b);
+    if(!tier) return null;
+    const c = TIER_COPY[tier];
+    return {
+      tier,
+      hearts: '★'.repeat(tier) + '☆'.repeat(5-tier),
+      label: c.label,
+      summary: c.summary,
+      comment: c.comment,
+      taunt: c.taunt
+    };
+  }
 
   // ── Axis-based compatibility (algorithmic) ──
   // 相性◎: 沼塩=同じ / SM=違う / 愛欲=同じ / GiveTake=違う
@@ -1046,31 +1146,15 @@
 
   // ── Compatibility scoring (simple rule) ──
   function compatScore(a,b){
-    function makeStars(n){ return '★'.repeat(n) + '☆'.repeat(5-n); }
-    // same-char (a===b) falls through to sameCount===4 branch below
-    const at = types[a], bt = types[b];
-    if(!at || !bt) return null;
-    if(!at.axisCode || !bt.axisCode) return null;
-    const ax = at.axisCode.split('-');
-    const bx = bt.axisCode.split('-');
-    // Compare each axis
-    const sameNuma = ax[0]===bx[0];
-    const sameSM   = ax[1]===bx[1];
-    const sameAi   = ax[2]===bx[2];
-    const sameGT   = ax[3]===bx[3];
-    // GOOD pattern: numa=same, sm=diff, ai=same, gt=diff
-    const isGood = sameNuma && !sameSM && sameAi && !sameGT;
-    // BAD pattern:  numa=diff, sm=same, ai=diff, gt=same
-    const isBad  = !sameNuma && sameSM && !sameAi && sameGT;
-    if(isGood) return {hearts:makeStars(5), label:'運命の二人', txt:`同じ感情の深さ・愛の質感を持ちながら、主導権と燃える瞬間は対照的——その絶妙な噛み合わせが、互いの欠けている部分を埋めて補い合う、最高の相性です。`};
-    if(isBad)  return {hearts:makeStars(1), label:'すれ違いがち', txt:`感情の深さも愛の動機も真逆なのに、主導権の取り方とイく瞬間だけ同じ——会話の根っこがすれ違いやすく、夜の温度を合わせるのが難しい組み合わせ。`};
-    // Count axis matches for intermediate scores
-    const sameCount = [sameNuma,sameSM,sameAi,sameGT].filter(Boolean).length;
-    if(sameCount===4) return {hearts:makeStars(3), label:'似た者同士', txt:`感情の深さも愛の動機も似ているのに、主導権の取り方とイく瞬間まで同じ——居心地はいいけれど、刺激は少なめ。`};
-    if(sameCount===3) return {hearts:makeStars(4), label:'深く響き合う', txt:`軸の3つが一致していて、根っこの価値観は近い相性。${at.name}と${bt.name}は、自然と長く付き合える組み合わせです。`};
-    if(sameCount===2) return {hearts:makeStars(3), label:'穏やかな距離感', txt:`半分は似ていて、半分は違う。安心と刺激のバランスが取れた、落ち着いた相性です。`};
-    if(sameCount===1) return {hearts:makeStars(2), label:'刺激的な関係', txt:`1軸だけ重なる、温度差のある相性。違いを楽しめば視野が広がる組み合わせ。`};
-    return {hearts:makeStars(2), label:'スレ違いがち', txt:`4軸すべてが違う相性。お互いの夜は完全に別の言語を話しているようなもの。`};
+    const info = getCompatInfo(a, b);
+    if(!info) return null;
+    return {
+      hearts: info.hearts,
+      label: info.label,
+      txt: info.comment,
+      summary: info.summary,
+      tier: info.tier
+    };
   }
 
   function compareWith(c, tile){
@@ -1146,6 +1230,14 @@
     document.getElementById('invFromShort').textContent = `${fromT.name} (${fromCode})`;
     document.getElementById('invHearts').textContent = r.hearts;
     document.getElementById('invLabel').textContent = r.label;
+    // Update title to include summary
+    const sumEl = block.querySelector('.inv-summary');
+    if(!sumEl && r.summary){
+      const sumNode = document.createElement('p');
+      sumNode.className = 'inv-summary';
+      sumNode.textContent = '「' + r.summary + '」';
+      block.querySelector('.inv-score').appendChild(sumNode);
+    }
     // Comment: take first sentence (up to first 。or first 80 chars)
     let txt = r.txt || '';
     const firstSentence = txt.split(/(。|——)/)[0] + (txt.includes('。') ? '。' : '');
@@ -1169,6 +1261,18 @@
         window.scrollTo({top: offsetTop, behavior: 'smooth'});
       }
     });
+    // Tier 3: tone down (no taunt), tier 1-2 and 4-5: prominent
+    if(r.tier === 3){
+      document.getElementById('invShareBtn').classList.add('inv-share-muted');
+    }
+    // If invite has a taunt, prefix the share text with it
+    if(r.taunt){
+      // Override share text used by X/LINE buttons
+      const newTaunt = r.taunt;
+      const shareTextTaunt = newTaunt + '\n私のナイトタイプは「' + t.name + '」、相手は「' + fromT.name + '」(' + fromCode + ')。\nあなたのナイトタイプは？';
+      document.getElementById('btnX').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTextTaunt)}&url=${encodeURIComponent(shareUrl)}`;
+      document.getElementById('btnLine').href = `https://line.me/R/msg/text/?${encodeURIComponent(shareTextTaunt + '\n' + shareUrl)}`;
+    }
 
     // Analytics hook
     window.dispatchEvent(new CustomEvent('invited_arrival', {detail:{from:fromCode, me:code, label:r.label}}));

@@ -644,18 +644,28 @@
       return `<div class="mr-cell" data-code="${c}"><img src="${imgSrc}" alt="${tt.name}" onerror="this.style.display='none'"><div class="mr-cell-code">${c}</div></div>`;
     }).join('');
     function axisCompare(myCode, other){
+      const TIER_COPY = {
+        5: {label:'夜の双子',summary:'初対面で朝5時まで気まずさゼロ',txt:'笑うタイミング、酔うタイミング、帰りたくなるタイミングまで全部一致。会って3時間でベスフレ確定の相性。'},
+        4: {label:'波長一致',summary:'気づいたら終電なくなってるタイプ',txt:'2軒目以降のテンションが揃う。酔い方の方向性が同じで、朝まで語れる。'},
+        3: {label:'並ぶ夜',summary:'酒は飲めるけど話は深まらない',txt:'黙って隣で飲める関係。盛り上がりはしないけど、別に嫌でもない。普通の飲み友ポジション。'},
+        2: {label:'微妙なすれ違い',summary:'終電の使い方で価値観バトル',txt:'あなたが二件目行きたい時、相手はタクシー呼んでる。夜の終わり方が合わない人。'},
+        1: {label:'天敵レベル',summary:'居酒屋の2時間がまるで永遠',txt:'あなたが乾杯したい瞬間、相手はもう帰りたい。テンションのタイミングが完全に真逆。気まずい沈黙のオンパレード。'}
+      };
       const me = types[myCode], you = types[other];
       if(!me || !you || !me.axisCode || !you.axisCode) return null;
-      
       const a = me.axisCode.split('-'), b = you.axisCode.split('-');
       const sN = a[0]===b[0], sS = a[1]===b[1], sA = a[2]===b[2], sG = a[3]===b[3];
-      if(sN && !sS && sA && !sG) return {hearts:5, label:'運命の二人', txt:`同じ感情の深さ・愛の質感を持ちながら、主導権と燃える瞬間は対照的——${me.name}と${you.name}は互いの欠けている部分を埋め合う、最高の相性です。`};
-      if(!sN && sS && !sA && sG) return {hearts:1, label:'すれ違いがち', txt:`感情の深さも愛の動機も真逆なのに、主導権の取り方とイく瞬間だけ同じ——会話の根っこがすれ違いやすい組み合わせ。`};
-      const cnt = [sN,sS,sA,sG].filter(Boolean).length;
-      if(cnt===3) return {hearts:4, label:'深く響き合う', txt:`軸の3つが一致していて、根っこの価値観は近い相性。自然と長く付き合える組み合わせです。`};
-      if(cnt===2) return {hearts:3, label:'穏やかな距離感', txt:`半分は似ていて、半分は違う。安心と刺激のバランスが取れた、落ち着いた相性です。`};
-      if(cnt===1) return {hearts:2, label:'刺激的な関係', txt:`1軸だけ重なる、温度差のある相性。違いを楽しめば視野が広がる組み合わせ。`};
-      return {hearts:2, label:'対照的な二人', txt:`4軸すべてが違う相性。お互いの夜は完全に別の言語を話しているようなもの。`};
+      let tier;
+      if(sN && !sS && sA && !sG) tier = 5;
+      else if(!sN && sS && !sA && sG) tier = 1;
+      else{
+        const cnt = [sN,sS,sA,sG].filter(Boolean).length;
+        if(cnt===3) tier = 4;
+        else if(cnt===2 || cnt===4) tier = 3;
+        else tier = 2;
+      }
+      const tc = TIER_COPY[tier];
+      return {hearts: tier, label: tc.label, txt: tc.txt, summary: tc.summary};
     }
     grid.querySelectorAll('.mr-cell').forEach(el=>{
       el.addEventListener('click', ()=>{
@@ -672,6 +682,10 @@
         document.getElementById('mr1Name').textContent = me.name;
         document.getElementById('mr2Name').textContent = you.name;
         document.getElementById('mrHearts').textContent = '★'.repeat(r.hearts) + '☆'.repeat(5-r.hearts);
+        // Show summary
+        let sumEl = document.querySelector('.mr-summary');
+        if(!sumEl){ sumEl = document.createElement('div'); sumEl.className='mr-summary'; sumEl.style.cssText='font-family:Noto Sans JP,sans-serif;font-size:13px;color:#fff;margin:4px 0 10px;text-wrap:balance;text-align:center'; document.getElementById('mrLabel').parentNode.insertBefore(sumEl, document.getElementById('mrLabel').nextSibling); }
+        sumEl.textContent = '「' + (r.summary || '') + '」';
         document.getElementById('mrLabel').textContent = r.label;
         document.getElementById('mrComment').textContent = r.txt;
         document.getElementById('mirrorResult').classList.add('show');
