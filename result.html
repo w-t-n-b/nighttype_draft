@@ -1305,18 +1305,20 @@
     const scores = JSON.parse(localStorage.getItem('nightTypeScores') || 'null');
     if(!scores) { document.getElementById('axisGauges').style.display='none'; return; }
     const MAX = 24; // max score per axis: val(±3) × weight, sum: 3*2*3 + 3*1*2 = 24
+    // LIKE side (♥, positive score) is on the LEFT — matches quiz button layout
     const axes = [
-      { key:'numa', left:'塩',   right:'沼'   },
-      { key:'sm',   left:'M',    right:'S'    },
-      { key:'ai',   left:'欲',   right:'愛'   },
-      { key:'gt',   left:'Take', right:'Give' }
+      { key:'numa', left:'沼',   right:'塩'   },
+      { key:'sm',   left:'S',    right:'M'    },
+      { key:'ai',   left:'愛',   right:'欲'   },
+      { key:'gt',   left:'Give', right:'Take' }
     ];
     const list = document.getElementById('axisGaugeList');
     list.innerHTML = axes.map(a => {
       const s = Math.max(-MAX, Math.min(MAX, scores[a.key] || 0));
-      const pct = Math.abs(s) / MAX * 50;       // 0〜50%
-      const isRight = s > 0;
-      const isLeft  = s < 0;
+      const pct = Math.abs(s) / MAX * 50;
+      // Positive score → fill LEFT (toward like side); negative → fill RIGHT (toward nope side)
+      const isLeft  = s > 0;
+      const isRight = s < 0;
       const sign = s>0 ? '+' : (s<0 ? '−' : '±');
       const fillClass = isRight ? 'right' : (isLeft ? 'left' : '');
       return `
