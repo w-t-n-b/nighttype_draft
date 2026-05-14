@@ -862,14 +862,6 @@
   }
   .share-save-link:hover{ color:var(--ink); }
 
-  .share-btn:hover{
-    transform:translateY(-2px);
-    border-color:rgba(155,124,248,.5);
-    box-shadow:0 12px 32px rgba(155,124,248,.15);
-  }
-  .share-btn svg{
-    width:14px; height:14px; fill:currentColor;
-  }
   .share-btn.copy.copied{
     border-color:var(--cyan); color:var(--cyan);
   }
@@ -920,7 +912,16 @@
     .section-title{ font-size:24px; }
     .char-orbit{ width:240px; height:240px }
     .char-frame{ width:220px; height:220px; }
-
+    /* Ensure share buttons stay visible on mobile */
+    .share-strip{ padding:0 6px; }
+    .share-row{ gap:6px !important; }
+    .share-btn{
+      min-height:64px;
+      padding:10px 4px !important;
+      gap:5px !important;
+    }
+    .share-btn svg{ width:18px !important; height:18px !important; }
+    .share-btn-label{ font-size:9.5px !important; }
   }
 </style>
 </head>
