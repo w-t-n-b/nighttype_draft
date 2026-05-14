@@ -475,28 +475,72 @@
     .meter-count{font-size:28px}
   }
 
-  /* Invite banner — shown when ?from= is set */
+  /* Invite banner (招待元 × ? のペア表示) */
   .invite-banner{
-    margin:0 auto 18px; max-width:560px;
-    padding:14px 20px;
-    border-radius:14px;
-    background:linear-gradient(135deg, rgba(244,114,182,.18), rgba(155,124,248,.12));
+    margin:0 auto 20px; max-width:560px;
+    padding:18px 22px;
+    border-radius:18px;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(244,114,182,.18), transparent 60%),
+      radial-gradient(circle at 80% 50%, rgba(34,211,238,.14), transparent 60%),
+      linear-gradient(135deg, rgba(60,30,80,.45), rgba(8,6,22,.5));
     border:1px solid rgba(244,114,182,.35);
     text-align:center;
   }
+  .ib-pair{
+    display:flex; align-items:center; justify-content:center;
+    gap:14px; margin-bottom:12px; flex-wrap:nowrap;
+  }
+  .ib-side{ flex:0 0 auto; }
+  .ib-char-wrap{
+    width:72px; height:72px;
+    display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at 50% 60%, rgba(124,58,237,.2) 0%, rgba(0,0,0,0) 70%);
+    border-radius:16px;
+  }
+  .ib-char-img{
+    width:100%; height:100%; object-fit:contain;
+    filter:drop-shadow(0 6px 16px rgba(155,124,248,.5));
+  }
+  .ib-char-unknown{
+    background:radial-gradient(ellipse at 50% 60%, rgba(34,211,238,.16) 0%, rgba(0,0,0,0) 70%);
+    border:1.5px dashed rgba(34,211,238,.4);
+  }
+  .ib-q-mark{
+    font-family:"Cormorant Garamond",serif;
+    font-size:42px; font-style:italic; font-weight:500;
+    background:linear-gradient(135deg,rgba(34,211,238,.95),rgba(155,124,248,.85));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    line-height:1;
+  }
+  .ib-cross{
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+    font-size:24px;
+    background:linear-gradient(135deg,var(--violet),var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    flex-shrink:0;
+  }
   .invite-banner .ib-text{
     font-family:"Noto Sans JP",sans-serif;
-    font-size:13.5px; color:#fff;
-    line-height:1.6;
+    font-size:15px; color:#fff; font-weight:600;
+    line-height:1.5; text-wrap:balance;
   }
   .invite-banner .ib-from-name{
     color:var(--pink); font-weight:700;
   }
   .invite-banner .ib-sub{
     display:block;
-    font-size:11px; color:var(--ink-mute);
-    letter-spacing:.06em;
-    margin-top:2px;
+    font-size:12px; color:var(--ink-mute);
+    font-weight:400;
+    letter-spacing:.04em;
+    margin-top:6px;
+  }
+  @media (max-width:480px){
+    .invite-banner{ padding:14px 16px; margin:0 12px 16px; }
+    .ib-char-wrap{ width:58px; height:58px; }
+    .ib-q-mark{ font-size:34px; }
+    .ib-cross{ font-size:20px; }
+    .invite-banner .ib-text{ font-size:12.5px; }
   }
 
 </style>
@@ -527,9 +571,22 @@
 <!-- Quiz body -->
 <div class="quiz-wrap">
   <div class="invite-banner" id="inviteBanner" style="display:none">
+    <div class="ib-pair">
+      <div class="ib-side ib-side-them">
+        <div class="ib-char-wrap">
+          <img class="ib-char-img" id="ibFromImg" src="" alt="">
+        </div>
+      </div>
+      <div class="ib-cross">×</div>
+      <div class="ib-side ib-side-you">
+        <div class="ib-char-wrap ib-char-unknown">
+          <span class="ib-q-mark">?</span>
+        </div>
+      </div>
+    </div>
     <div class="ib-text">
-      <span class="ib-from-name" id="ibFromName">—</span>から招待されました
-      <span class="ib-sub">診断後に相性が表示されます</span>
+      <span class="ib-from-name" id="ibFromName">—</span>との相性は？
+      <span class="ib-sub">まずはあなたのナイトタイプから</span>
     </div>
   </div>
   <div class="meter-row">
@@ -958,7 +1015,7 @@
     if(typeof gtag === 'function'){ try{ gtag('event', 'quiz_started', {from: fromParam}); }catch(_){} }
   })();
 
-  // Show invite banner if ?from= is present
+  // Show invite banner if ?from= is present (pair display)
   (function showInviteBanner(){
     const params = new URLSearchParams(location.search);
     const fromCode = params.get('from');
@@ -968,6 +1025,11 @@
     const banner = document.getElementById('inviteBanner');
     if(!banner) return;
     document.getElementById('ibFromName').textContent = fromT.name + '(' + fromCode + ')';
+    const img = document.getElementById('ibFromImg');
+    if(img){
+      img.src = fromT.image || ('images/' + fromCode + '.png');
+      img.alt = fromT.name;
+    }
     banner.style.display = 'block';
   })();
 </script>
