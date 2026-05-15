@@ -388,11 +388,11 @@
     .vs-mark{font-size:24px}
 
     /* slot filled compact */
-    .slot-fill{flex-direction:row !important; gap:8px; padding:8px !important; align-items:center}
-    .slot-fill img{width:36px !important; height:36px !important; border-radius:10px}
+    .slot-fill{flex-direction:row !important; gap:10px; padding:10px !important; align-items:center}
+    .slot-fill img{width:64px !important; height:64px !important; border-radius:14px; object-fit:contain !important; background:radial-gradient(ellipse at 50% 65%, rgba(124,58,237,.22) 0%, rgba(0,0,0,.4) 70%)}
     .slot-fill-info{text-align:left !important; flex:1; min-width:0}
     .slot-fill-code{font-size:8px !important; letter-spacing:.18em; margin-bottom:1px !important}
-    .slot-fill-name{font-size:11px !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.15 !important}
+    .slot-fill-name{font-size:12px !important; line-height:1.3 !important; white-space:normal !important; overflow:visible !important; text-overflow:clip !important}
     .slot-fill-clear{top:4px !important; right:4px !important; width:18px !important; height:18px !important; font-size:13px !important}
 
     /* roster compact 4x4 */
@@ -618,6 +618,27 @@
   }
 
   // ── Compatibility scoring ──
+  // === 5-tier compatibility copy ===
+  const TIER_COPY = {
+    5: {label:'夜の双子',summary:'初対面で朝5時まで気まずさゼロ',comment:'笑うタイミング、酔うタイミング、帰りたくなるタイミングまで全部一致。会って3時間でベスフレ確定の相性。',taunt:'これマジで運命'},
+    4: {label:'波長一致',summary:'気づいたら終電なくなってるタイプ',comment:'2軒目以降のテンションが揃う。酔い方の方向性が同じで、朝まで語れる。',taunt:'これ運命では?'},
+    3: {label:'並ぶ夜',summary:'酒は飲めるけど話は深まらない',comment:'黙って隣で飲める関係。盛り上がりはしないけど、別に嫌でもない。普通の飲み友ポジション。',taunt:''},
+    2: {label:'微妙なすれ違い',summary:'終電の使い方で価値観バトル',comment:'あなたが二件目行きたい時、相手はタクシー呼んでる。夜の終わり方が合わない人。',taunt:'これ意外と当たってて泣いた'},
+    1: {label:'天敵レベル',summary:'居酒屋の2時間がまるで永遠',comment:'あなたが乾杯したい瞬間、相手はもう帰りたい。テンションのタイミングが完全に真逆。気まずい沈黙のオンパレード。',taunt:'これ友達と試したら絶望した'}
+  };
+  function getCompatTier(a,b){
+    if(!a||!b) return null;
+    const at=types[a],bt=types[b]; if(!at||!bt||!at.axisCode||!bt.axisCode) return null;
+    const ax=at.axisCode.split('-'),bx=bt.axisCode.split('-');
+    const sN=ax[0]===bx[0],sS=ax[1]===bx[1],sA=ax[2]===bx[2],sG=ax[3]===bx[3];
+    if(sN&&!sS&&sA&&!sG) return 5;
+    if(!sN&&sS&&!sA&&sG) return 1;
+    const cnt=[sN,sS,sA,sG].filter(Boolean).length;
+    if(cnt===3) return 4;
+    if(cnt===2||cnt===4) return 3;
+    return 2;
+  }
+
 function compatScore(a, b){
     const tier = getCompatTier(a, b);
     if(!tier) return null;
