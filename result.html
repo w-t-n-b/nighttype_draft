@@ -837,23 +837,30 @@
     margin-bottom:10px; justify-content:center;
   }
   .share-btn{
-    flex:1 1 0; min-width:0;
-    display:inline-flex; align-items:center; justify-content:center; gap:6px;
-    padding:12px 8px; border-radius:14px;
+    flex:1 1 0;
+    min-width:0; min-height:74px;
+    display:flex !important;
     flex-direction:column;
-    font-family:"Noto Sans JP",sans-serif; font-size:10px;
-    letter-spacing:.05em;
+    align-items:center; justify-content:center;
+    gap:6px;
+    padding:14px 6px; border-radius:14px;
+    font-family:"Noto Sans JP",sans-serif; font-size:10.5px;
+    font-weight:600; letter-spacing:.05em;
     cursor:pointer; transition:all .25s;
     border:1px solid var(--line);
-    background:rgba(255,255,255,.02);
-    color:var(--ink); text-decoration:none;
+    background:rgba(255,255,255,.04);
+    color:#fff; text-decoration:none;
   }
-  .share-btn-label{ display:block; font-size:10px; font-weight:600; }
-  .share-btn svg{ width:18px; height:18px; }
-  .share-btn.copy:hover{ border-color:rgba(34,211,238,.6); color:var(--cyan); }
-  .share-btn.x:hover{ border-color:rgba(255,255,255,.6); }
-  .share-btn.line:hover{ border-color:#06c755; color:#06c755; }
-  .share-btn.ig:hover{ border-color:#e1306c; color:#e1306c; }
+  .share-btn-label{ display:block !important; font-size:10.5px; font-weight:600; }
+  .share-btn svg{ width:22px !important; height:22px !important; fill:currentColor; flex-shrink:0; }
+  .share-btn.copy{ color:#22d3ee; border-color:rgba(34,211,238,.35); background:rgba(34,211,238,.06); }
+  .share-btn.copy:hover{ border-color:rgba(34,211,238,.7); background:rgba(34,211,238,.12); }
+  .share-btn.x{ color:#fff; border-color:rgba(255,255,255,.2); }
+  .share-btn.x:hover{ border-color:rgba(255,255,255,.5); }
+  .share-btn.line{ color:#06c755; border-color:rgba(6,199,85,.4); background:rgba(6,199,85,.06); }
+  .share-btn.line:hover{ border-color:rgba(6,199,85,.8); background:rgba(6,199,85,.12); }
+  .share-btn.ig{ color:#e1306c; border-color:rgba(225,48,108,.4); background:rgba(225,48,108,.06); }
+  .share-btn.ig:hover{ border-color:rgba(225,48,108,.8); background:rgba(225,48,108,.12); }
   .share-save-link{
     display:inline-block;
     background:transparent; border:none;
@@ -914,15 +921,15 @@
     .section-title{ font-size:24px; }
     .char-orbit{ width:240px; height:240px }
     .char-frame{ width:220px; height:220px; }
-    /* Ensure share buttons stay visible on mobile */
-    .share-strip{ padding:0 6px; }
-    .share-row{ gap:6px !important; }
+    /* Mobile share buttons: 4 columns, each compact but visible */
+    .share-strip{ padding:0 4px; }
+    .share-row{ gap:6px !important; flex-wrap:nowrap !important; }
     .share-btn{
-      min-height:64px;
-      padding:10px 4px !important;
-      gap:5px !important;
+      min-height:70px;
+      padding:10px 2px !important;
+      gap:4px !important;
     }
-    .share-btn svg{ width:18px !important; height:18px !important; }
+    .share-btn svg{ width:20px !important; height:20px !important; }
     .share-btn-label{ font-size:9.5px !important; }
   }
 </style>
