@@ -460,12 +460,30 @@
   .cno:hover{ border-color:var(--ink-mute); color:var(--ink); }
 
   @media (max-width:480px){
-    .quiz-wrap{padding-top:72px}
-    .qcard-body{padding:26px 22px 22px}
-    .qcard-text{font-size:21px;min-height:100px;margin-bottom:22px}
+    /* Make the wrap scrollable instead of fixed-viewport to prevent overlap */
+    .quiz-wrap{
+      position:static; padding:80px 16px 80px;
+      max-width:100%;
+    }
+    body{ min-height:100vh; }
+    .card-stack{
+      align-items:flex-start;
+      padding-top:8px;
+      min-height:auto;
+    }
+    .qcard-body{padding:24px 18px 20px}
+    .qcard-text{font-size:20px;min-height:80px;margin-bottom:18px}
     .qcard-options{grid-template-columns:1fr}
-    .qopt{padding:14px 16px;font-size:13px}
+    .qopt{padding:12px 14px;font-size:13px}
     .qopt-text{font-size:14px;line-height:1.55}
+    /* Compact invite banner on mobile */
+    .invite-banner{ padding:12px 14px; margin:0 0 14px; }
+    .ib-char-wrap{ width:52px; height:52px; }
+    .ib-q-mark{ font-size:30px; }
+    .ib-cross{ font-size:18px; }
+    .ib-pair{ gap:10px; margin-bottom:8px; }
+    .invite-banner .ib-text{ font-size:13px; }
+    .invite-banner .ib-sub{ font-size:11px; margin-top:3px; }
     .scale-row{gap:6px}
     .s-l3,.s-n3{width:54px;height:54px}
     .s-l2,.s-n2{width:44px;height:44px}
