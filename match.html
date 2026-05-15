@@ -692,7 +692,32 @@ function compatScore(a, b){
   document.getElementById('btnRandom').addEventListener('click', randomPick);
   document.getElementById('btnClear').addEventListener('click', clearAll);
 
+  // ── URL params: ?a=B3&b=C4 → auto-pick both slots ──
+  (function autoPickFromQuery(){
+    try{
+      const p = new URLSearchParams(location.search);
+      const a = (p.get('a') || '').toUpperCase();
+      const b = (p.get('b') || '').toUpperCase();
+      if(order.indexOf(a) >= 0) picks[0] = a;
+      if(order.indexOf(b) >= 0) picks[1] = b;
+      if(picks[0] && picks[1]) target = 0;
+      else if(picks[0]) target = 1;
+      else if(picks[1]) target = 0;
+    }catch(_){}
+  })();
+
   updateAll();
+
+  // If both pre-picked, scroll the result card into view after layout settles
+  if(picks[0] && picks[1]){
+    setTimeout(()=>{
+      const rc = document.getElementById('resultCard');
+      if(rc){
+        const offsetTop = rc.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({top: offsetTop, behavior: 'smooth'});
+      }
+    }, 350);
+  }
 </script>
 </body>
 </html>

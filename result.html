@@ -1956,21 +1956,28 @@
 
     block.style.display = 'block';
 
-    // CTA: scroll to 相性 section (section 03)
+    // CTA: 詳しく見る → match.html (pair detail page with both characters pre-selected)
     document.getElementById('invDetailBtn').addEventListener('click', ()=>{
-      const sec = Array.from(document.querySelectorAll('.section-block')).find(el => el.textContent.includes('響き合う人'));
-      if(sec){
-        const offsetTop = sec.getBoundingClientRect().top + window.pageYOffset - 80;
-        window.scrollTo({top: offsetTop, behavior: 'smooth'});
-      }
+      window.dispatchEvent(new CustomEvent('invite_detail_clicked', {detail:{from:fromCode, me:code}}));
+      const detailUrl = location.origin + location.pathname.replace(/result\.html$/, 'match.html')
+                      + '?a=' + encodeURIComponent(code) + '&b=' + encodeURIComponent(fromCode);
+      window.location.href = detailUrl;
     });
-    // CTA: scroll to share buttons
-    document.getElementById('invShareBtn').addEventListener('click', ()=>{
-      const sr = document.querySelector('.share-row');
-      if(sr){
-        const offsetTop = sr.getBoundingClientRect().top + window.pageYOffset - 80;
-        window.scrollTo({top: offsetTop, behavior: 'smooth'});
+    // CTA: この相性をシェア → directly fire pair share (no scroll). Uses native share if available, else X intent.
+    document.getElementById('invShareBtn').addEventListener('click', async ()=>{
+      const shareText = buildShareText('pair', fromCode);
+      const shareLink = buildShareUrl('pair', fromCode);
+      window.dispatchEvent(new CustomEvent('share_clicked', {detail:{channel:'invite_pair', mode:'pair', from:code, to:fromCode}}));
+      // Prefer native share sheet on mobile
+      if(navigator.share){
+        try{
+          await navigator.share({text: shareText, url: shareLink});
+          return;
+        }catch(_){ /* fall through */ }
       }
+      // Fallback: open X intent in a new tab
+      const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLink)}`;
+      window.open(xUrl, '_blank', 'noopener');
     });
     // Tier 3: tone down (no taunt), tier 1-2 and 4-5: prominent
     if(r.tier === 3){
