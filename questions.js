@@ -56,8 +56,8 @@ const questions = [
   {
     id: 9, axis: "sm", weight: 2,
     text: "相手がいじめたいと言ってきたら？",
-    like: "それは譲れない。攻める側でいたい",
-    nope: "いいよ、むしろされ役がいい"
+    like: "いじめたい",
+    nope: "いじめられたい"
   },
   {
     id: 10, axis: "sm", weight: 1,
@@ -105,9 +105,9 @@ const questions = [
   },
   {
     id: 17, axis: "gt", weight: 2,
-    text: "相手が「もっとして」と言ったら？",
-    like: "燃える。もっとしてあげたい",
-    nope: "自分も気持ちよくなりたいから、お互い様"
+    text: "相手と性癖が合わなかったら？",
+    like: "相手の好みに合わせる",
+    nope: "自分の好みを譲らない"
   },
   {
     id: 18, axis: "gt", weight: 2,
