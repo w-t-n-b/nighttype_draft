@@ -55,9 +55,9 @@ const questions = [
   },
   {
     id: 9, axis: "sm", weight: 2,
-    text: "体を抑え込む/抑え込まれる、惹かれるのは？",
-    like: "抑え込みたい",
-    nope: "抑え込まれたい"
+    text: "相手がいじめたいと言ってきたら？",
+    like: "それは譲れない。攻める側でいたい",
+    nope: "いいよ、むしろされ役がいい"
   },
   {
     id: 10, axis: "sm", weight: 1,
