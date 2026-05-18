@@ -100,8 +100,8 @@ const questions = [
   {
     id: 16, axis: "gt", weight: 2,
     text: "相手がイった瞬間と、自分がイった瞬間、どっちが興奮する？",
-    like: "相手がイった瞬間。やった、って思う",
-    nope: "自分がイった瞬間。それが全て"
+    like: "相手がイった瞬間",
+    nope: "自分がイった瞬間"
   },
   {
     id: 17, axis: "gt", weight: 2,
