@@ -44,8 +44,8 @@ const questions = [
   {
     id: 7, axis: "sm", weight: 2,
     text: "噛む・引っ張る・髪を掴む、惹かれるのは？",
-    like: "与える側",
-    nope: "受ける側"
+    like: "する側",
+    nope: "される側"
   },
   {
     id: 8, axis: "sm", weight: 1,
