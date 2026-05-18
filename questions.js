@@ -55,7 +55,7 @@ const questions = [
   },
   {
     id: 9, axis: "sm", weight: 2,
-    text: "相手がいじめたいと言ってきたら？",
+    text: "いじめる側といじめられる側、どっち？",
     like: "いじめたい",
     nope: "いじめられたい"
   },
