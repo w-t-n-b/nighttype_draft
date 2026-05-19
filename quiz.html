@@ -721,12 +721,18 @@
   const axisScores = { numa:0, sm:0, ai:0, gt:0 };
   const tieBreakers = { numa:null, sm:null, ai:null, gt:null };
 
+  // スコアリング: 重み2はval×2、重み1は底上げ(強4,中3,弱2)
+  const W1_SCORE = {3:4, 2:3, 1:2, '-1':-2, '-2':-3, '-3':-4};
+  function calcScore(q, val){
+    if(q.weight === 2) return val * 2;
+    return W1_SCORE[val] || 0;
+  }
   function addAxisScore(q,val){
-    axisScores[q.axis] += val * q.weight;
+    axisScores[q.axis] += calcScore(q, val);
     if(q.weight === 2) tieBreakers[q.axis] = val>0?1:-1;
   }
   function undoAxisScore(q,val){
-    axisScores[q.axis] -= val * q.weight;
+    axisScores[q.axis] -= calcScore(q, val);
   }
   // (val is now passed directly: -2/-1/0/+1/+2 instead of sign ±1)
   function getFinalTypeCode(){
