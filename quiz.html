@@ -627,9 +627,6 @@
 
     <div class="qcard" id="qcard">
       <div class="qcard-body">
-        <div class="swipe-label like" id="lblLike"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><path d="M12 21s-9-5.5-9-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-9 11-9 11z"/></svg></div>
-        <div class="swipe-label nope" id="lblNope"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><path d="M12 3l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-.5z"/></svg></div>
-
         <div class="qcard-head">
           <div class="qcard-axis">
             <span class="axis-dot"></span>
@@ -653,7 +650,6 @@
         </div>
 
         <div class="qcard-foot">
-          <span>← swipe / tap →</span>
           <span class="qcard-remain"><span id="remain">20</span> remaining</span>
         </div>
       </div>
@@ -761,8 +757,6 @@
   const axisLbl = document.getElementById('axisLabel');
   const optLike = document.getElementById('optLike');
   const optNope = document.getElementById('optNope');
-  const lblLike = document.getElementById('lblLike');
-  const lblNope = document.getElementById('lblNope');
   const backBtn = document.getElementById('backBtn');
   const reveal  = document.getElementById('reveal');
   const revealBar=document.getElementById('revealBar');
@@ -884,7 +878,6 @@
       card.style.transition = '';
       card.style.transform  = '';
       card.style.opacity    = '';
-      lblLike.style.opacity = lblNope.style.opacity = 0;
       card.style.boxShadow  = '';
       cb();
     }, 420);
@@ -972,57 +965,7 @@
     }, 240);
   });
 
-  // ── Swipe ──
-  let sx=0,sy=0,drag=false,cx=0,tapT=0;
-  const T1=60,T2=120,TAP_MAX=14,TAP_MS=260;
-  function ds(x,y){ sx=x;sy=y;drag=true;cx=0;tapT=Date.now(); }
-  function dm(x,y){
-    if(!drag) return;
-    const dx=x-sx,dy=y-sy;
-    if(Math.abs(dy)>Math.abs(dx)*1.5){ drag=false; rc(); return; }
-    cx=dx;
-    const r = Math.min(Math.abs(dx)/T2, 1);
-    card.style.transform = `translateX(${dx*.55}px) rotate(${dx*.04}deg)`;
-    if(dx<-12){
-      // swipe LEFT = LIKE (matches ♥ button on left)
-      lblLike.style.opacity = Math.min(r*1.4,1);
-      lblNope.style.opacity = 0;
-      card.style.boxShadow = `0 0 0 1px rgba(244,114,182,${.6*r}), 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(244,114,182,${.18*r})`;
-    } else if(dx>12){
-      // swipe RIGHT = NOPE (matches ★ button on right)
-      lblNope.style.opacity = Math.min(r*1.4,1);
-      lblLike.style.opacity = 0;
-      card.style.boxShadow = `0 0 0 1px rgba(155,124,248,${.4*r}), 0 30px 80px rgba(0,0,0,.6)`;
-    } else {
-      lblLike.style.opacity = lblNope.style.opacity = 0;
-      card.style.boxShadow = '';
-    }
-  }
-  function rc(){
-    lblLike.style.opacity = lblNope.style.opacity = 0;
-    card.style.boxShadow = '';
-    card.style.transition = 'transform .48s cubic-bezier(.34,1.56,.64,1)';
-    card.style.transform  = '';
-    setTimeout(()=>card.style.transition = '', 480);
-  }
-  function de(){
-    if(!drag) return;
-    drag = false;
-    if(Math.abs(cx)<TAP_MAX && Date.now()-tapT<TAP_MS){
-      answer(0); return;
-    }
-    if(cx<-T2)     answer(3);    // strong left swipe = strong like (+3)
-    else if(cx<-T1)answer(2);    // mild left swipe = medium like (+2)
-    else if(cx>T2) answer(-3);   // strong right swipe = strong nope (-3)
-    else if(cx>T1) answer(-2);   // mild right swipe = medium nope (-2)
-    else rc();
-  }
-  card.addEventListener('touchstart', e=>ds(e.touches[0].clientX,e.touches[0].clientY), {passive:true});
-  card.addEventListener('touchmove',  e=>dm(e.touches[0].clientX,e.touches[0].clientY), {passive:true});
-  card.addEventListener('touchend', de);
-  card.addEventListener('mousedown', e=>{ ds(e.clientX,e.clientY); card.style.cursor='grabbing'; });
-  addEventListener('mousemove', e=>dm(e.clientX,e.clientY));
-  addEventListener('mouseup', ()=>{ card.style.cursor=''; de(); });
+  // ── Swipe / tap-on-card disabled (回答は下の6ボタンのみ) ──
 
   // ── Restart confirm ──
   const covl = document.getElementById('covl');
