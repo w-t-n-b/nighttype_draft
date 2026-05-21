@@ -317,7 +317,7 @@ function getCompat(t1, t2) {
   const a2 = TYPE_AXES[t2];
   if (!a1 || !a2) return 2;
 
-  let score = 3; // ベーススコア
+  let score = 2; // ベーススコア
 
   // S/M軸: 補完(S×M)=+1, 衝突(S×S・M×M)=-1
   if (a1.sm !== a2.sm) score += 1;
@@ -332,7 +332,7 @@ function getCompat(t1, t2) {
 
   // 沼/塩軸: 相性に影響なし
 
-  return Math.max(1, Math.min(5, score));
+  return Math.max(0, Math.min(5, score));
 }
 
 const compatComments = {
