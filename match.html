@@ -618,32 +618,12 @@
   }
 
   // ── Compatibility scoring ──
-  // === 5-tier compatibility copy ===
-  const TIER_COPY = {
-    5: {label:'夜の双子',summary:'初対面で朝5時まで気まずさゼロ',comment:'笑うタイミング、酔うタイミング、帰りたくなるタイミングまで全部一致。会って3時間でベスフレ確定の相性。',taunt:'これマジで運命'},
-    4: {label:'波長一致',summary:'気づいたら終電なくなってるタイプ',comment:'2軒目以降のテンションが揃う。酔い方の方向性が同じで、朝まで語れる。',taunt:'これ運命では?'},
-    3: {label:'並ぶ夜',summary:'酒は飲めるけど話は深まらない',comment:'黙って隣で飲める関係。盛り上がりはしないけど、別に嫌でもない。普通の飲み友ポジション。',taunt:''},
-    2: {label:'微妙なすれ違い',summary:'終電の使い方で価値観バトル',comment:'あなたが二件目行きたい時、相手はタクシー呼んでる。夜の終わり方が合わない人。',taunt:'これ意外と当たってて泣いた'},
-    1: {label:'天敵レベル',summary:'居酒屋の2時間がまるで永遠',comment:'あなたが乾杯したい瞬間、相手はもう帰りたい。テンションのタイミングが完全に真逆。気まずい沈黙のオンパレード。',taunt:'これ友達と試したら絶望した'}
-  };
-  function getCompatTier(a,b){
+  // types.js の getCompat + compatComments を使用
+  function compatScore(a, b){
     if(!a||!b) return null;
-    const at=types[a],bt=types[b]; if(!at||!bt||!at.axisCode||!bt.axisCode) return null;
-    const ax=at.axisCode.split('-'),bx=bt.axisCode.split('-');
-    const sN=ax[0]===bx[0],sS=ax[1]===bx[1],sA=ax[2]===bx[2],sG=ax[3]===bx[3];
-    if(sN&&!sS&&sA&&!sG) return 5;
-    if(!sN&&sS&&!sA&&sG) return 1;
-    const cnt=[sN,sS,sA,sG].filter(Boolean).length;
-    if(cnt===3) return 4;
-    if(cnt===2||cnt===4) return 3;
-    return 2;
-  }
-
-function compatScore(a, b){
-    const tier = getCompatTier(a, b);
-    if(!tier) return null;
-    const c = TIER_COPY[tier];
-    return {hearts: tier, label: c.label, txt: c.comment, summary: c.summary, taunt: c.taunt, type: 'tier-'+tier};
+    const score = getCompat(a, b);
+    const c = compatComments[score] || compatComments[3];
+    return {hearts: score, label: c.label, txt: c.text};
   }
 
   function renderResult(){
@@ -657,18 +637,9 @@ function compatScore(a, b){
     document.getElementById('rp1Name').textContent = at.name;
     document.getElementById('rp2Name').textContent = bt.name;
     document.getElementById('resHearts').textContent = '★'.repeat(r.hearts) + '☆'.repeat(5-r.hearts);
-    // Also show summary if it exists
-    if(r.summary){
-      let sumEl = document.querySelector('.res-summary');
-      const labelEl = document.getElementById('resLabel');
-      if(!sumEl && labelEl){
-        sumEl = document.createElement('div');
-        sumEl.className = 'res-summary';
-        sumEl.style.cssText = 'font-family:"Noto Sans JP",sans-serif;font-size:14px;color:#fff;margin:6px 0 12px;text-wrap:balance';
-        labelEl.parentNode.insertBefore(sumEl, labelEl.nextSibling);
-      }
-      if(sumEl) sumEl.textContent = '「' + r.summary + '」';
-    }
+    // summaryは廃止（不要な要素があれば非表示）
+    const sumEl = document.querySelector('.res-summary');
+    if(sumEl) sumEl.textContent = '';
     document.getElementById('resLabel').textContent = r.label;
     document.getElementById('resComment').textContent = r.txt;
     card.classList.remove('show'); void card.offsetWidth;
