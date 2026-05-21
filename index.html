@@ -70,7 +70,7 @@
   .hero-title{
     font-family:"Cormorant Garamond",serif;
     font-weight:500;
-    font-size:clamp(72px,16vw,232px);
+    font-size:clamp(48px,10vw,144px);
     line-height:1.05;letter-spacing:-0.02em;
     padding-bottom:.12em;
     background:linear-gradient(180deg,#fff 0%,#d6c8ff 30%,var(--violet) 60%,var(--cyan) 100%);
@@ -249,12 +249,11 @@
 <main>
 
   <section class="hero">
-    <div class="hero-eyebrow reveal"><span class="dot"></span>Night Personality Diagnosis · v15</div>
     <div class="hero-title-wrap reveal">
       <div class="hero-glow"></div>
       <h1 class="hero-title">夜キャラ診断</h1>
     </div>
-    <div class="hero-sub reveal">— what kind of night are you, really?</div>
+    <div class="hero-sub reveal">What's Your Night Character?</div>
     <p class="hero-jp reveal">あなたの夜の価値観タイプは？<br/>
       4軸×20問。深夜の自分を構成する成分を、<br/>16タイプの座標に解き明かす。</p>
     <div class="hero-cta reveal-stagger">
@@ -597,7 +596,6 @@ const TYPES = [
         <div class="type-shadow"></div>
       </div>
       <div class="type-meta">
-        <div class="type-code"><span class="glyph">${t.sym}</span> ${t.code}</div>
         <div class="type-name">${t.name}</div>
         <div class="type-axis">${t.axes}</div>
       </div>
