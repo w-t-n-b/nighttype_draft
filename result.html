@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Result — NightType</title>
-<meta property="og:title" id="ogTitle" content="あなたのナイトタイプ診断結果">
-<meta property="og:description" id="ogDesc" content="あなたのナイトタイプも診断して、相性を見てみよう">
+<title>Result — 夜キャラ診断</title>
+<meta property="og:title" id="ogTitle" content="あなたの夜キャラ診断結果">
+<meta property="og:description" id="ogDesc" content="あなたの夜キャラも診断して、相性を見てみよう">
 <meta property="og:image" id="ogImage" content="images/A1.png">
 <meta property="og:url" id="ogUrl" content="">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" id="twTitle" content="あなたのナイトタイプ診断結果">
-<meta name="twitter:description" id="twDesc" content="あなたのナイトタイプも診断して、相性を見てみよう">
+<meta name="twitter:title" id="twTitle" content="あなたの夜キャラ診断結果">
+<meta name="twitter:description" id="twDesc" content="あなたの夜キャラも診断して、相性を見てみよう">
 <meta name="twitter:image" id="twImage" content="images/A1.png">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -979,7 +979,7 @@
 
 <!-- Top Nav -->
 <nav class="nt-nav">
-  <a href="index.html" class="nt-brand"><span class="nt-brand-mark"></span>NightType</a>
+  <a href="index.html" class="nt-brand"><span class="nt-brand-mark"></span>夜キャラ診断</a>
   <div class="nt-nav-links" id="navLinks">
     <a href="index.html">Home</a>
     <a href="quiz.html">Quiz</a>
@@ -1277,8 +1277,8 @@
 
   // ── OGP / Twitter meta tags (dynamic) ──
   (function setOGP(){
-    const ogTitle = `${t.name}さんはナイトタイプ「${t.name}」`;
-    const ogDesc = 'あなたのナイトタイプも診断して、相性を見てみよう';
+    const ogTitle = `${t.name}さんの夜キャラは「${t.name}」`;
+    const ogDesc = 'あなたの夜キャラも診断して、相性を見てみよう';
     const ogImage = location.origin + location.pathname.replace(/result\.html$/, '') + (t.image || ('images/' + code + '.png'));
     const ogUrl = location.href;
     const set = (id, val)=> { const el = document.getElementById(id); if(el) el.setAttribute('content', val); };
@@ -1289,7 +1289,7 @@
     set('twTitle', ogTitle);
     set('twDesc', ogDesc);
     set('twImage', ogImage);
-    document.title = `${t.name}(${code}) — NightType`;
+    document.title = `${t.name}(${code}) — 夜キャラ診断`;
   })();
 
   // ── Analytics events (実装指示#3 §9) ──
@@ -1616,10 +1616,10 @@
       const info = TIER_COPY[tier];
       const me = types[code], you = types[pairCode];
       const taunt = info.taunt ? info.taunt + '\n' : '';
-      return taunt + `${me.name} × ${you.name} の相性は${info.label}\nあなたのナイトタイプは？`;
+      return taunt + `${me.name} × ${you.name} の相性は${info.label}\nあなたの夜キャラは？`;
     }
     // self mode
-    return `私のナイトタイプは「${t.name}」だった！\nあなたのナイトタイプは？`;
+    return `私の夜キャラは「${t.name}」だった！\nあなたの夜キャラは？`;
   }
   function buildShareUrl(mode, pairCode){
     if(mode === 'pair' && pairCode){
@@ -1668,7 +1668,7 @@
     g.fillStyle = 'rgba(34,211,238,.85)';
     g.font = '500 32px "Space Mono", monospace';
     g.textAlign = 'center';
-    g.fillText('— NIGHTTYPE —', W/2, 130);
+    g.fillText('— 夜キャラ診断 —', W/2, 130);
 
     if(mode === 'self'){
       // Self image: 1 large character + name + summary
@@ -1738,7 +1738,7 @@
     }
     g.fillStyle = 'rgba(255,255,255,.65)';
     g.font = '500 28px "Space Mono", monospace';
-    g.fillText('NightType - 夜の価値観診断', W/2, H-90);
+    g.fillText('夜キャラ診断', W/2, H-90);
     g.fillStyle = 'rgba(196,181,253,.55)';
     g.font = '400 22px "Space Mono", monospace';
     g.fillText(location.host + location.pathname.replace('result.html', ''), W/2, H-50);
@@ -1848,7 +1848,7 @@
 
     // The invite URL is the user's quiz.html?from={selfCode}
     const inviteUrl = location.origin + location.pathname.replace(/result\.html$/, 'quiz.html') + '?from=' + code;
-    const inviteText = `私のナイトタイプは「${t.name}」だった！\nあなたのナイトタイプは？`;
+    const inviteText = `私の夜キャラは「${t.name}」だった！\nあなたの夜キャラは？`;
 
     // Primary copy button
     const btn = document.getElementById('ibcBtn');
@@ -1987,7 +1987,7 @@
     if(r.taunt){
       // Override share text used by X/LINE buttons
       const newTaunt = r.taunt;
-      const shareTextTaunt = newTaunt + '\n私のナイトタイプは「' + t.name + '」、相手は「' + fromT.name + '」(' + fromCode + ')。\nあなたのナイトタイプは？';
+      const shareTextTaunt = newTaunt + '\n私の夜キャラは「' + t.name + '」、相手は「' + fromT.name + '」(' + fromCode + ')。\nあなたの夜キャラは？';
       document.getElementById('btnX').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTextTaunt)}&url=${encodeURIComponent(shareUrl)}`;
       document.getElementById('btnLine').href = `https://line.me/R/msg/text/?${encodeURIComponent(shareTextTaunt + '\n' + shareUrl)}`;
     }

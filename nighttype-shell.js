@@ -1,4 +1,4 @@
-// === NightType — 共通の星空背景・ナビ動作・コンステレーション ===
+// === 夜キャラ診断 — 共通の星空背景・ナビ動作・コンステレーション ===
 (function(){
   // === Stars canvas ===
   const canvas = document.getElementById('stars');
