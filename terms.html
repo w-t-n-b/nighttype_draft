@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QB8NMCQJ7R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QB8NMCQJ7R');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>利用規約・著作権表示 — 夜キャラ診断</title>
+<meta name="description" content="夜キャラ診断の利用規約・著作権表示。コンテンツの著作権・禁止事項・違反時の対応について。" />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="nighttype-shell.css" />
+<style>
+  :root{
+    --bg:#04040e; --bg-2:#0a0a1a;
+    --ink:#e9e6ff; --ink-mute:#9a96b8; --ink-dim:#787494;
+    --violet:#9B7CF8; --cyan:#22D3EE; --pink:#F472B6;
+    --line:rgba(255,255,255,0.08);
+    --glass:rgba(14,12,32,0.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;position:relative;line-height:1.85}
+  a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(34,211,238,.3);transition:color .2s,border-color .2s}
+  a:hover{color:var(--violet);border-color:var(--violet)}
+
+  .nebula{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 55% 45% at 15% 20%, rgba(155,124,248,0.16), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 85% 75%, rgba(34,211,238,0.10), transparent 60%);
+    mix-blend-mode:screen;
+  }
+
+  main{position:relative;z-index:5;max-width:760px;margin:0 auto;padding:120px 28px 80px}
+
+  .pp-eyebrow{
+    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--cyan);margin-bottom:16px;
+  }
+  h1{
+    font-family:"Cormorant Garamond",serif;font-weight:500;
+    font-size:clamp(36px,6vw,56px);letter-spacing:-.01em;
+    margin-bottom:14px;line-height:1.15;
+    background:linear-gradient(180deg,#fff 0%,#d6c8ff 60%,var(--violet) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .pp-sub{color:var(--ink-mute);font-size:13.5px;margin-bottom:48px;letter-spacing:.04em}
+  .pp-updated{
+    display:inline-block;font-family:"Space Mono",monospace;font-size:10.5px;
+    letter-spacing:.22em;color:var(--ink-dim);
+    padding:6px 14px;border:1px solid var(--line);border-radius:99px;
+    margin-bottom:48px;
+  }
+
+  h2{
+    font-family:"Cormorant Garamond",serif;font-weight:500;
+    font-size:24px;letter-spacing:.01em;color:#fff;
+    margin:48px 0 16px;padding-top:24px;
+    border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;
+  }
+  h2::before{
+    content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
+    background:var(--violet);box-shadow:0 0 8px var(--violet);
+  }
+  h2 .en{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.32em;color:var(--cyan);text-transform:uppercase;margin-left:auto}
+
+  p{font-size:14px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.02em}
+  p strong{color:var(--ink);font-weight:500}
+
+  ul{margin:8px 0 18px 0;padding-left:0;list-style:none}
+  ul li{
+    font-size:14px;color:var(--ink-mute);margin-bottom:8px;
+    padding-left:18px;position:relative;letter-spacing:.02em;
+  }
+  ul li::before{
+    content:"";position:absolute;left:0;top:10px;width:8px;height:1px;
+    background:linear-gradient(90deg,var(--violet),transparent);
+  }
+  ul li strong{color:var(--ink);font-weight:500}
+
+  .pp-callout{
+    background:rgba(244,114,182,.05);
+    border:1px solid rgba(244,114,182,.22);
+    border-radius:14px;padding:18px 22px;margin:20px 0;
+    font-size:13.5px;color:var(--ink-mute);line-height:1.85;
+  }
+  .pp-callout strong{color:var(--pink)}
+
+  .tm-copyright{
+    margin-top:60px;padding:24px;text-align:center;
+    border:1px solid var(--line);border-radius:14px;
+    background:linear-gradient(135deg,rgba(155,124,248,.04),rgba(34,211,238,.03));
+    font-family:"Space Mono",monospace;font-size:12px;
+    letter-spacing:.16em;color:var(--ink);
+  }
+
+  .pp-back{
+    display:inline-flex;align-items:center;gap:8px;
+    margin-top:32px;padding:14px 24px;border-radius:99px;
+    border:1px solid var(--line);
+    font-family:"Space Mono",monospace;font-size:11px;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--ink);
+    background:rgba(255,255,255,.03);
+    transition:all .25s;
+  }
+  .pp-back:hover{
+    border-color:var(--violet);transform:translateY(-2px);
+    box-shadow:0 12px 32px rgba(155,124,248,.2);color:#fff;
+  }
+  .pp-back .arrow{transition:transform .3s}
+  .pp-back:hover .arrow{transform:translateX(-4px)}
+
+  footer{
+    border-top:1px solid var(--line);padding:36px 32px;
+    text-align:center;position:relative;z-index:5;
+    background:rgba(4,4,14,.6);backdrop-filter:blur(12px);
+  }
+  footer .brand-line{
+    font-family:"Cormorant Garamond",serif;font-size:18px;
+    color:var(--ink);letter-spacing:.04em;margin-bottom:6px;
+  }
+  footer .copy{
+    font-family:"Space Mono",monospace;font-size:10px;
+    letter-spacing:.26em;color:var(--ink-dim);text-transform:uppercase;
+  }
+
+  @media (max-width:520px){
+    main{padding:90px 20px 60px}
+    h1{font-size:32px}
+    h2{font-size:21px}
+  }
+</style>
+</head>
+<body>
+
+<div class="nebula"></div>
+
+<main>
+  <div class="pp-eyebrow">● Terms of Service</div>
+  <h1>利用規約・著作権表示</h1>
+  <p class="pp-sub">夜キャラ診断（以下「本サイト」）のコンテンツに関する利用規約および著作権表示</p>
+  <div class="pp-updated">最終更新: 2026年5月22日</div>
+
+  <h2>第1条（著作権） <span class="en">Copyright</span></h2>
+  <p>本サイト「夜キャラ診断」に掲載されている全てのコンテンツ（診断コンテンツ・質問文・タイプ説明・キャラクター設定・デザイン・ロゴ・ソースコード等）は、<strong>運営者に帰属する著作物</strong>であり、著作権法により保護されています。</p>
+
+  <h2>第2条（禁止事項） <span class="en">Prohibited</span></h2>
+  <p>以下の行為を厳禁します。</p>
+  <ul>
+    <li>本サイトのコンテンツの<strong>無断複製・転載・改変・配布</strong></li>
+    <li>本サイトの<strong>診断ロジック・質問文・タイプ設定の模倣・盗用</strong></li>
+    <li><strong>商業目的での無断使用</strong></li>
+  </ul>
+
+  <h2>第3条（違反時の対応） <span class="en">Enforcement</span></h2>
+  <p>無断複製・模倣が発覚した場合、以下の対応を行います。</p>
+  <div class="pp-callout">
+    <ul style="margin:0">
+      <li><strong>即時停止・削除の要求</strong></li>
+      <li><strong>損害賠償請求</strong>（著作権法第114条に基づく）</li>
+      <li><strong>刑事告訴</strong>（著作権法第119条：10年以下の懲役 または 1000万円以下の罰金）</li>
+    </ul>
+  </div>
+
+  <div class="tm-copyright">© 2026 夜キャラ診断 All rights reserved.</div>
+
+  <a class="pp-back" href="index.html"><span class="arrow">←</span> トップに戻る</a>
+</main>
+
+<footer>
+  <div class="brand-line">夜キャラ診断</div>
+  <div class="copy">— what's your night character · 2026 —</div>
+</footer>
+
+</body>
+</html>

@@ -99,11 +99,11 @@
   const links  = document.querySelector('.nt-nav-links');
   const ovl    = document.querySelector('.nt-overlay');
 
-  // === 全ページフッター自動注入（PPリンク付き） ===
+  // === 全ページフッター自動注入（著作権 + 利用規約 + PP） ===
   (function ensureFooter(){
     let f = document.querySelector('footer');
-    const hasPP = f && f.querySelector('[data-privacy-link]');
-    if(hasPP) return;
+    const hasLegal = f && f.querySelector('[data-legal-line]');
+    if(hasLegal) return;
     // フッターが無ければ新規作成
     if(!f){
       f = document.createElement('footer');
@@ -115,18 +115,18 @@
       `;
       document.body.appendChild(f);
     }
-    // PPリンクを追加
-    const wrap = document.createElement('div');
-    wrap.style.cssText = 'margin-top:14px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:11px;color:#9a96b8;letter-spacing:.04em';
-    const pp = document.createElement('a');
-    pp.href = 'privacy.html';
-    pp.textContent = 'プライバシーポリシー';
-    pp.setAttribute('data-privacy-link','1');
-    pp.style.cssText = 'color:#9a96b8;text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s';
-    pp.addEventListener('mouseover',()=>{pp.style.color='#9B7CF8';pp.style.borderBottomColor='#9B7CF8'});
-    pp.addEventListener('mouseout',()=>{pp.style.color='#9a96b8';pp.style.borderBottomColor='transparent'});
-    wrap.appendChild(pp);
-    f.appendChild(wrap);
+    // 著作権 + 利用規約 + PP 1行
+    const p = document.createElement('p');
+    p.setAttribute('data-legal-line','1');
+    p.style.cssText = 'margin-top:14px;font-size:11px;color:#9a96b8;letter-spacing:.04em;line-height:1.8';
+    const linkCss = 'color:#9a96b8;text-decoration:underline;text-underline-offset:3px';
+    p.innerHTML = `© 2026 夜キャラ診断 All rights reserved. &nbsp;|&nbsp; <a href="terms.html" style="${linkCss}">利用規約</a> &nbsp;|&nbsp; <a href="privacy.html" style="${linkCss}">プライバシーポリシー</a>`;
+    // ホバー色だけJSで設定
+    p.querySelectorAll('a').forEach(a => {
+      a.addEventListener('mouseover', ()=>{a.style.color='#9B7CF8'});
+      a.addEventListener('mouseout',  ()=>{a.style.color='#9a96b8'});
+    });
+    f.appendChild(p);
   })();
 
   if(burger && links){
