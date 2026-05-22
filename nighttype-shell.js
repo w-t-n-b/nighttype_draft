@@ -111,16 +111,24 @@
       f.style.cssText = 'border-top:1px solid rgba(255,255,255,0.08);padding:36px 32px;text-align:center;position:relative;z-index:5;background:rgba(4,4,14,0.6);backdrop-filter:blur(12px);margin-top:auto';
       f.innerHTML = `
         <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#e9e6ff;letter-spacing:.04em;margin-bottom:6px">夜キャラ診断</div>
-        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.26em;color:#787494;text-transform:uppercase">— what's your night character · 2026 —</div>
       `;
       document.body.appendChild(f);
+      // Sticky footer: PC でも画面下端に固定（auto-footerだけ対象）
+      // 既存のbody styleを壊さないよう、必要なものだけ追加
+      const bs = document.body.style;
+      const cs = getComputedStyle(document.body);
+      if(cs.display !== 'flex'){
+        bs.display = 'flex';
+        bs.flexDirection = 'column';
+        bs.minHeight = '100vh';
+      }
     }
     // 著作権 + 利用規約 + PP 1行
     const p = document.createElement('p');
     p.setAttribute('data-legal-line','1');
     p.style.cssText = 'margin-top:14px;font-size:11px;color:#9a96b8;letter-spacing:.04em;line-height:1.8';
     const linkCss = 'color:#9a96b8;text-decoration:underline;text-underline-offset:3px';
-    p.innerHTML = `© 2026 夜キャラ診断 All rights reserved. &nbsp;|&nbsp; <a href="terms.html" style="${linkCss}">利用規約</a> &nbsp;|&nbsp; <a href="privacy.html" style="${linkCss}">プライバシーポリシー</a>`;
+    p.innerHTML = `© 2026 夜キャラ診断 All rights reserved.<br><a href="terms.html" style="${linkCss}">利用規約</a> &nbsp;|&nbsp; <a href="privacy.html" style="${linkCss}">プライバシーポリシー</a>`;
     // ホバー色だけJSで設定
     p.querySelectorAll('a').forEach(a => {
       a.addEventListener('mouseover', ()=>{a.style.color='#9B7CF8'});
