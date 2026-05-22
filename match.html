@@ -290,6 +290,8 @@
     padding:30px 24px 100px;
     position:relative; z-index:5;
   }
+  /* 2人揃うまでは結果セクションごと畳む（空白防止） */
+  .result-wrap.is-empty{ display:none; }
   .result-card{
     padding:40px 36px;
     border-radius:28px;
@@ -466,7 +468,7 @@
 </section>
 
 <!-- Result (移動: rosterの上に配置で結果が即見える) -->
-<section class="result-wrap">
+<section class="result-wrap is-empty" id="resultWrap">
   <div class="result-card" id="resultCard">
     <div class="result-eyebrow" id="resEyebrow">Compatibility Reading</div>
     <div class="result-hearts" id="resHearts">●●●</div>
@@ -645,7 +647,13 @@
 
   function renderResult(){
     const card = document.getElementById('resultCard');
-    if(!picks[0] || !picks[1]){ card.classList.remove('show'); return; }
+    const wrap = document.getElementById('resultWrap');
+    if(!picks[0] || !picks[1]){
+      card.classList.remove('show');
+      if(wrap) wrap.classList.add('is-empty');
+      return;
+    }
+    if(wrap) wrap.classList.remove('is-empty');
     const a = picks[0], b = picks[1];
     const r = compatScore(a, b);
     const at = types[a], bt = types[b];
