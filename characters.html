@@ -231,10 +231,14 @@
     margin-bottom:32px; line-height:1.8;
   }
 
+  /* タブレット ~ スマホ：2列固定（auto-fillだと端末によって3列目がはみ出る） */
+  @media (max-width:720px){
+    .ch-grid{padding:30px 14px 80px; gap:12px;
+      grid-template-columns:1fr 1fr;}
+  }
   @media (max-width:560px){
     .ch-hero{padding-top:110px}
-    .ch-grid{padding:30px 18px 80px; gap:14px;
-      grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));}
+    .ch-grid{padding:30px 12px 80px; gap:10px;}
     .ch-card-body{padding:16px 16px 18px}
     .ch-card-name{font-size:18px}
     .ch-card-tagline{font-size:13px}
