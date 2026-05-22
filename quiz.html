@@ -1037,6 +1037,23 @@
       }
       if(typeof gtag === 'function'){ try{ gtag('event', 'quiz_completed', {type:code}); }catch(_){} }
       localStorage.setItem('nightTypeScores', JSON.stringify(axisScores));
+      // ── Webhook: GAS endpoint へ診断結果を POST（fire-and-forget） ──
+      try{
+        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyeIleNj5CyhZgxDpuEKyOUZgRsm3xgBhQLCiAoDPb5X-89q2BmilytJCI1Jn59kpxphg/exec';
+        const payload = {
+          type: code,
+          answers: history.map((h, i) => ({ id: i+1, axis: h.axis, val: h.val, weight: h.weight })),
+          ua: navigator.userAgent
+        };
+        // text/plain にすることで preflight (OPTIONS) を回避し、GAS の doPost が受けやすい
+        fetch(WEBHOOK_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload),
+          keepalive: true
+        }).catch(()=>{ /* fire-and-forget */ });
+      }catch(_){}
       // カードを飛ばした後にプロフィール収集→reveal→result.html
       fly(val<0, ()=>{
         showProfileForm(code);
