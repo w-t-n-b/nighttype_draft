@@ -99,19 +99,35 @@
   const links  = document.querySelector('.nt-nav-links');
   const ovl    = document.querySelector('.nt-overlay');
 
-  // Privacy Policy link を全ページのハンバーガーに自動注入
-  if(links && !links.querySelector('[data-privacy-link]')){
+  // === 全ページフッター自動注入（PPリンク付き） ===
+  (function ensureFooter(){
+    let f = document.querySelector('footer');
+    const hasPP = f && f.querySelector('[data-privacy-link]');
+    if(hasPP) return;
+    // フッターが無ければ新規作成
+    if(!f){
+      f = document.createElement('footer');
+      f.setAttribute('data-auto-footer','1');
+      f.style.cssText = 'border-top:1px solid rgba(255,255,255,0.08);padding:36px 32px;text-align:center;position:relative;z-index:5;background:rgba(4,4,14,0.6);backdrop-filter:blur(12px);margin-top:auto';
+      f.innerHTML = `
+        <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#e9e6ff;letter-spacing:.04em;margin-bottom:6px">夜キャラ診断</div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.26em;color:#787494;text-transform:uppercase">— what's your night character · 2026 —</div>
+      `;
+      document.body.appendChild(f);
+    }
+    // PPリンクを追加
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'margin-top:14px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:11px;color:#9a96b8;letter-spacing:.04em';
     const pp = document.createElement('a');
     pp.href = 'privacy.html';
     pp.textContent = 'プライバシーポリシー';
-    pp.setAttribute('data-privacy-link', '1');
-    pp.style.opacity = '.7';
-    pp.style.fontSize = '13px';
-    // Diagnose → の前に挿入（CTAは最後に保持）
-    const cta = Array.from(links.querySelectorAll('a')).find(a => /diagnose|診断/i.test(a.textContent));
-    if(cta) links.insertBefore(pp, cta);
-    else links.appendChild(pp);
-  }
+    pp.setAttribute('data-privacy-link','1');
+    pp.style.cssText = 'color:#9a96b8;text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s';
+    pp.addEventListener('mouseover',()=>{pp.style.color='#9B7CF8';pp.style.borderBottomColor='#9B7CF8'});
+    pp.addEventListener('mouseout',()=>{pp.style.color='#9a96b8';pp.style.borderBottomColor='transparent'});
+    wrap.appendChild(pp);
+    f.appendChild(wrap);
+  })();
 
   if(burger && links){
     function toggle(open){

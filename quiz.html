@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QB8NMCQJ7R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QB8NMCQJ7R');
+</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Quiz — 夜キャラ診断</title>
@@ -509,7 +517,8 @@
     outline:none; border-color:var(--violet);
     background:rgba(155,124,248,.06);
   }
-  .pgender{ display:flex; gap:8px; }
+  .pgender{ display:flex; flex-direction:column; gap:8px; }
+  .pages-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
   .pgbtn{
     flex:1; padding:13px 8px; border-radius:12px;
     border:1px solid var(--line);
@@ -791,26 +800,30 @@
     <div class="pdesc">より正確な分析と、年代×タイプの傾向集計のため<br/>2つだけ教えてください。</div>
 
     <div class="pfield">
-      <label class="plabel" for="pBirth">生まれ年</label>
-      <input class="pinput" type="number" id="pBirth" inputmode="numeric"
-             placeholder="例: 1999" min="1900" max="2020" autocomplete="off"/>
+      <span class="plabel">あなたの恋愛対象は?</span>
+      <div class="pgender" id="pInterest">
+        <button type="button" class="pgbtn" data-i="male">男性</button>
+        <button type="button" class="pgbtn" data-i="female">女性</button>
+        <button type="button" class="pgbtn" data-i="both">どちらも</button>
+      </div>
     </div>
 
     <div class="pfield">
-      <span class="plabel">性別</span>
-      <div class="pgender" id="pGender">
-        <button type="button" class="pgbtn" data-g="male">男性</button>
-        <button type="button" class="pgbtn" data-g="female">女性</button>
-        <button type="button" class="pgbtn" data-g="other">その他</button>
+      <span class="plabel">あなたの年齢層は?</span>
+      <div class="pages-grid" id="pAge">
+        <button type="button" class="pgbtn" data-a="10e">10代前半</button>
+        <button type="button" class="pgbtn" data-a="10l">10代後半</button>
+        <button type="button" class="pgbtn" data-a="20e">20代前半</button>
+        <button type="button" class="pgbtn" data-a="20l">20代後半</button>
+        <button type="button" class="pgbtn" data-a="30e">30代前半</button>
+        <button type="button" class="pgbtn" data-a="30l">30代後半</button>
+        <button type="button" class="pgbtn" data-a="40">40代</button>
+        <button type="button" class="pgbtn" data-a="50plus">50代以上</button>
       </div>
     </div>
 
     <button type="submit" class="psubmit" id="pSubmit" disabled>結果を見る →</button>
     <div class="perr" id="pErr"></div>
-    <div style="font-size:10.5px;color:var(--ink-mute);text-align:center;margin-top:14px;line-height:1.7;letter-spacing:.04em">
-      送信ボタンを押すことで <a href="privacy.html" target="_blank" rel="noopener" style="color:var(--cyan);text-decoration:underline">プライバシーポリシー</a> に同意したものとみなします。<br>
-      入力情報は統計分析にのみ利用されます。
-    </div>
   </form>
 </div>
 
@@ -1031,48 +1044,42 @@
     }
   }
 
-  // ── Profile collection（生まれ年・性別、集計用）──
+  // ── Profile collection（恋愛対象・年齢層、集計用）──
   function showProfileForm(code){
     const povl = document.getElementById('povl');
     const form = document.getElementById('profileForm');
-    const birthEl = document.getElementById('pBirth');
-    const gWrap = document.getElementById('pGender');
+    const iWrap = document.getElementById('pInterest');
+    const aWrap = document.getElementById('pAge');
     const submit = document.getElementById('pSubmit');
     const errEl = document.getElementById('pErr');
-    let gender = null;
+    let interest = null;
+    let ageRange = null;
 
     function validateAndToggle(){
-      const y = parseInt(birthEl.value, 10);
-      const yOk = !isNaN(y) && y >= 1900 && y <= new Date().getFullYear();
-      submit.disabled = !(yOk && gender);
+      submit.disabled = !(interest && ageRange);
     }
 
-    gWrap.querySelectorAll('.pgbtn').forEach(b=>{
-      b.addEventListener('click', ()=>{
-        gWrap.querySelectorAll('.pgbtn').forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        gender = b.dataset.g;
-        validateAndToggle();
+    function bindGroup(wrap, onPick){
+      wrap.querySelectorAll('.pgbtn').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          wrap.querySelectorAll('.pgbtn').forEach(x=>x.classList.remove('active'));
+          b.classList.add('active');
+          onPick(b);
+          validateAndToggle();
+        });
       });
-    });
-    birthEl.addEventListener('input', validateAndToggle);
+    }
+    bindGroup(iWrap, b => { interest = b.dataset.i; });
+    bindGroup(aWrap, b => { ageRange = b.dataset.a; });
 
     form.addEventListener('submit', (e)=>{
       e.preventDefault();
-      const y = parseInt(birthEl.value, 10);
-      const currentY = new Date().getFullYear();
-      if(isNaN(y) || y < 1900 || y > currentY){
-        errEl.textContent = '生まれ年を正しく入力してください';
-        return;
-      }
-      if(!gender){
-        errEl.textContent = '性別を選んでください';
-        return;
-      }
+      if(!interest){ errEl.textContent = '恋愛対象を選んでください'; return; }
+      if(!ageRange){ errEl.textContent = '年齢層を選んでください'; return; }
+
       const profile = {
-        birthYear: y,
-        age: currentY - y,
-        gender: gender,
+        ageRange: ageRange,           // 10e/10l/20e/20l/30e/30l/40/50plus
+        romanticInterest: interest,   // male/female/both
         type: code,
         ts: Date.now()
       };
@@ -1082,7 +1089,7 @@
         window.dispatchEvent(new CustomEvent('profile_collected', {detail: profile}));
       }
       if(typeof gtag === 'function'){
-        try{ gtag('event', 'profile_collected', {birth_year:y, age:profile.age, gender, type:code}); }catch(_){}
+        try{ gtag('event', 'profile_collected', {age_range:ageRange, romantic_interest:interest, type:code}); }catch(_){}
       }
       // overlay退場 → reveal → result.html
       povl.classList.remove('show');
@@ -1102,7 +1109,6 @@
     }, {once:true});
 
     povl.classList.add('show');
-    setTimeout(()=>birthEl.focus(), 350);
   }
 
   // ── Auto-apply Q1 answer from visitor landing (実装指示#3 §6) ──
