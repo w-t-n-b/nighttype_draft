@@ -1045,15 +1045,26 @@
           answers: history.map((h, i) => ({ id: i+1, axis: h.axis, val: h.val, weight: h.weight })),
           ua: navigator.userAgent
         };
-        // text/plain にすることで preflight (OPTIONS) を回避し、GAS の doPost が受けやすい
-        fetch(WEBHOOK_URL, {
+        // ?debug=1 がついてたら詳細ログ + CORSエラーを可視化
+        const DEBUG = new URLSearchParams(location.search).get('debug') === '1';
+        const opts = {
           method: 'POST',
-          mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload),
           keepalive: true
-        }).catch(()=>{ /* fire-and-forget */ });
-      }catch(_){}
+        };
+        if(!DEBUG) opts.mode = 'no-cors';
+        console.log('[Webhook] sending →', WEBHOOK_URL);
+        console.log('[Webhook] payload =', payload);
+        fetch(WEBHOOK_URL, opts)
+          .then(r => {
+            console.log('[Webhook] response:', { type: r.type, status: r.status, ok: r.ok });
+            if(DEBUG) return r.text().then(t => console.log('[Webhook] body:', t.slice(0,500)));
+          })
+          .catch(e => console.error('[Webhook] fetch failed:', e));
+      }catch(err){
+        console.error('[Webhook] threw before fetch:', err);
+      }
       // カードを飛ばした後にプロフィール収集→reveal→result.html
       fly(val<0, ()=>{
         showProfileForm(code);
