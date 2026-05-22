@@ -98,6 +98,21 @@
   const burger = document.querySelector('.nt-burger');
   const links  = document.querySelector('.nt-nav-links');
   const ovl    = document.querySelector('.nt-overlay');
+
+  // Privacy Policy link を全ページのハンバーガーに自動注入
+  if(links && !links.querySelector('[data-privacy-link]')){
+    const pp = document.createElement('a');
+    pp.href = 'privacy.html';
+    pp.textContent = 'プライバシーポリシー';
+    pp.setAttribute('data-privacy-link', '1');
+    pp.style.opacity = '.7';
+    pp.style.fontSize = '13px';
+    // Diagnose → の前に挿入（CTAは最後に保持）
+    const cta = Array.from(links.querySelectorAll('a')).find(a => /diagnose|診断/i.test(a.textContent));
+    if(cta) links.insertBefore(pp, cta);
+    else links.appendChild(pp);
+  }
+
   if(burger && links){
     function toggle(open){
       const isOpen = open ?? !links.classList.contains('open');

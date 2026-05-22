@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>プライバシーポリシー — 夜キャラ診断</title>
+<meta name="description" content="夜キャラ診断のプライバシーポリシー。取得情報・利用目的・第三者提供・Cookie・問い合わせ窓口について。" />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="nighttype-shell.css" />
+<style>
+  :root{
+    --bg:#04040e; --bg-2:#0a0a1a;
+    --ink:#e9e6ff; --ink-mute:#9a96b8; --ink-dim:#787494;
+    --violet:#9B7CF8; --cyan:#22D3EE; --pink:#F472B6;
+    --line:rgba(255,255,255,0.08);
+    --glass:rgba(14,12,32,0.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;position:relative;line-height:1.85}
+  a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(34,211,238,.3);transition:color .2s,border-color .2s}
+  a:hover{color:var(--violet);border-color:var(--violet)}
+
+  .nebula{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 55% 45% at 15% 20%, rgba(155,124,248,0.16), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 85% 75%, rgba(34,211,238,0.10), transparent 60%);
+    mix-blend-mode:screen;
+  }
+
+  main{position:relative;z-index:5;max-width:760px;margin:0 auto;padding:120px 28px 80px}
+
+  .pp-eyebrow{
+    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--cyan);margin-bottom:16px;
+  }
+  h1{
+    font-family:"Cormorant Garamond",serif;font-weight:500;
+    font-size:clamp(36px,6vw,56px);letter-spacing:-.01em;
+    margin-bottom:14px;line-height:1.15;
+    background:linear-gradient(180deg,#fff 0%,#d6c8ff 60%,var(--violet) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .pp-sub{color:var(--ink-mute);font-size:13.5px;margin-bottom:48px;letter-spacing:.04em}
+  .pp-updated{
+    display:inline-block;font-family:"Space Mono",monospace;font-size:10.5px;
+    letter-spacing:.22em;color:var(--ink-dim);
+    padding:6px 14px;border:1px solid var(--line);border-radius:99px;
+    margin-bottom:48px;
+  }
+
+  h2{
+    font-family:"Cormorant Garamond",serif;font-weight:500;
+    font-size:24px;letter-spacing:.01em;color:#fff;
+    margin:48px 0 16px;padding-top:24px;
+    border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;
+  }
+  h2::before{
+    content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
+    background:var(--violet);box-shadow:0 0 8px var(--violet);
+  }
+  h2 .en{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.32em;color:var(--cyan);text-transform:uppercase;margin-left:auto}
+
+  h3{font-size:14.5px;color:var(--ink);margin:22px 0 8px;font-weight:500;letter-spacing:.04em}
+
+  p{font-size:14px;color:var(--ink-mute);margin-bottom:14px;letter-spacing:.02em}
+  p strong{color:var(--ink);font-weight:500}
+
+  ul{margin:8px 0 18px 0;padding-left:0;list-style:none}
+  ul li{
+    font-size:14px;color:var(--ink-mute);margin-bottom:8px;
+    padding-left:18px;position:relative;letter-spacing:.02em;
+  }
+  ul li::before{
+    content:"";position:absolute;left:0;top:10px;width:8px;height:1px;
+    background:linear-gradient(90deg,var(--violet),transparent);
+  }
+  ul li strong{color:var(--ink);font-weight:500}
+
+  .pp-callout{
+    background:rgba(155,124,248,.05);
+    border:1px solid rgba(155,124,248,.18);
+    border-radius:14px;padding:18px 22px;margin:20px 0;
+    font-size:13.5px;color:var(--ink-mute);line-height:1.85;
+  }
+  .pp-callout strong{color:var(--violet)}
+
+  .pp-table{
+    width:100%;border-collapse:separate;border-spacing:0;
+    margin:14px 0 20px;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  }
+  .pp-table th,.pp-table td{
+    padding:14px 16px;text-align:left;font-size:13.5px;
+    border-bottom:1px solid var(--line);vertical-align:top;
+  }
+  .pp-table th{
+    background:rgba(155,124,248,.06);color:var(--ink);
+    font-weight:500;letter-spacing:.04em;width:38%;
+  }
+  .pp-table tr:last-child th,.pp-table tr:last-child td{border-bottom:none}
+  .pp-table td{color:var(--ink-mute)}
+
+  .pp-contact{
+    background:linear-gradient(135deg,rgba(155,124,248,.08),rgba(34,211,238,.05));
+    border:1px solid rgba(155,124,248,.2);
+    border-radius:16px;padding:22px 24px;margin:24px 0 8px;
+    text-align:center;
+  }
+  .pp-contact-label{
+    font-family:"Space Mono",monospace;font-size:10px;
+    letter-spacing:.32em;color:var(--cyan);text-transform:uppercase;margin-bottom:8px;
+  }
+  .pp-contact-mail{
+    font-family:"Space Mono",monospace;font-size:16px;
+    color:#fff;letter-spacing:.04em;word-break:break-all;
+  }
+  .pp-contact-mail a{color:#fff;border-bottom-color:rgba(255,255,255,.3)}
+  .pp-contact-mail a:hover{color:var(--violet);border-bottom-color:var(--violet)}
+
+  .pp-back{
+    display:inline-flex;align-items:center;gap:8px;
+    margin-top:48px;padding:14px 24px;border-radius:99px;
+    border:1px solid var(--line);
+    font-family:"Space Mono",monospace;font-size:11px;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--ink);
+    background:rgba(255,255,255,.03);
+    transition:all .25s;
+  }
+  .pp-back:hover{
+    border-color:var(--violet);transform:translateY(-2px);
+    box-shadow:0 12px 32px rgba(155,124,248,.2);color:#fff;
+  }
+  .pp-back .arrow{transition:transform .3s}
+  .pp-back:hover .arrow{transform:translateX(-4px)}
+
+  footer{
+    border-top:1px solid var(--line);padding:36px 32px;
+    text-align:center;position:relative;z-index:5;
+    background:rgba(4,4,14,.6);backdrop-filter:blur(12px);
+  }
+  footer .brand-line{
+    font-family:"Cormorant Garamond",serif;font-size:18px;
+    color:var(--ink);letter-spacing:.04em;margin-bottom:6px;
+  }
+  footer .copy{
+    font-family:"Space Mono",monospace;font-size:10px;
+    letter-spacing:.26em;color:var(--ink-dim);text-transform:uppercase;
+  }
+  footer .footer-links{
+    margin-top:14px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;
+    font-size:11px;color:var(--ink-mute);
+  }
+  footer .footer-links a{border:none;color:var(--ink-mute)}
+  footer .footer-links a:hover{color:var(--violet)}
+
+  @media (max-width:520px){
+    main{padding:90px 20px 60px}
+    h1{font-size:32px}
+    h2{font-size:21px}
+    .pp-table th,.pp-table td{padding:12px 12px;font-size:12.5px}
+    .pp-table th{width:42%}
+  }
+</style>
+</head>
+<body>
+
+<div class="nebula"></div>
+
+<main>
+  <div class="pp-eyebrow">● Privacy Policy</div>
+  <h1>プライバシーポリシー</h1>
+  <p class="pp-sub">夜キャラ診断（以下「本サービス」）における個人情報・利用情報の取扱いについて</p>
+  <div class="pp-updated">最終更新: 2026年5月22日</div>
+
+  <h2>1. 取得する情報 <span class="en">What we collect</span></h2>
+  <p>本サービスは、診断機能の提供および統計分析のため、以下の情報を取得することがあります。</p>
+  <table class="pp-table">
+    <tr><th>診断回答</th><td>20問の回答内容、4軸スコア、最終診断結果（16タイプ）</td></tr>
+    <tr><th>ユーザー属性</th><td>生まれ年、性別（男性 / 女性 / その他）</td></tr>
+    <tr><th>利用情報</th><td>アクセス日時、参照元、利用デバイス・ブラウザ情報、IPアドレス、Cookie等の識別子</td></tr>
+    <tr><th>共有・招待履歴</th><td>招待リンクの生成・遷移情報（パートナーの診断結果は本人の同意なく保存されません）</td></tr>
+  </table>
+
+  <h2>2. 利用目的 <span class="en">Purposes</span></h2>
+  <ul>
+    <li><strong>診断結果の表示</strong> および相性分析機能の提供</li>
+    <li><strong>年代・性別ごとの傾向分析</strong>（個人を特定しない統計データの作成・公表）</li>
+    <li><strong>サービスの改善</strong>・新機能開発・不具合対応</li>
+    <li>利用状況の分析（Google Analytics 等）</li>
+    <li>本サービスに関するお問い合わせへの対応</li>
+  </ul>
+
+  <h2>3. 性に関する情報の取扱い <span class="en">Sensitive content</span></h2>
+  <div class="pp-callout">
+    本サービスは、性に関する価値観・嗜好を測定する診断ツールです。診断回答および結果は、日本の個人情報保護法上の <strong>「要配慮個人情報」に準じた慎重な取扱い</strong> を行います。<br><br>
+    具体的には、回答内容と氏名・住所・連絡先などの直接的な識別情報を結びつけて保存することはありません。生まれ年・性別と診断結果は、統計分析の目的に限って集計形式で利用します。
+  </div>
+
+  <h2>4. Cookie および Google Analytics <span class="en">Cookies / GA</span></h2>
+  <p>本サービスは、サイト改善のため Google LLC が提供する Google Analytics 4 を利用しています。Google Analytics は Cookie を使用して、個人を特定しない形式で利用者の情報を収集します。</p>
+  <ul>
+    <li>収集される情報：アクセス日時、ページビュー、リファラ、おおよその地域、デバイス情報、ID（Cookie・広告識別子）</li>
+    <li>収集方法：Google が提供する計測タグ（JavaScript）</li>
+    <li>収集主体：Google LLC（個人情報保護方針：<a href="https://policies.google.com/privacy?hl=ja" target="_blank" rel="noopener">policies.google.com/privacy</a>）</li>
+  </ul>
+  <p>Google Analytics による情報収集を希望しない方は、Google が提供する <a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">オプトアウト アドオン</a> をご利用いただくか、ブラウザの Cookie 設定からブロックできます。</p>
+
+  <h2>5. 第三者提供 <span class="en">Third parties</span></h2>
+  <p>運営者は、以下の場合を除き、取得した情報を第三者に提供することはありません。</p>
+  <ul>
+    <li>利用者の事前の同意がある場合</li>
+    <li>法令に基づく開示要請（裁判所・捜査機関等）に応じる場合</li>
+    <li>人の生命・身体・財産の保護のために必要であって、本人の同意を得ることが困難な場合</li>
+    <li>個人を特定できない形に加工された統計データを公表・提供する場合</li>
+  </ul>
+
+  <h2>6. データの保存期間 <span class="en">Retention</span></h2>
+  <p>診断結果・ユーザー属性などはお使いのブラウザの localStorage 内に保存されます。<strong>サーバー側に保存されるものではありません。</strong>ブラウザの履歴・データ削除機能を使用すれば、いつでも削除いただけます。</p>
+  <p>Google Analytics のデータ保持期間は標準設定（14ヶ月）に従います。</p>
+
+  <h2>7. 開示・訂正・削除のご請求 <span class="en">Your rights</span></h2>
+  <p>取得した情報に関する開示・訂正・利用停止・削除のご要望は、下記の窓口までご連絡ください。本人確認の上、合理的な範囲で速やかに対応いたします。</p>
+
+  <h2>8. 18歳未満の方の利用について <span class="en">Age policy</span></h2>
+  <p>本サービスは性に関する内容を含むため、<strong>18歳未満の方は利用できません</strong>。18歳未満の方の情報を意図的に取得することはありません。万が一、18歳未満の方の情報を取得していたと判明した場合は、速やかに該当データを削除いたします。</p>
+
+  <h2>9. 免責事項 <span class="en">Disclaimer</span></h2>
+  <p>本サービスが提供する診断結果は <strong>エンタテインメントを目的</strong> としたものであり、医学的・心理学的・性的健康に関する助言・診断・治療を意図するものではありません。診断結果に基づくいかなる意思決定についても、運営者は責任を負いかねます。</p>
+
+  <h2>10. プライバシーポリシーの改定 <span class="en">Revisions</span></h2>
+  <p>本ポリシーの内容は、法令の改正・サービス内容の変更等により、予告なく改定することがあります。改定後の内容は本ページに掲載した時点から効力を生じるものとします。</p>
+
+  <h2>11. 運営者・お問い合わせ <span class="en">Contact</span></h2>
+  <p>
+    <strong>運営者名</strong>：夜キャラ診断 運営<br>
+    <strong>サービス名</strong>：夜キャラ診断（Night Personality Diagnosis）
+  </p>
+  <div class="pp-contact">
+    <div class="pp-contact-label">● Email</div>
+    <div class="pp-contact-mail"><a href="mailto:nighttypediagnosis@gmail.com">nighttypediagnosis@gmail.com</a></div>
+  </div>
+
+  <a class="pp-back" href="index.html"><span class="arrow">←</span> トップに戻る</a>
+</main>
+
+<footer>
+  <div class="brand-line">夜キャラ診断</div>
+  <div class="copy">— what's your night character · 2026 —</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="characters.html">16タイプ</a>
+    <a href="match.html">相性チェック</a>
+    <a href="privacy.html">プライバシーポリシー</a>
+  </div>
+</footer>
+
+</body>
+</html>
