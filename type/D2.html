@@ -484,7 +484,6 @@
   <section class="ts-block">
     <h2 class="ts-title">01 · このタイプの<em>夜</em>の本質</h2>
     <div class="ts-card">
-      <p class="ts-quote" id="typeQuote">—</p>
       <div class="ts-text" id="typeDesc">—</div>
       <div class="ts-meta" id="metaRow"></div>
     </div>
@@ -581,9 +580,7 @@
     document.getElementById('axGt').textContent   = axesParts[3];
   }
 
-  // ── Description ──
-  document.getElementById('typeQuote').textContent = t.quote || '';
-  function paragraphify(text){
+  // ── Description ──  function paragraphify(text){
     return (text || '')
       .split(/\n\s*\n/)
       .map(p => `<p>${p.replace(/\n/g,'<br/>')}</p>`)

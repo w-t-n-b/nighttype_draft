@@ -407,7 +407,6 @@
     <div class="ts-eyebrow">01 · このタイプの夜</div>
     <h2 class="ts-title">この人たちの<em>夜</em>、その本質</h2>
     <div class="ts-card">
-      <p class="ts-quote" id="typeQuote">—</p>
       <div class="ts-text" id="typeDesc">—</div>
       <div class="ts-meta" id="metaRow"></div>
     </div>
@@ -494,9 +493,7 @@
     document.getElementById('axGt').textContent   = axesParts[3];
   }
 
-  // ── Description ──
-  document.getElementById('typeQuote').textContent = t.quote || '';
-  function paragraphify(text){
+  // ── Description ──  function paragraphify(text){
     return (text || '')
       .split(/\n\s*\n/)
       .map(p => `<p>${p.replace(/\n/g,'<br/>')}</p>`)
