@@ -460,6 +460,93 @@
   }
   .cno:hover{ border-color:var(--ink-mute); color:var(--ink); }
 
+  /* Profile form overlay (Q20→結果の間) */
+  .povl{
+    position:fixed; inset:0; z-index:380;
+    background:rgba(0,0,0,.85); backdrop-filter:blur(20px);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity .35s;
+    overflow-y:auto; padding:24px;
+  }
+  .povl.show{ opacity:1; pointer-events:all; }
+  .psheet{
+    width:100%; max-width:440px;
+    background:rgba(14,12,32,.96);
+    border:1px solid var(--line);
+    border-radius:28px; padding:38px 30px 32px;
+    transform:translateY(20px) scale(.96);
+    transition:transform .4s cubic-bezier(.34,1.3,.64,1);
+    box-shadow:0 24px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(155,124,248,.1);
+  }
+  .povl.show .psheet{ transform:translateY(0) scale(1); }
+  .ptitle{
+    font-family:"Cormorant Garamond",serif; font-size:28px;
+    margin-bottom:6px; text-align:center; font-weight:500;
+    background:linear-gradient(135deg,#fff,#d6c8ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .pdesc{
+    font-size:12.5px; color:var(--ink-mute);
+    line-height:1.7; text-align:center; margin-bottom:26px;
+  }
+  .pfield{ margin-bottom:22px; }
+  .plabel{
+    font-family:"Space Mono",monospace; font-size:10px;
+    letter-spacing:.28em; text-transform:uppercase;
+    color:var(--cyan); margin-bottom:10px; display:block;
+  }
+  .pinput{
+    width:100%; padding:14px 16px; border-radius:12px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.04);
+    color:var(--ink); font-size:16px;
+    font-family:"Space Mono",monospace; letter-spacing:.08em;
+    text-align:center;
+    transition:border-color .2s, background .2s;
+  }
+  .pinput::placeholder{ color:var(--ink-mute); opacity:.5; letter-spacing:.04em; }
+  .pinput:focus{
+    outline:none; border-color:var(--violet);
+    background:rgba(155,124,248,.06);
+  }
+  .pgender{ display:flex; gap:8px; }
+  .pgbtn{
+    flex:1; padding:13px 8px; border-radius:12px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.03);
+    color:var(--ink-mute); cursor:pointer;
+    font-family:"Noto Sans JP",sans-serif; font-size:13px;
+    transition:all .2s;
+  }
+  .pgbtn:hover{ border-color:var(--ink-mute); color:var(--ink); }
+  .pgbtn.active{
+    background:linear-gradient(135deg, rgba(155,124,248,.2), rgba(34,211,238,.15));
+    border-color:var(--violet); color:#fff;
+    box-shadow:0 0 0 1px rgba(155,124,248,.4), 0 8px 24px rgba(155,124,248,.2);
+  }
+  .psubmit{
+    width:100%; padding:16px; border-radius:99px;
+    font-family:"Space Mono",monospace; font-size:11px;
+    letter-spacing:.22em; text-transform:uppercase;
+    cursor:pointer; transition:all .25s;
+    background:linear-gradient(135deg,var(--violet),var(--pink));
+    color:#fff; border:1px solid transparent;
+    margin-top:8px;
+  }
+  .psubmit:hover:not(:disabled){
+    transform:translateY(-2px);
+    box-shadow:0 16px 40px rgba(155,124,248,.45);
+  }
+  .psubmit:disabled{
+    background:rgba(255,255,255,.06); color:var(--ink-mute);
+    cursor:not-allowed; box-shadow:none;
+  }
+  .perr{
+    color:#ff9bb3; font-size:11.5px;
+    margin-top:8px; text-align:center;
+    min-height:16px;
+  }
+
   @media (max-width:480px){
     /* Make the wrap scrollable instead of fixed-viewport to prevent overlap */
     .quiz-wrap{
@@ -697,6 +784,32 @@
   <div class="reveal-bar-wrap"><div class="reveal-bar" id="revealBar"></div></div>
 </div>
 
+<!-- Profile collect overlay (Q20→結果の前) -->
+<div class="povl" id="povl" role="dialog" aria-modal="true" aria-labelledby="ptitleId">
+  <form class="psheet" id="profileForm" novalidate>
+    <div class="ptitle" id="ptitleId">あと少し。</div>
+    <div class="pdesc">より正確な分析と、年代×タイプの傾向集計のため<br/>2つだけ教えてください。</div>
+
+    <div class="pfield">
+      <label class="plabel" for="pBirth">生まれ年</label>
+      <input class="pinput" type="number" id="pBirth" inputmode="numeric"
+             placeholder="例: 1999" min="1900" max="2020" autocomplete="off"/>
+    </div>
+
+    <div class="pfield">
+      <span class="plabel">性別</span>
+      <div class="pgender" id="pGender">
+        <button type="button" class="pgbtn" data-g="male">男性</button>
+        <button type="button" class="pgbtn" data-g="female">女性</button>
+        <button type="button" class="pgbtn" data-g="other">その他</button>
+      </div>
+    </div>
+
+    <button type="submit" class="psubmit" id="pSubmit" disabled>結果を見る →</button>
+    <div class="perr" id="pErr"></div>
+  </form>
+</div>
+
 <!-- Confirm restart -->
 <div class="covl" id="covl">
   <div class="csheet">
@@ -907,7 +1020,69 @@
       }
       if(typeof gtag === 'function'){ try{ gtag('event', 'quiz_completed', {type:code}); }catch(_){} }
       localStorage.setItem('nightTypeScores', JSON.stringify(axisScores));
-      fly(val<0, ()=>{   // val<0 = nope (★ on right) → fly right
+      // カードを飛ばした後にプロフィール収集→reveal→result.html
+      fly(val<0, ()=>{
+        showProfileForm(code);
+      });
+    }
+  }
+
+  // ── Profile collection（生まれ年・性別、集計用）──
+  function showProfileForm(code){
+    const povl = document.getElementById('povl');
+    const form = document.getElementById('profileForm');
+    const birthEl = document.getElementById('pBirth');
+    const gWrap = document.getElementById('pGender');
+    const submit = document.getElementById('pSubmit');
+    const errEl = document.getElementById('pErr');
+    let gender = null;
+
+    function validateAndToggle(){
+      const y = parseInt(birthEl.value, 10);
+      const yOk = !isNaN(y) && y >= 1900 && y <= new Date().getFullYear();
+      submit.disabled = !(yOk && gender);
+    }
+
+    gWrap.querySelectorAll('.pgbtn').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        gWrap.querySelectorAll('.pgbtn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        gender = b.dataset.g;
+        validateAndToggle();
+      });
+    });
+    birthEl.addEventListener('input', validateAndToggle);
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const y = parseInt(birthEl.value, 10);
+      const currentY = new Date().getFullYear();
+      if(isNaN(y) || y < 1900 || y > currentY){
+        errEl.textContent = '生まれ年を正しく入力してください';
+        return;
+      }
+      if(!gender){
+        errEl.textContent = '性別を選んでください';
+        return;
+      }
+      const profile = {
+        birthYear: y,
+        age: currentY - y,
+        gender: gender,
+        type: code,
+        ts: Date.now()
+      };
+      localStorage.setItem('nightTypeProfile', JSON.stringify(profile));
+      // Analytics
+      if(typeof window.dispatchEvent === 'function'){
+        window.dispatchEvent(new CustomEvent('profile_collected', {detail: profile}));
+      }
+      if(typeof gtag === 'function'){
+        try{ gtag('event', 'profile_collected', {birth_year:y, age:profile.age, gender, type:code}); }catch(_){}
+      }
+      // overlay退場 → reveal → result.html
+      povl.classList.remove('show');
+      setTimeout(()=>{
         reveal.classList.add('show');
         let p = 0;
         const iv = setInterval(()=>{
@@ -915,11 +1090,15 @@
           revealBar.style.width = p+'%';
           if(p>=100){
             clearInterval(iv);
-            setTimeout(()=>location.href = 'result.html' + (new URLSearchParams(location.search).get('from') ? '?from=' + new URLSearchParams(location.search).get('from') : ''), 600);
+            const from = new URLSearchParams(location.search).get('from');
+            setTimeout(()=>location.href = 'result.html' + (from ? '?from=' + from : ''), 600);
           }
         }, 30);
-      });
-    }
+      }, 280);
+    }, {once:true});
+
+    povl.classList.add('show');
+    setTimeout(()=>birthEl.focus(), 350);
   }
 
   // ── Auto-apply Q1 answer from visitor landing (実装指示#3 §6) ──
