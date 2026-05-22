@@ -469,8 +469,8 @@
   const t = types[code] || types.A1;
 
   // ── Page meta ──
-  document.title = `${t.name}（${code}）— 夜キャラ診断`;
-  document.getElementById('pageTitle').textContent = `${t.name}（${code}）— 夜キャラ診断`;
+  document.title = `${t.name} — 夜キャラ診断`;
+  document.getElementById('pageTitle').textContent = `${t.name} — 夜キャラ診断`;
   document.getElementById('ogTitle').setAttribute('content', `${t.name}｜夜キャラ診断`);
   document.getElementById('ogDesc').setAttribute('content', t.tagline || '');
   if(t.image) document.getElementById('ogImage').setAttribute('content', t.image);
@@ -481,8 +481,8 @@
   charImg.src = imgSrc; charImg.alt = t.name;
   document.getElementById('heroBg').style.backgroundImage = `url("${imgSrc}")`;
 
-  document.getElementById('bcCode').textContent = code;
-  document.getElementById('heroCode').textContent = `${code} · ${t.axisCode || ''}`;
+  document.getElementById('bcCode').textContent = t.name;
+  document.getElementById('heroCode').textContent = `${t.axisCode || ''}`;
   document.getElementById('heroName').textContent = t.name;
   document.getElementById('heroTagline').textContent = `"${t.tagline || ''}"`;
 
@@ -535,7 +535,7 @@
         <img src="${tt.image || `images/${c}.png`}" alt=""
              onerror="this.style.display='none'"/>
         <div class="compat-item-body">
-          <div class="compat-item-code">${c}</div>
+          <div class="compat-item-code">${(types[c]||{}).name||""}</div>
           <div class="compat-item-name">${tt.name}</div>
         </div>
       </a>

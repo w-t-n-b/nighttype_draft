@@ -1297,7 +1297,7 @@
     set('twTitle', ogTitle);
     set('twDesc', ogDesc);
     set('twImage', ogImage);
-    document.title = `${t.name}(${code}) — 夜キャラ診断`;
+    document.title = `${t.name} — 夜キャラ診断`;
   })();
 
   // ── Analytics events (実装指示#3 §9) ──
@@ -1432,7 +1432,6 @@
       <a class="compat-item" href="type.html?type=${c}">
         <img src="${tt.image || `images/${c}.png`}" alt="" onerror="this.style.display='none'"/>
         <div class="compat-item-body">
-          <div class="compat-item-code">${c}</div>
           <div class="compat-item-name">${tt.name}</div>
         </div>
       </a>
@@ -1510,7 +1509,7 @@
     const renderItem = ({code:c, tier})=>{
       const tt = types[c]; if(!tt) return '';
       const info = TIER_COPY[tier];
-      return `<a class="compat-item" href="type/${c}.html"><img src="${tt.image || 'images/'+c+'.png'}" alt=""><div class="compat-item-body"><div class="compat-item-code">${c} · ${info.label}</div><div class="compat-item-name">${tt.name}</div></div></a>`;
+      return `<a class="compat-item" href="type/${c}.html"><img src="${tt.image || 'images/'+c+'.png'}" alt=""><div class="compat-item-body"><div class="compat-item-code">${info.label}</div><div class="compat-item-name">${tt.name}</div></div></a>`;
     };
     document.getElementById('goodList').innerHTML = top.map(renderItem).join('');
     document.getElementById('badList').innerHTML  = bottom.map(renderItem).join('');
@@ -1541,7 +1540,7 @@
     tile.dataset.code = c;
     tile.innerHTML = `
       <img src="${tt.image || `images/${c}.png`}" alt="${tt.name}" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a0f2e,#0a0a1a)'"/>
-      <div class="friend-tile-label">${c}</div>
+      <div class="friend-tile-label">${tt.name}</div>
     `;
     tile.addEventListener('click', ()=>compareWith(c, tile));
     friendGrid.appendChild(tile);
@@ -1689,7 +1688,7 @@
       g.fillText(t.name, W/2, 920);
       g.fillStyle = 'rgba(196,181,253,.9)';
       g.font = '500 36px "Space Mono", monospace';
-      g.fillText(code + ' · ' + (t.axisCode || ''), W/2, 980);
+      g.fillText((t.axisCode || ''), W/2, 980);
       if(t.tagline){
         g.fillStyle = 'rgba(252,165,209,.9)';
         g.font = 'italic 38px "Cormorant Garamond", serif';

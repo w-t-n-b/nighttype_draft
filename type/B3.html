@@ -490,23 +490,15 @@
     </div>
   </section>
 
-  <!-- Detail -->
-  <section class="ts-block" id="detailBlock">
-    <h2 class="ts-title">02 · もっと<em>詳しく</em></h2>
-    <div class="ts-card">
-      <div class="ts-text" id="typeDetail">—</div>
-    </div>
-  </section>
-
   <!-- Aruaru -->
   <section class="ts-block">
-    <h2 class="ts-title">03 · <em>あるある</em></h2>
+    <h2 class="ts-title">02 · <em>あるある</em></h2>
     <div class="aruaru-list" id="aruaruList"></div>
   </section>
 
   <!-- Compatibility -->
   <section class="ts-block">
-    <h2 class="ts-title">04 · あなたの夜の<em>相性</em></h2>
+    <h2 class="ts-title">03 · あなたの夜の<em>相性</em></h2>
     <div class="compat-grid">
       <div class="compat-card good">
         <div class="compat-head"><span class="dot"></span>響き合う相手</div>
@@ -524,7 +516,7 @@
 
   <!-- Mirror compare (05) -->
   <section class="ts-block">
-    <h2 class="ts-title">05 · 他のタイプと<em>比べる</em></h2>
+    <h2 class="ts-title">04 · 他のタイプと<em>比べる</em></h2>
     <div class="ts-card mirror-card">
       <div class="mirror-grid" id="mirrorGrid"></div>
       <div id="mirrorResult" class="mirror-result">
@@ -564,8 +556,8 @@
   const t = types[code] || types.A1;
 
   // ── Page meta ──
-  document.title = `${t.name}（${code}）— 夜キャラ診断`;
-  document.getElementById('pageTitle').textContent = `${t.name}（${code}）— 夜キャラ診断`;
+  document.title = `${t.name} — 夜キャラ診断`;
+  document.getElementById('pageTitle').textContent = `${t.name} — 夜キャラ診断`;
   document.getElementById('ogTitle').setAttribute('content', `${t.name}｜夜キャラ診断`);
   document.getElementById('ogDesc').setAttribute('content', t.tagline || '');
   if(t.image) document.getElementById('ogImage').setAttribute('content', t.image);
@@ -576,8 +568,8 @@
   charImg.src = imgSrc.startsWith("images/")?"../"+imgSrc:imgSrc; charImg.alt = t.name;
   document.getElementById('heroBg').style.backgroundImage = `url("${imgSrc.startsWith("images/")?"../"+imgSrc:imgSrc}")`;
 
-  document.getElementById('bcCode').textContent = code;
-  document.getElementById('heroCode').textContent = `${code} · ${t.axisCode || ''}`;
+  const _bc = document.getElementById('bcCode'); if(_bc) _bc.textContent = t.name;
+  document.getElementById('heroCode').textContent = `${t.axisCode || ''}`;
   document.getElementById('heroName').textContent = t.name;
   document.getElementById('heroTagline').textContent = `"${t.tagline || ''}"`;
 
@@ -600,11 +592,6 @@
   document.getElementById('typeDesc').innerHTML = paragraphify(t.description);
 
   // ── Detail ──
-  if(t.detail){
-    document.getElementById('typeDetail').innerHTML = paragraphify(t.detail);
-  } else {
-    document.getElementById('detailBlock').style.display = 'none';
-  }
 
   // Meta row
   const meta = [];
@@ -630,7 +617,7 @@
         <img src="${(tt.image||"").startsWith("images/")?"../"+tt.image:(tt.image||`../images/${c}.png`)}" alt=""
              onerror="this.style.display='none'"/>
         <div class="compat-item-body">
-          <div class="compat-item-code">${c}</div>
+          <div class="compat-item-code">${(types[c]||{}).name||""}</div>
           <div class="compat-item-name">${tt.name}</div>
         </div>
       </a>
@@ -649,7 +636,7 @@
     grid.innerHTML = order.filter(c=>c!==code).map(c=>{
       const tt = types[c]; if(!tt) return '';
       const imgSrc = (tt.image||'').startsWith('images/') ? '../'+tt.image : (tt.image || '../images/'+c+'.png');
-      return `<div class="mr-cell" data-code="${c}"><img src="${imgSrc}" alt="${tt.name}" onerror="this.style.display='none'"><div class="mr-cell-code">${c}</div></div>`;
+      return `<div class="mr-cell" data-code="${c}"><img src="${imgSrc}" alt="${tt.name}" onerror="this.style.display='none'"><div class="mr-cell-code">${(types[c]||{}).name||""}</div></div>`;
     }).join('');
     function axisCompare(myCode, other){
       const TIER_COPY = {
