@@ -412,25 +412,16 @@
     </div>
   </section>
 
-  <!-- Detail -->
-  <section class="ts-block" id="detailBlock">
-    <div class="ts-eyebrow">02 · もっと深く</div>
-    <h2 class="ts-title">愛し方の<em>質感</em></h2>
-    <div class="ts-card">
-      <div class="ts-text" id="typeDetail">—</div>
-    </div>
-  </section>
-
   <!-- Aruaru -->
   <section class="ts-block">
-    <div class="ts-eyebrow">03 · あるある</div>
+    <div class="ts-eyebrow">02 · あるある</div>
     <h2 class="ts-title">この人だけがやる、<em>夜のあるある</em></h2>
     <div class="aruaru-list" id="aruaruList"></div>
   </section>
 
   <!-- Compatibility -->
   <section class="ts-block">
-    <div class="ts-eyebrow">04 · 相性</div>
+    <div class="ts-eyebrow">03 · 相性</div>
     <h2 class="ts-title"><em>響き合う人</em>、<em>すれ違う人</em></h2>
     <div class="compat-grid">
       <div class="compat-card good">
@@ -501,12 +492,6 @@
   }
   document.getElementById('typeDesc').innerHTML = paragraphify(t.description);
 
-  // ── Detail ──
-  if(t.detail){
-    document.getElementById('typeDetail').innerHTML = paragraphify(t.detail);
-  } else {
-    document.getElementById('detailBlock').style.display = 'none';
-  }
 
   // Meta row
   const meta = [];
