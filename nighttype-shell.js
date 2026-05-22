@@ -101,6 +101,9 @@
 
   // === 全ページフッター自動注入（著作権 + 利用規約 + PP） ===
   (function ensureFooter(){
+    // クイズの没入モード（.quiz-wrap が固定で画面を覆うページ）はフッター不要
+    // PCで .quiz-wrap (z-index:5, position:fixed) と autoフッター(z-index:5) が衝突するのを防ぐ
+    if(document.querySelector('.quiz-wrap')) return;
     let f = document.querySelector('footer');
     const hasLegal = f && f.querySelector('[data-legal-line]');
     if(hasLegal) return;
