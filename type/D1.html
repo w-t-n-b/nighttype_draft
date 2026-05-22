@@ -580,7 +580,8 @@
     document.getElementById('axGt').textContent   = axesParts[3];
   }
 
-  // ── Description ──  function paragraphify(text){
+  // ── Description ──
+  function paragraphify(text){
     return (text || '')
       .split(/\n\s*\n/)
       .map(p => `<p>${p.replace(/\n/g,'<br/>')}</p>`)
