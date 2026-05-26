@@ -1979,19 +1979,29 @@
     setTimeout(()=>ld.classList.add('gone'), 700);
   }, 800);
 
-  // ── Instagram 3択モーダル（投稿 / ストーリー / メッセージ） ──
-  window.openIgChooser = function(blob, fname){
-    // 画像を先にダウンロード（IGアプリで選びやすく）
+  // ── 「その他」シェア: iOS/Android システムシェアシートを呼び出す ──
+  window.openIgChooser = async function(blob, fname){
+    // Web Share API (files対応) → iOS/Androidのシェアシート表示
+    if(navigator.canShare && navigator.canShare({files:[new File([blob], fname, {type:'image/png'})]})){
+      try{
+        await navigator.share({
+          files: [new File([blob], fname, {type:'image/png'})],
+          title: '夜キャラ診断',
+          text: '私の夜キャラは…'
+        });
+        return;
+      }catch(err){
+        // ユーザーキャンセル or 失敗 → フォールバックへ
+        if(err && err.name === 'AbortError') return;
+      }
+    }
+    // フォールバック: 画像をダウンロード + 案内（PC、Web Share未対応ブラウザ）
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = fname;
     a.click();
     setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
-
-    // モーダル表示
-    const overlay = document.getElementById('igChooser');
-    if(!overlay) return;
-    overlay.classList.add('show');
+    alert('画像をダウンロードしました。お好きなSNSにアップロードしてください。');
   };
 
   document.addEventListener('click', (e)=>{
