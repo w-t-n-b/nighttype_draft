@@ -1449,48 +1449,26 @@
     `;
   }
   // === 5-tier compatibility copy (specific scene-based, no abstract metaphors) ===
+  // types.js の compatComments と同一(label + comment)、summary/taunt は廃止
   const TIER_COPY = {
-    5: {
-      label: '夜の双子',
-      summary: '初対面で朝5時まで気まずさゼロ',
-      comment: '笑うタイミング、酔うタイミング、帰りたくなるタイミングまで全部一致。会って3時間でベスフレ確定の相性。',
-      taunt: 'これマジで運命'
-    },
-    4: {
-      label: '波長一致',
-      summary: '気づいたら終電なくなってるタイプ',
-      comment: '2軒目以降のテンションが揃う。酔い方の方向性が同じで、朝まで語れる。',
-      taunt: 'これ運命では?'
-    },
-    3: {
-      label: '並ぶ夜',
-      summary: '酒は飲めるけど話は深まらない',
-      comment: '黙って隣で飲める関係。盛り上がりはしないけど、別に嫌でもない。普通の飲み友ポジション。',
-      taunt: ''
-    },
-    2: {
-      label: '微妙なすれ違い',
-      summary: '終電の使い方で価値観バトル',
-      comment: 'あなたが二件目行きたい時、相手はタクシー呼んでる。夜の終わり方が合わない人。',
-      taunt: 'これ意外と当たってて泣いた'
-    },
-    1: {
-      label: '天敵レベル',
-      summary: '居酒屋の2時間がまるで永遠',
-      comment: 'あなたが乾杯したい瞬間、相手はもう帰りたい。テンションのタイミングが完全に真逆。気まずい沈黙のオンパレード。',
-      taunt: 'これ友達と試したら絶望した'
-    }
+    0: { label:'天敵',   comment:'終わる頃には、心も体もすり減り切って、朝を待つ間の沈黙が、まるで葬式のような重苦しさ。', summary:'', taunt:'' },
+    1: { label:'共倒れ', comment:'触れ合うたびに軋む音。快感の追求ではなく、互いの地雷を全力で踏み合っているだけの、最悪に相性の悪い熱帯夜。', summary:'', taunt:'' },
+    2: { label:'ギリ耐え', comment:'意味もなく、なんとなく、進む、淀みあるストーリー', summary:'', taunt:'' },
+    3: { label:'共犯',   comment:'特別じゃないけれど、替えが効かない。深夜2時の気だるさを一緒に溶かせる、唯一の相手。', summary:'', taunt:'' },
+    4: { label:'最適',   comment:'細胞膜に包まって、3分間で40回戦。', summary:'', taunt:'' },
+    5: { label:'神',     comment:'世界が回っていることすら忘れた。朝が来るまで、このベッド上が僕らの唯一の宇宙。', summary:'', taunt:'' }
   };
-  // Map (a, b) axisCode patterns → tier number 1-5
+  // 相性tier計算は types.js の getCompat() に統一（0〜5を返す）
   function getCompatTier(a, b){
     if(!a || !b) return null;
+    if(typeof getCompat === 'function') return getCompat(a, b);
+    // フォールバック（types.js未読込時）
     const at = types[a], bt = types[b];
     if(!at || !bt || !at.axisCode || !bt.axisCode) return null;
     const ax = at.axisCode.split('-'), bx = bt.axisCode.split('-');
     const sN = ax[0]===bx[0], sS = ax[1]===bx[1], sA = ax[2]===bx[2], sG = ax[3]===bx[3];
-    // Specific patterns first
-    if(sN && !sS && sA && !sG) return 5;  // GOOD pattern
-    if(!sN && sS && !sA && sG) return 1;  // BAD pattern
+    if(sN && !sS && sA && !sG) return 5;
+    if(!sN && sS && !sA && sG) return 1;
     const cnt = [sN,sS,sA,sG].filter(Boolean).length;
     if(cnt===3) return 4;
     if(cnt===2 || cnt===4) return 3;
