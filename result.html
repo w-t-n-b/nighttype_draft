@@ -1264,7 +1264,7 @@
       16タイプ全部見る <span class="arrow">→</span>
     </a>
     <a href="quiz.html?restart=1" class="nt-btn nt-btn-primary">
-      もう一度診断する <span class="arrow">↻</span>
+      気分を新たに再診断 <span class="arrow">↻</span>
     </a>
   </div>
 
@@ -1311,6 +1311,14 @@
     // If gtag is available (GA4), forward
     if(typeof gtag === 'function'){ try{ gtag('event', name, params || {}); }catch(_){} }
   }
+  // ── CustomEvent → GA4 自動転送（dispatchEventだけのコードもGAに届くように） ──
+  ['share_clicked','invite_detail_clicked','invite_returned_cta_clicked','visitor_cta_clicked','visitor_arrival','result_viewed'].forEach(name=>{
+    window.addEventListener(name, (e)=>{
+      if(typeof gtag === 'function'){
+        try{ gtag('event', name, e.detail || {}); }catch(_){}
+      }
+    });
+  });
   // Fire visitor_arrival or result_viewed
   if(urlFromCode) trackEvent('visitor_arrival', {from: urlFromCode, type: code});
   trackEvent('result_viewed', {type: code, mode: isVisitorMode ? 'visitor' : 'normal', from: urlFromCode || null});
