@@ -871,15 +871,16 @@
   }
   /* ── Share strip ── */
   .share-row{
-    display:flex; gap:8px; flex-wrap:nowrap;
+    display:flex !important; gap:8px; flex-wrap:nowrap;
     margin-bottom:10px; justify-content:center;
+    visibility:visible !important; opacity:1 !important;
   }
   .share-btn{
-    flex:1 1 0;
-    min-width:0; min-height:74px;
+    flex:1 1 0 !important;
+    min-width:60px !important; min-height:74px !important;
     display:flex !important;
-    flex-direction:column;
-    align-items:center; justify-content:center;
+    flex-direction:column !important;
+    align-items:center !important; justify-content:center !important;
     gap:6px;
     padding:14px 6px; border-radius:14px;
     font-family:"Noto Sans JP",sans-serif; font-size:10.5px;
@@ -888,6 +889,7 @@
     border:1px solid var(--line);
     background:rgba(255,255,255,.04);
     color:#fff; text-decoration:none;
+    visibility:visible !important; opacity:1 !important;
   }
   .share-btn-label{ display:block !important; font-size:10.5px; font-weight:600; }
   .share-btn svg{ width:22px !important; height:22px !important; fill:currentColor; flex-shrink:0; }
@@ -1128,7 +1130,7 @@
         </button>
         <button class="share-btn ig" data-action="ig" data-ibc="1">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
-          <span class="share-btn-label">IGストーリー</span>
+          <span class="share-btn-label">その他</span>
         </button>
       </div>
       <button class="share-save-link" data-action="save" data-ibc="1">または画像を保存</button>
@@ -1153,7 +1155,7 @@
       </button>
       <button class="share-btn ig" data-action="ig">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
-        <span class="share-btn-label">IGストーリー</span>
+        <span class="share-btn-label">その他</span>
       </button>
     </div>
     <button class="share-save-link" data-action="save">または画像を保存</button>
@@ -1248,7 +1250,7 @@
             </button>
             <button class="share-btn ig" data-action="ig">
               <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
-              <span class="share-btn-label">IGストーリー</span>
+              <span class="share-btn-label">その他</span>
             </button>
           </div>
           <button class="share-save-link" data-action="save">または画像を保存</button>
@@ -1822,7 +1824,7 @@
           }catch(e){ console.error(e); alert('画像生成に失敗しました'); }
           btn.disabled = false;
           if(btn.querySelector('.share-btn-label')){
-            btn.querySelector('.share-btn-label').textContent = action==='ig' ? 'IGストーリー' : 'Copy';
+            btn.querySelector('.share-btn-label').textContent = action==='ig' ? 'その他' : 'Copy';
           } else {
             btn.textContent = origLabel;
           }
