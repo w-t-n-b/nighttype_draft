@@ -1167,7 +1167,6 @@
     <h2 class="section-title">あなたの夜を、<em>ひとこと</em>で</h2>
     <div class="desc-card">
       <div class="desc-text" id="typeDesc">—</div>
-      <div class="meta-row" id="metaRow"></div>
     </div>
   </section>
 
@@ -1420,10 +1419,6 @@
     .join('');
   document.getElementById('typeDesc').innerHTML = descHtml;
 
-  // Meta row
-  const meta = [];
-  (t.keyword || []).forEach(k=> meta.push(`<span class="meta-chip">${k}</span>`));
-  document.getElementById('metaRow').innerHTML = meta.join('');
 
   // ── Aruaru ──
   const aruList = (typeof aruaruData !== 'undefined' && aruaruData[code]) || [];
