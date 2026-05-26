@@ -2029,11 +2029,12 @@
 <style>
   .ig-ovl{
     position:fixed; inset:0; z-index:500;
-    background:rgba(0,0,0,.78); backdrop-filter:blur(14px);
-    display:flex; align-items:flex-end; justify-content:center;
+    background:rgba(0,0,0,.78);
+    align-items:flex-end; justify-content:center;
+    display:none; /* 初期は完全に非表示（Safariのbackdrop-filter干渉回避） */
     opacity:0; pointer-events:none; transition:opacity .25s;
   }
-  .ig-ovl.show{ opacity:1; pointer-events:all; }
+  .ig-ovl.show{ display:flex; opacity:1; pointer-events:all; backdrop-filter:blur(14px); }
   .ig-bg{ position:absolute; inset:0; }
   .ig-sheet{
     position:relative; z-index:2;
