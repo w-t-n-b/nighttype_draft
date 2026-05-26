@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QB8NMCQJ7R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QB8NMCQJ7R');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coming Soon — 夜キャラ診断</title>
+<meta name="description" content="夜キャラ診断の Items は近日公開予定です。" />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="nighttype-shell.css" />
+<style>
+  :root{
+    --bg:#04040e; --bg-2:#0a0a1a;
+    --ink:#e9e6ff; --ink-mute:#9a96b8; --ink-dim:#787494;
+    --violet:#9B7CF8; --cyan:#22D3EE; --pink:#F472B6;
+    --line:rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;position:relative;display:flex;flex-direction:column}
+
+  .nebula{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 25%, rgba(155,124,248,0.20), transparent 60%),
+      radial-gradient(ellipse 55% 45% at 80% 75%, rgba(34,211,238,0.14), transparent 60%),
+      radial-gradient(ellipse 40% 35% at 50% 50%, rgba(244,114,182,0.10), transparent 60%);
+    mix-blend-mode:screen;
+  }
+
+  main{
+    position:relative;z-index:5;flex:1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:140px 28px 80px;
+  }
+
+  .cs-eyebrow{
+    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.4em;
+    text-transform:uppercase;color:var(--cyan);margin-bottom:24px;
+    display:inline-flex;align-items:center;gap:12px;
+  }
+  .cs-eyebrow::before, .cs-eyebrow::after{
+    content:"";width:40px;height:1px;background:var(--cyan);opacity:.4;
+  }
+  .cs-dot{
+    display:inline-block;width:8px;height:8px;border-radius:50%;
+    background:var(--violet);box-shadow:0 0 12px var(--violet);
+    animation:pulse 2s ease infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+
+  h1{
+    font-family:"Cormorant Garamond",serif;font-weight:500;
+    font-size:clamp(48px,9vw,108px);line-height:1.05;letter-spacing:-.02em;
+    margin-bottom:24px;text-wrap:balance;
+    background:linear-gradient(180deg,#fff 0%,#d6c8ff 40%,var(--violet) 70%,var(--cyan) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(155,124,248,.25);
+    padding-bottom:.1em;
+  }
+  .cs-italic{font-style:italic;}
+
+  .cs-sub{
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    font-size:clamp(18px,2.6vw,26px);color:#cfc8ee;
+    margin-bottom:36px;letter-spacing:.04em;
+  }
+  .cs-jp{
+    font-size:14.5px;color:var(--ink-mute);line-height:1.95;
+    max-width:520px;margin:0 auto 56px;letter-spacing:.02em;
+  }
+
+  .cs-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:48px}
+  .cs-btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:16px 32px;border-radius:99px;
+    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;cursor:pointer;
+    border:1px solid var(--line);transition:all .3s;
+    backdrop-filter:blur(12px);
+  }
+  .cs-btn-primary{
+    background:linear-gradient(135deg,var(--violet),var(--cyan));
+    color:#0b0820;border-color:transparent;
+    box-shadow:0 16px 48px -12px rgba(155,124,248,.5);
+  }
+  .cs-btn-primary:hover{transform:translateY(-3px);box-shadow:0 24px 64px -8px rgba(155,124,248,.6)}
+  .cs-btn-ghost{
+    background:rgba(255,255,255,.03);color:var(--ink);
+  }
+  .cs-btn-ghost:hover{border-color:rgba(155,124,248,.5);transform:translateY(-3px)}
+  .cs-btn .arrow{transition:transform .3s}
+  .cs-btn:hover .arrow{transform:translateX(4px)}
+
+  .cs-info{
+    display:flex;flex-direction:column;gap:8px;align-items:center;
+    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.2em;
+    color:var(--ink-dim);text-transform:uppercase;
+  }
+  .cs-info-row{display:flex;gap:8px;align-items:center}
+  .cs-info-row .label{color:var(--violet)}
+
+  /* drifting orbs */
+  .orb{
+    position:absolute;border-radius:50%;
+    pointer-events:none;mix-blend-mode:screen;
+    animation:drift 18s ease-in-out infinite;
+  }
+  .orb-1{
+    width:300px;height:300px;top:8%;left:5%;
+    background:radial-gradient(circle,rgba(155,124,248,.35),transparent 70%);
+    animation-delay:0s;
+  }
+  .orb-2{
+    width:240px;height:240px;bottom:12%;right:8%;
+    background:radial-gradient(circle,rgba(34,211,238,.28),transparent 70%);
+    animation-delay:-6s;
+  }
+  .orb-3{
+    width:200px;height:200px;top:40%;right:18%;
+    background:radial-gradient(circle,rgba(244,114,182,.22),transparent 70%);
+    animation-delay:-12s;
+  }
+  @keyframes drift{
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(40px,-30px) scale(1.08)}
+    66%{transform:translate(-30px,40px) scale(.94)}
+  }
+
+  @media (max-width:520px){
+    main{padding:110px 22px 60px}
+    h1{font-size:44px}
+    .cs-sub{font-size:18px}
+  }
+</style>
+</head>
+<body>
+
+<div class="nebula"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<main>
+  <div class="cs-eyebrow"><span class="cs-dot"></span>Coming Soon<span class="cs-dot"></span></div>
+  <h1>準備中。<br/><span class="cs-italic">もう少しだけ。</span></h1>
+  <p class="cs-sub">— Items, just around the night —</p>
+  <p class="cs-jp">
+    夜キャラを「形」にしたグッズを、近日リリース予定です。<br/>
+    まずは診断を試して、自分の夜のキャラを見つけておきませんか?
+  </p>
+
+  <div class="cs-cta">
+    <a class="cs-btn cs-btn-primary" href="quiz.html">診断をはじめる<span class="arrow">→</span></a>
+    <a class="cs-btn cs-btn-ghost" href="characters.html">16タイプを見る<span class="arrow">→</span></a>
+  </div>
+
+  <div class="cs-info">
+    <div class="cs-info-row"><span class="label">●</span><span>Stay tuned</span></div>
+  </div>
+</main>
+
+</body>
+</html>
