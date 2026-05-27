@@ -35,7 +35,9 @@
 <meta name="twitter:image" content="https://yoruchara16types.com/images/og_top.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" /></noscript>
 <link rel="stylesheet" href="nighttype-shell.css" />
 <style>
   :root{
@@ -302,6 +304,12 @@
     .hero-title,.cursor-glow,.marquee-track,.btn-primary::before,.const-char,.type-img,.type-orb::before{animation:none}
   }
 </style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"夜キャラ診断16types","alternateName":["夜キャラ診断","ナイトタイプ16types"],"url":"https://yoruchara16types.com/","description":"MBTI・ラブタイプの次に流行る「夜のタイプ」を診断。沼塩・愛欲・S/M・Give/Take の4軸で導き出す16キャラクター。","inLanguage":"ja"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"夜キャラ診断","alternateName":"夜キャラ診断16types","url":"https://yoruchara16types.com/","logo":"https://yoruchara16types.com/favicon-192.png","description":"夜の自己理解を提供する16タイプ性格診断サービス。"}
+</script>
 </head>
 <body>
 
@@ -342,7 +350,7 @@
     <div class="repeater-band" id="repeaterBand" style="display:none">
       <div class="repeater-greet">おかえりなさい</div>
       <div class="repeater-card">
-        <img class="repeater-img" id="repeaterImg" src="" alt=""/>
+        <img class="repeater-img" id="repeaterImg" src="" alt="" width="120" height="120" loading="lazy"/>
         <div class="repeater-info">
           <div class="repeater-name" id="repeaterName">—</div>
           <div class="repeater-tag" id="repeaterTag">—</div>
@@ -661,7 +669,7 @@ const TYPES = [
     // Vary animation duration per tier for parallax feel: near = slower, far = faster
     const baseDur = p.tier==='near'?32 : p.tier==='mid'?22 : 16;
     node.style.animationDuration = (baseDur + (i%5)*1.5)+'s';
-    node.innerHTML = `<img src="images/${t.code}.png" alt="" loading="lazy"/>`;
+    node.innerHTML = `<img src="images/${t.code}.png" alt="" width="160" height="160" loading="lazy"/>`;
     root.appendChild(node);
   });
 
@@ -689,7 +697,7 @@ const TYPES = [
     a.style.transitionDelay = (i*0.04)+'s';
     a.innerHTML = `
       <div class="type-orb">
-        <img class="type-img" src="images/${t.code}.png" alt="${t.code}" loading="lazy" />
+        <img class="type-img" src="images/${t.code}.png" alt="${t.code}" width="200" height="200" loading="lazy" />
         <div class="type-shadow"></div>
       </div>
       <div class="type-meta">

@@ -35,7 +35,9 @@
 <meta name="twitter:image" content="https://yoruchara16types.com/images/og_characters.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" /></noscript>
 <link rel="stylesheet" href="nighttype-shell.css" />
 <style>
 
@@ -381,8 +383,11 @@
            style="animation-delay:${Math.min(i*0.04, 0.6)}s">
           <div class="ch-card-img-wrap">
             <span class="ch-card-axes">${axisShort}</span>
-            <img class="ch-card-img" src="${t.image || `images/${c}.png`}" alt="${t.name}"
-                 onerror="this.style.display='none';this.parentElement.style.background='radial-gradient(circle at 30% 30%, rgba(155,124,248,.4), #0a0a1a)'"/>
+            <picture>
+              <source srcset="images/${c}.webp" type="image/webp" />
+              <img class="ch-card-img" src="${t.image || `images/${c}.png`}" alt="「${t.name}」夜キャラ${c}" width="240" height="240" loading="lazy"
+                   onerror="this.style.display='none';this.parentElement.style.background='radial-gradient(circle at 30% 30%, rgba(155,124,248,.4), #0a0a1a)'"/>
+            </picture>
           </div>
           <div class="ch-card-body">
             <div class="ch-card-name">${t.name}</div>

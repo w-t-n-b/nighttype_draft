@@ -34,9 +34,12 @@
 <meta name="twitter:description" content="「観測者ポジション」(塩 × S × 愛 × Take・INTJタイプ)── 全部見えている。だから、愛してる。本質・夜のあるある・響き合う相手とすれ違う相手まで、3分で分かる無料診断付き解説。" />
 <meta name="twitter:image" content="https://yoruchara16types.com/images/og_D1.png" />
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "観測者ポジション(S-S-A-T)の特徴・相性・あるある", "description": "全部見えている。だから、愛してる", "image": "https://yoruchara16types.com/images/og_D1.png", "author": {"@type": "Organization", "name": "夜キャラ診断"}, "publisher": {"@type": "Organization", "name": "夜キャラ診断", "logo": {"@type": "ImageObject", "url": "https://yoruchara16types.com/favicon.ico"}}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://yoruchara16types.com/type/D1.html"}, "keywords": "観察,支配,愛情確認"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://yoruchara16types.com/"}, {"@type": "ListItem", "position": 2, "name": "キャラクター一覧", "item": "https://yoruchara16types.com/characters.html"}, {"@type": "ListItem", "position": 3, "name": "観測者ポジション", "item": "https://yoruchara16types.com/type/D1.html"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" /></noscript>
 <link rel="stylesheet" href="../nighttype-shell.css" />
 <style>
 
@@ -475,7 +478,7 @@
       <div class="hero-orbit-ring"></div>
       <div class="hero-orbit-ring"></div>
       <div class="hero-char-frame">
-        <img id="charImg" alt="" />
+        <picture><source srcset="../images/D1.webp" type="image/webp" /><img id="charImg" alt="観測者ポジション(S-S-A-T・INTJタイプ)の夜キャラクター画像" width="600" height="600" loading="eager" /></picture>
       </div>
     </div>
 
@@ -534,9 +537,9 @@
       <div class="mirror-grid" id="mirrorGrid"></div>
       <div id="mirrorResult" class="mirror-result">
         <div class="mr-pair">
-          <div class="mr-char"><img id="mr1Img" /><div class="mr-name" id="mr1Name">—</div></div>
+          <div class="mr-char"><img id="mr1Img" width="160" height="160" loading="lazy" alt="" /><div class="mr-name" id="mr1Name">—</div></div>
           <div class="mr-cross">×</div>
-          <div class="mr-char"><img id="mr2Img" /><div class="mr-name" id="mr2Name">—</div></div>
+          <div class="mr-char"><img id="mr2Img" width="160" height="160" loading="lazy" alt="" /><div class="mr-name" id="mr2Name">—</div></div>
         </div>
         <div class="mr-score">
           <div class="mr-hearts" id="mrHearts">★★★☆☆</div>
@@ -578,7 +581,7 @@
   // ── Hero ──
   const imgSrc = t.image || `../images/${code}.png`;
   const charImg = document.getElementById('charImg');
-  charImg.src = imgSrc.startsWith("images/")?"../"+imgSrc:imgSrc; charImg.alt = t.name;
+  charImg.src = imgSrc.startsWith("images/")?"../"+imgSrc:imgSrc;
   document.getElementById('heroBg').style.backgroundImage = `url("${imgSrc.startsWith("images/")?"../"+imgSrc:imgSrc}")`;
 
   const _bc = document.getElementById('bcCode'); if(_bc) _bc.textContent = t.name;
@@ -623,7 +626,7 @@
     if(!tt) return '';
     return `
       <a class="compat-item" href="${c}.html">
-        <img src="${(tt.image||"").startsWith("images/")?"../"+tt.image:(tt.image||`../images/${c}.png`)}" alt=""
+        <img src="${(tt.image||"").startsWith("images/")?"../"+tt.image:(tt.image||`../images/${c}.png`)}" alt="" width="120" height="120" loading="lazy"
              onerror="this.style.display='none'"/>
         <div class="compat-item-body">
           <div class="compat-item-code">${(types[c]||{}).name||""}</div>
@@ -643,7 +646,7 @@
     grid.innerHTML = order.filter(c=>c!==code).map(c=>{
       const tt = types[c]; if(!tt) return '';
       const imgSrc = (tt.image||'').startsWith('images/') ? '../'+tt.image : (tt.image || '../images/'+c+'.png');
-      return `<div class="mr-cell" data-code="${c}"><img src="${imgSrc}" alt="${tt.name}" onerror="this.style.display='none'"><div class="mr-cell-code">${(types[c]||{}).name||""}</div></div>`;
+      return `<div class="mr-cell" data-code="${c}"><img src="${imgSrc}" alt="${tt.name}" width="100" height="100" loading="lazy" onerror="this.style.display='none'"><div class="mr-cell-code">${(types[c]||{}).name||""}</div></div>`;
     }).join('');
     function axisCompare(myCode, other){
       const TIER_COPY = {

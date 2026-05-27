@@ -28,7 +28,9 @@
 <meta name="twitter:image" id="twImage" content="images/A1.png">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" /></noscript>
 <link rel="stylesheet" href="nighttype-shell.css" />
 <style>
   body{ background:var(--bg); }
@@ -1015,7 +1017,7 @@
     <div class="vl-pair">
       <div class="vl-side vl-side-them">
         <div class="vl-char-wrap">
-          <img class="vl-char-img" id="vlInviterImg" src="" alt="">
+          <img class="vl-char-img" id="vlInviterImg" src="" alt="" width="200" height="200" loading="lazy">
         </div>
         <div class="vl-side-code" id="vlInviterCode">—</div>
         <div class="vl-side-name" id="vlInviterName">—</div>
@@ -1062,12 +1064,12 @@
     <h2 class="inv-title">あなた × <span id="invFromName">—</span>(<span id="invFromCode">—</span>) の相性</h2>
     <div class="inv-pair">
       <div class="inv-char">
-        <img id="invMeImg" src="" alt="" />
+        <img id="invMeImg" src="" alt="" width="120" height="120" loading="lazy" />
         <div class="inv-char-name" id="invMeName">あなた</div>
       </div>
       <div class="inv-cross">×</div>
       <div class="inv-char">
-        <img id="invFromImg" src="" alt="" />
+        <img id="invFromImg" src="" alt="" width="120" height="120" loading="lazy" />
         <div class="inv-char-name" id="invFromShort">—</div>
       </div>
     </div>
@@ -1089,7 +1091,7 @@
     <div class="char-orbit">
       <div class="char-orbit-ring"></div>
       <div class="char-orbit-ring"></div>
-      <div class="char-frame"><img id="charImg" src="" alt="" /></div>
+      <div class="char-frame"><img id="charImg" src="" alt="" width="600" height="600" loading="eager" /></div>
     </div>
 
     <div class="type-code" id="typeCode">A1 · N-S-A-G</div>
@@ -1186,7 +1188,7 @@
   <!-- Items CTA (hidden until launch)
   <section class="section-block items-cta">
     <div class="items-cta-inner">
-      <img class="items-cta-img" id="itemsCtaImg" src="" alt="" />
+      <img class="items-cta-img" id="itemsCtaImg" src="" alt="" width="240" height="240" loading="lazy" />
       <div class="items-cta-body">
         <div class="items-cta-eyebrow">— Items —</div>
         <h2 class="items-cta-title">夜のあなたを<em>お迎え</em>。</h2>
@@ -1226,9 +1228,9 @@
       <div class="friend-grid" id="friendGrid"></div>
       <div class="friend-result" id="friendResult">
         <div class="friend-pair">
-          <div class="fp-char"><img id="fp1Img" /><div class="fp-char-name" id="fp1Name">—</div></div>
+          <div class="fp-char"><img id="fp1Img" width="120" height="120" loading="lazy" alt="" /><div class="fp-char-name" id="fp1Name">—</div></div>
           <div class="fp-cross">×</div>
-          <div class="fp-char"><img id="fp2Img" /><div class="fp-char-name" id="fp2Name">—</div></div>
+          <div class="fp-char"><img id="fp2Img" width="120" height="120" loading="lazy" alt="" /><div class="fp-char-name" id="fp2Name">—</div></div>
         </div>
         <div class="fp-score">
           <div class="fp-hearts" id="fpHearts">●●●</div>
@@ -1441,7 +1443,7 @@
     if(!tt) return '';
     return `
       <a class="compat-item" href="type.html?type=${c}">
-        <img src="${tt.image || `images/${c}.png`}" alt="" onerror="this.style.display='none'"/>
+        <img src="${tt.image || `images/${c}.png`}" alt="" width="120" height="120" loading="lazy" onerror="this.style.display='none'"/>
         <div class="compat-item-body">
           <div class="compat-item-name">${tt.name}</div>
         </div>
@@ -1498,7 +1500,7 @@
     const renderItem = ({code:c, tier})=>{
       const tt = types[c]; if(!tt) return '';
       const info = TIER_COPY[tier];
-      return `<a class="compat-item" href="type/${c}.html"><img src="${tt.image || 'images/'+c+'.png'}" alt=""><div class="compat-item-body"><div class="compat-item-code">${info.label}</div><div class="compat-item-name">${tt.name}</div></div></a>`;
+      return `<a class="compat-item" href="type/${c}.html"><img src="${tt.image || 'images/'+c+'.png'}" alt="" width="80" height="80" loading="lazy"><div class="compat-item-body"><div class="compat-item-code">${info.label}</div><div class="compat-item-name">${tt.name}</div></div></a>`;
     };
     document.getElementById('goodList').innerHTML = top.map(renderItem).join('');
     document.getElementById('badList').innerHTML  = bottom.map(renderItem).join('');
@@ -1528,7 +1530,7 @@
     tile.className = 'friend-tile';
     tile.dataset.code = c;
     tile.innerHTML = `
-      <img src="${tt.image || `images/${c}.png`}" alt="${tt.name}" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a0f2e,#0a0a1a)'"/>
+      <img src="${tt.image || `images/${c}.png`}" alt="${tt.name}" width="160" height="160" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a0f2e,#0a0a1a)'"/>
       <div class="friend-tile-label">${tt.name}</div>
     `;
     tile.addEventListener('click', ()=>compareWith(c, tile));
