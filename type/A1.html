@@ -490,7 +490,6 @@
     <h2 class="ts-title">01 · このキャラの<em>夜</em>、その本質</h2>
     <div class="ts-card">
       <div class="ts-text" id="typeDesc">—</div>
-      <div class="ts-meta" id="metaRow"></div>
     </div>
   </section>
 
@@ -595,9 +594,6 @@
   // ── Detail ──
 
   // Meta row
-  const meta = [];
-  (t.keyword || []).forEach(k=> meta.push(`<span class="ts-meta-chip">${k}</span>`));
-  document.getElementById('metaRow').innerHTML = meta.join('');
 
   // ── Aruaru ──
   const aruList = (typeof aruaruData !== 'undefined' && aruaruData[code]) || [];
