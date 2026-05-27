@@ -1,8 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /type.html
 Disallow: /privacy.html
 Disallow: /terms.html
 Disallow: /coming-soon.html
 Disallow: /compat.html
+Disallow: /uploads/
 
 Sitemap: https://yoruchara16types.com/sitemap.xml
