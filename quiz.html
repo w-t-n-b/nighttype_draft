@@ -1117,6 +1117,31 @@
         ts: Date.now()
       };
       localStorage.setItem('nightTypeProfile', JSON.stringify(profile));
+
+      // ── 新Webhook: 質問×プロフィール データを別エンドポイントへ送信 ──
+      // GASデプロイ後、下記URLを差し替える（空文字なら送信スキップ）
+      try{
+        const NEW_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxCNp-A90KK2FeDsuawwKXgcXJLeOnTCkJ9COWqG1atrjOSxqiAqfd7Cv4qNaQGWFGpHA/exec';
+        if(NEW_WEBHOOK_URL){
+          const newPayload = {
+            type: code,
+            age_range: ageRange,
+            romantic_interest: interest,
+            answers: history.map((h, i) => ({ id: i+1, axis: h.axis, val: h.val, weight: h.weight })),
+            ua: navigator.userAgent
+          };
+          fetch(NEW_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(newPayload),
+            mode: 'no-cors',
+            keepalive: true
+          }).catch(e => console.error('[NewWebhook] failed:', e));
+        }
+      }catch(err){
+        console.error('[NewWebhook] threw before fetch:', err);
+      }
+
       // Analytics
       if(typeof window.dispatchEvent === 'function'){
         window.dispatchEvent(new CustomEvent('profile_collected', {detail: profile}));
