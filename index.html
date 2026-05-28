@@ -303,12 +303,45 @@
     .reveal,.reveal-stagger > *{opacity:1;transform:none}
     .hero-title,.cursor-glow,.marquee-track,.btn-primary::before,.const-char,.type-img,.type-orb::before{animation:none}
   }
+  /* FAQセクション（控えめ・SEO目的） */
+  .faq-section{
+    max-width:720px;margin:0 auto;padding:48px 24px 24px;
+    border-top:1px solid var(--line);
+  }
+  .faq-inner{display:flex;flex-direction:column;gap:8px}
+  .faq-item{
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    padding:14px 4px;
+  }
+  .faq-item summary{
+    cursor:pointer;list-style:none;
+    font-family:"Noto Sans JP",sans-serif;font-size:13px;
+    color:var(--ink-mute);letter-spacing:.02em;
+    padding:4px 0;
+    transition:color .2s;
+  }
+  .faq-item summary:hover{color:#cfc8ee}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary::before{
+    content:"+";display:inline-block;width:18px;
+    color:var(--cyan);font-family:"Space Mono",monospace;
+    transition:transform .2s;
+  }
+  .faq-item[open] summary::before{content:"−"}
+  .faq-item p{
+    margin:10px 0 4px 18px;
+    font-family:"Noto Sans JP",sans-serif;font-size:12px;
+    color:var(--ink-mute);line-height:1.8;
+  }
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"夜キャラ診断16types","alternateName":["夜キャラ診断","ナイトタイプ16types"],"url":"https://yoruchara16types.com/","description":"MBTI・ラブタイプの次に流行る「夜のタイプ」を診断。沼塩・愛欲・S/M・Give/Take の4軸で導き出す16キャラクター。","inLanguage":"ja"}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"夜キャラ診断","alternateName":"夜キャラ診断16types","url":"https://yoruchara16types.com/","logo":"https://yoruchara16types.com/favicon-192.png","description":"夜の自己理解を提供する16タイプ性格診断サービス。"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"夜キャラ診断とは何ですか?","acceptedAnswer":{"@type":"Answer","text":"4軸20問の質問から、あなたの「夜の価値観タイプ」を16タイプのキャラクターに当てはめる無料の性格診断です。所要時間は約3分です。"}},{"@type":"Question","name":"結果は何種類ありますか?","acceptedAnswer":{"@type":"Answer","text":"沼/塩・S/M・愛/欲・Give/Takeの4軸の組み合わせで、合計16タイプのキャラクターがいます。"}},{"@type":"Question","name":"何分くらいで終わりますか?","acceptedAnswer":{"@type":"Answer","text":"20問の質問に答えるだけなので、平均2〜3分で完了します。"}},{"@type":"Question","name":"相性診断もできますか?","acceptedAnswer":{"@type":"Answer","text":"はい。診断後に出る結果ページから、他のキャラクターとの相性(0〜5段階)を確認できます。友達や恋人の結果と比較するページ(MATCH)もあります。"}},{"@type":"Question","name":"結果はSNSでシェアできますか?","acceptedAnswer":{"@type":"Answer","text":"X(Twitter)、LINE、Instagram、システムシェアシートに対応しています。結果ページのシェアボタンから最短1タップで投稿できます。"}}]}
 </script>
 </head>
 <body>
@@ -474,6 +507,31 @@
     </div>
   </section>
 </main>
+
+<section class="faq-section" aria-label="よくある質問">
+  <div class="faq-inner">
+    <details class="faq-item">
+      <summary>夜キャラ診断とは何ですか?</summary>
+      <p>4軸20問の質問から、あなたの「夜の価値観タイプ」を16タイプのキャラクターに当てはめる無料の性格診断です。所要時間は約3分です。</p>
+    </details>
+    <details class="faq-item">
+      <summary>結果は何種類ありますか?</summary>
+      <p>沼/塩・S/M・愛/欲・Give/Takeの4軸の組み合わせで、合計16タイプのキャラクターがいます。</p>
+    </details>
+    <details class="faq-item">
+      <summary>何分くらいで終わりますか?</summary>
+      <p>20問の質問に答えるだけなので、平均2〜3分で完了します。</p>
+    </details>
+    <details class="faq-item">
+      <summary>相性診断もできますか?</summary>
+      <p>はい。診断後に出る結果ページから、他のキャラクターとの相性(0〜5段階)を確認できます。友達や恋人の結果と比較するページ(MATCH)もあります。</p>
+    </details>
+    <details class="faq-item">
+      <summary>結果はSNSでシェアできますか?</summary>
+      <p>X(Twitter)、LINE、Instagram、システムシェアシートに対応しています。結果ページのシェアボタンから最短1タップで投稿できます。</p>
+    </details>
+  </div>
+</section>
 
 <footer>
   <div class="brand-line">夜キャラ診断</div>
