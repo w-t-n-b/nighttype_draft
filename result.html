@@ -1641,6 +1641,29 @@
       return await QRCode.toDataURL(url, {width:200, margin:1, color:{dark:'#ffffff', light:'#04040e'}});
     }catch(e){ console.warn('QR fail:', e); return null; }
   }
+  // 画像保存: スマホ=Web Share API(写真に保存可)、デスクトップ/未対応=ダウンロード
+  async function saveImageOrShare(blob, fname){
+    try{
+      if(navigator.canShare){
+        const file = new File([blob], fname, {type:'image/png'});
+        if(navigator.canShare({files:[file]})){
+          await navigator.share({files:[file]});
+          return true;
+        }
+      }
+    }catch(e){
+      // ユーザーがキャンセル(AbortError)した場合は再試行しない
+      if(e && e.name === 'AbortError') return false;
+      console.warn('Web Share failed, falling back to download:', e);
+    }
+    // フォールバック: ダウンロード
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = fname;
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    return true;
+  }
   async function makeImageBlob(mode, pairCode){
     const W = 1080, H = 1920;
     const c = document.createElement('canvas');
@@ -1795,11 +1818,7 @@
               ? `nighttype_${code}x${pairCode()}.png`
               : `nighttype_${code}.png`;
             if(action === 'save'){
-              const a = document.createElement('a');
-              a.href = URL.createObjectURL(blob);
-              a.download = fname;
-              a.click();
-              setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+              await saveImageOrShare(blob, fname);
             } else {
               // IG: 画像DL + 3択モーダル表示
               window.openIgChooser(blob, fname);
@@ -1871,11 +1890,7 @@
             const blob = await makeImageBlob('self', null);
             const fname = `nighttype_${code}.png`;
             if(action === 'save'){
-              const a = document.createElement('a');
-              a.href = URL.createObjectURL(blob);
-              a.download = fname;
-              a.click();
-              setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+              await saveImageOrShare(blob, fname);
             } else {
               // IG: 画像DL + 3択モーダル表示
               window.openIgChooser(blob, fname);
