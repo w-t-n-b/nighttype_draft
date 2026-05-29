@@ -131,7 +131,7 @@
     p.setAttribute('data-legal-line','1');
     p.style.cssText = 'margin-top:14px;font-size:11px;color:#9a96b8;letter-spacing:.04em;line-height:1.8';
     const linkCss = 'color:#9a96b8;text-decoration:underline;text-underline-offset:3px';
-    p.innerHTML = `© 2026 夜キャラ診断 All rights reserved.<br><a href="terms.html" style="${linkCss}">利用規約</a> &nbsp;|&nbsp; <a href="privacy.html" style="${linkCss}">プライバシーポリシー</a>`;
+    p.innerHTML = `© 2026 夜キャラ診断 All rights reserved.<br><a href="faq.html" style="${linkCss}">FAQ</a> &nbsp;|&nbsp; <a href="terms.html" style="${linkCss}">利用規約</a> &nbsp;|&nbsp; <a href="privacy.html" style="${linkCss}">プライバシーポリシー</a>`;
     // ホバー色だけJSで設定
     p.querySelectorAll('a').forEach(a => {
       a.addEventListener('mouseover', ()=>{a.style.color='#9B7CF8'});
