@@ -1669,44 +1669,89 @@
     const c = document.createElement('canvas');
     c.width = W; c.height = H;
     const g = c.getContext('2d');
-    // Background gradient
-    const bg = g.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, '#1a0a2e');
-    bg.addColorStop(.5, '#0d0420');
-    bg.addColorStop(1, '#1a0a2e');
-    g.fillStyle = bg; g.fillRect(0, 0, W, H);
-    // Decorative radial halos
-    const r1 = g.createRadialGradient(W*.2, H*.25, 0, W*.2, H*.25, W*.7);
-    r1.addColorStop(0, 'rgba(244,114,182,.22)'); r1.addColorStop(1, 'rgba(0,0,0,0)');
-    g.fillStyle = r1; g.fillRect(0, 0, W, H);
-    const r2 = g.createRadialGradient(W*.8, H*.7, 0, W*.8, H*.7, W*.7);
-    r2.addColorStop(0, 'rgba(155,124,248,.2)'); r2.addColorStop(1, 'rgba(0,0,0,0)');
-    g.fillStyle = r2; g.fillRect(0, 0, W, H);
-
-    // Header
-    g.fillStyle = 'rgba(34,211,238,.85)';
-    g.font = '500 32px "Space Mono", monospace';
-    g.textAlign = 'center';
-    g.fillText('— 夜キャラ診断 —', W/2, 130);
 
     if(mode === 'self'){
-      // Self image: 1 large character + name + summary
+      // Self image: 事前作成済みの share_{code}.jpg をベースに、QRだけ動的URLで上書き
       try{
-        const charImg = await loadImage(t.image || `images/${code}.png`);
-        g.drawImage(charImg, W/2-300, 200, 600, 600);
-      }catch(e){}
-      g.fillStyle = '#fff';
-      g.font = '500 56px "Cormorant Garamond", serif';
-      g.fillText(t.name, W/2, 920);
-      g.fillStyle = 'rgba(196,181,253,.9)';
-      g.font = '500 36px "Space Mono", monospace';
-      g.fillText((t.axisCode || ''), W/2, 980);
-      if(t.tagline){
-        g.fillStyle = 'rgba(252,165,209,.9)';
-        g.font = 'italic 38px "Cormorant Garamond", serif';
-        g.fillText('"' + t.tagline + '"', W/2, 1060);
+        const baseImg = await loadImage(`images/share_${code}.jpg`);
+        g.drawImage(baseImg, 0, 0, W, H);
+      }catch(e){
+        // フォールバック: 旧Canvas生成(画像が無い場合)
+        const bg = g.createLinearGradient(0, 0, 0, H);
+        bg.addColorStop(0, '#1a0a2e'); bg.addColorStop(.5, '#0d0420'); bg.addColorStop(1, '#1a0a2e');
+        g.fillStyle = bg; g.fillRect(0, 0, W, H);
+        try{
+          const charImg = await loadImage(t.image || `images/${code}.png`);
+          g.drawImage(charImg, W/2-300, 200, 600, 600);
+        }catch(_){}
+        g.fillStyle = '#fff';
+        g.font = '500 56px "Cormorant Garamond", serif';
+        g.textAlign = 'center';
+        g.fillText(t.name, W/2, 920);
+        if(t.tagline){
+          g.fillStyle = 'rgba(252,165,209,.9)';
+          g.font = 'italic 38px "Cormorant Garamond", serif';
+          g.fillText('"' + t.tagline + '"', W/2, 1060);
+        }
       }
+
+      // 動的QRを既存QR位置に上書き
+      // 検出結果: QR本体は約 x=448..625, y=1664..1847 (中心 536,1755 / サイズ ~180)
+      const url = selfShareUrl;
+      const qr = await generateQrDataUrl(url);
+      if(qr){
+        const qrSize = 210;
+        const qrX = (W - qrSize) / 2;
+        const qrY = 1655;
+        // 1) 既存QRエリアを暗い角丸で塗りつぶし(覆い隠す)
+        const pad = 14;
+        g.save();
+        const radius = 18;
+        const rx = qrX - pad, ry = qrY - pad;
+        const rw = qrSize + pad * 2, rh = qrSize + pad * 2;
+        g.beginPath();
+        g.moveTo(rx + radius, ry);
+        g.lineTo(rx + rw - radius, ry);
+        g.quadraticCurveTo(rx + rw, ry, rx + rw, ry + radius);
+        g.lineTo(rx + rw, ry + rh - radius);
+        g.quadraticCurveTo(rx + rw, ry + rh, rx + rw - radius, ry + rh);
+        g.lineTo(rx + radius, ry + rh);
+        g.quadraticCurveTo(rx, ry + rh, rx, ry + rh - radius);
+        g.lineTo(rx, ry + radius);
+        g.quadraticCurveTo(rx, ry, rx + radius, ry);
+        g.closePath();
+        g.fillStyle = 'rgba(8,4,24,0.94)';
+        g.fill();
+        // 細い金フチ
+        g.strokeStyle = 'rgba(212,175,110,0.7)';
+        g.lineWidth = 1.5;
+        g.stroke();
+        g.restore();
+        // 2) QR本体
+        try{
+          const qrImg = await loadImage(qr);
+          g.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+        }catch(_){}
+      }
+
+      return new Promise(res => c.toBlob(res, 'image/png'));
     } else {
+      // Pair モードは従来通り Canvasで全部組む
+      const bg = g.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, '#1a0a2e');
+      bg.addColorStop(.5, '#0d0420');
+      bg.addColorStop(1, '#1a0a2e');
+      g.fillStyle = bg; g.fillRect(0, 0, W, H);
+      const r1 = g.createRadialGradient(W*.2, H*.25, 0, W*.2, H*.25, W*.7);
+      r1.addColorStop(0, 'rgba(244,114,182,.22)'); r1.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = r1; g.fillRect(0, 0, W, H);
+      const r2 = g.createRadialGradient(W*.8, H*.7, 0, W*.8, H*.7, W*.7);
+      r2.addColorStop(0, 'rgba(155,124,248,.2)'); r2.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = r2; g.fillRect(0, 0, W, H);
+      g.fillStyle = 'rgba(34,211,238,.85)';
+      g.font = '500 32px "Space Mono", monospace';
+      g.textAlign = 'center';
+      g.fillText('— 夜キャラ診断 —', W/2, 130);
       // Pair image: 2 chars + × + rating + label + summary
       const tier = getCompatTier(code, pairCode);
       const info = TIER_COPY[tier];
