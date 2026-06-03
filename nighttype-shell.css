@@ -191,6 +191,36 @@ main, .nt-main{position:relative;z-index:5}
 .nt-btn .arrow{transition:transform .3s}
 .nt-btn:hover .arrow{transform:translateX(4px)}
 
+/* === 統一CTA: 診断ボタン === */
+.cta-start{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  gap:14px;padding:20px 48px;border-radius:99px;
+  font-family:"Noto Sans JP",sans-serif;font-size:17px;font-weight:500;
+  letter-spacing:.12em;
+  background:linear-gradient(135deg,#9B7CF8 0%,#22D3EE 100%);
+  color:#0b0820;border:none;cursor:pointer;text-decoration:none;
+  box-shadow:0 20px 60px -20px rgba(155,124,248,.55), 0 0 32px rgba(34,211,238,.18);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;
+  overflow:hidden;isolation:isolate;
+  min-width:280px;max-width:90vw;
+}
+.cta-start::before{
+  content:"";position:absolute;inset:-2px;border-radius:99px;z-index:-2;
+  background:conic-gradient(from 0deg,#9B7CF8,#22D3EE,#F472B6,#9B7CF8);
+  animation:cta-spin 4s linear infinite;opacity:0;transition:opacity .3s;
+}
+.cta-start:hover{
+  transform:translateY(-3px);
+  box-shadow:0 28px 80px -16px rgba(34,211,238,.45), 0 0 40px rgba(155,124,248,.45);
+}
+.cta-start:hover::before{opacity:.55}
+.cta-start .arrow{transition:transform .3s;display:inline-block;font-size:18px}
+.cta-start:hover .arrow{transform:translateX(5px)}
+@keyframes cta-spin{to{transform:rotate(360deg)}}
+@media (max-width:480px){
+  .cta-start{padding:18px 36px;font-size:15px;letter-spacing:.08em;min-width:260px;gap:10px}
+}
+
 /* === Section base === */
 .nt-section{
   padding:80px 32px 60px;position:relative;z-index:5;
