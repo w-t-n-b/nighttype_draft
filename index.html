@@ -167,13 +167,25 @@
   }
   .repeater-primary{ width:100%; justify-content:center; padding:16px 24px; font-size:12px; }
   .repeater-redo{
-    display:block; text-align:center; margin-top:14px;
-    font-family:"Noto Sans JP",sans-serif; font-size:12px;
-    color:var(--ink-mute); text-decoration:none;
-    padding:6px; transition:color .2s;
-    border-bottom:1px solid transparent;
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    margin:18px auto 0;padding:12px 28px;
+    font-family:"Noto Sans JP",sans-serif;font-size:13px;font-weight:500;
+    color:#cfc8ee;text-decoration:none;
+    background:rgba(155,124,248,.08);
+    border:1px solid rgba(155,124,248,.4);
+    border-radius:99px;
+    transition:all .25s;
+    letter-spacing:.04em;
   }
-  .repeater-redo:hover{ color:var(--ink); border-bottom-color:rgba(255,255,255,.2); }
+  .repeater-redo::before{content:"↻ ";font-family:"Space Mono",monospace}
+  .repeater-redo:hover{
+    color:#fff;
+    background:rgba(155,124,248,.2);
+    border-color:rgba(155,124,248,.8);
+    transform:translateY(-1px);
+  }
+  /* 親が text-align:center の repeater-band内なので、ブロック化して中央寄せ */
+  .repeater-band .repeater-redo{display:flex;width:fit-content}
 
   .btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:18px 36px;border-radius:99px;font-family:"Space Mono",monospace;font-size:13px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border:1px solid var(--line);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;backdrop-filter:blur(12px);overflow:hidden;isolation:isolate}
   .btn-primary{background:linear-gradient(135deg,var(--violet),var(--cyan));color:#0b0820;border-color:transparent;box-shadow:0 20px 60px -20px rgba(155,124,248,.5)}
