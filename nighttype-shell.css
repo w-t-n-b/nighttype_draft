@@ -130,12 +130,12 @@ main, .nt-main{position:relative;z-index:5}
   }
   .nt-nav-links{
     position:fixed !important;top:0;right:0;bottom:0;left:auto;
-    width:60% !important;max-width:280px;min-width:220px;
+    width:auto !important;max-width:none;min-width:0;
     background-color:#04040e !important;
     background-image:none !important;
     backdrop-filter:none !important;
     border-left:1px solid var(--line) !important;
-    flex-direction:column;gap:0;padding:100px 24px 40px;
+    flex-direction:column;gap:0;padding:100px 28px 40px 36px;
     align-items:flex-end;justify-content:flex-start;
     opacity:0;pointer-events:none;
     transform:translateX(20px);
@@ -147,7 +147,7 @@ main, .nt-main{position:relative;z-index:5}
     padding:22px 0;border-bottom:1px solid var(--line);
     font-size:14px;letter-spacing:.22em;
     text-align:right;
-    width:100%;
+    width:auto;min-width:140px;
   }
   .nt-nav-links a.active::after{display:none}
   .nt-burger{display:block;z-index:10000;position:relative}
@@ -219,6 +219,140 @@ main, .nt-main{position:relative;z-index:5}
 @keyframes cta-spin{to{transform:rotate(360deg)}}
 @media (max-width:480px){
   .cta-start{padding:18px 36px;font-size:15px;letter-spacing:.08em;min-width:260px;gap:10px}
+}
+
+/* ==========================================================
+   縦リスト型クイズ UI (MBTI/Lovetype 風)
+   ========================================================== */
+.qv-wrap{
+  position:relative;z-index:5;max-width:760px;margin:0 auto;
+  padding:90px 24px 60px;
+}
+.qv-progress{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.2em;
+  color:var(--ink-mute);text-transform:uppercase;margin-bottom:24px;
+}
+.qv-progress-bar{
+  height:2px;background:rgba(255,255,255,.08);border-radius:99px;
+  overflow:hidden;margin-bottom:36px;
+}
+.qv-progress-fill{
+  height:100%;background:linear-gradient(90deg,#9B7CF8,#22D3EE);
+  transition:width .4s cubic-bezier(.2,.8,.2,1);
+}
+.qv-axis-header{
+  text-align:center;margin-bottom:48px;
+}
+.qv-axis-eyebrow{
+  font-family:"Cormorant Garamond",serif;font-style:italic;
+  font-size:16px;letter-spacing:.06em;color:var(--cyan);margin-bottom:8px;
+}
+.qv-axis-title{
+  font-family:"Cormorant Garamond",serif;font-weight:500;
+  font-size:clamp(32px,5vw,52px);line-height:1.1;color:var(--ink);
+  letter-spacing:-.01em;margin-bottom:6px;
+}
+.qv-axis-sub{
+  font-size:13px;color:var(--ink-mute);
+}
+.qv-list{display:flex;flex-direction:column;gap:28px;margin-bottom:40px}
+.qv-item{
+  padding:24px 22px;border-radius:18px;
+  border:1px solid var(--line);background:rgba(14,12,32,0.55);
+  backdrop-filter:blur(10px);
+  transition:border-color .3s,background .3s;
+}
+.qv-item.answered{
+  border-color:rgba(155,124,248,.4);
+  background:rgba(20,16,42,0.62);
+}
+.qv-item-text{
+  font-size:15px;font-weight:500;line-height:1.7;color:var(--ink);
+  margin-bottom:14px;text-wrap:pretty;
+}
+.qv-item-opts{
+  display:flex;flex-direction:column;gap:4px;margin-bottom:18px;
+  font-size:12.5px;color:var(--ink-mute);line-height:1.55;
+}
+.qv-item-opts .opt-key{
+  display:inline-block;width:18px;font-weight:700;color:var(--pink);
+}
+.qv-item-opts .opt-b .opt-key{color:var(--cyan)}
+/* 星ボタン6個の行(円なし・星のみ) */
+.qv-srow{
+  display:flex;justify-content:center;align-items:center;gap:14px;
+  flex-wrap:nowrap;
+}
+.sbtn{
+  flex:0 0 auto;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;border:none;padding:6px;
+  transition:transform .22s cubic-bezier(.34,1.56,.64,1),filter .2s;
+  position:relative;
+}
+.sbtn:hover{transform:translateY(-2px) scale(1.08)}
+.sbtn:active{transform:scale(.92)!important}
+.sbtn-icon{display:flex;align-items:center;justify-content:center}
+/* サイズ: 強(40px) 中(32px) 弱(24px) */
+.sbtn.s-l3 svg,.sbtn.s-n3 svg{width:40px;height:40px}
+.sbtn.s-l2 svg,.sbtn.s-n2 svg{width:32px;height:32px}
+.sbtn.s-l1 svg,.sbtn.s-n1 svg{width:24px;height:24px}
+/* ピンク(like = A side) */
+.sbtn.s-l3{color:rgba(244,114,182,1)}
+.sbtn.s-l2{color:rgba(244,114,182,.85)}
+.sbtn.s-l1{color:rgba(244,114,182,.7)}
+/* シアン(nope = B side) */
+.sbtn.s-n3{color:rgba(34,211,238,1)}
+.sbtn.s-n2{color:rgba(34,211,238,.85)}
+.sbtn.s-n1{color:rgba(34,211,238,.7)}
+/* 選択中: 星を塗りつぶす + グロー */
+.sbtn.selected{transform:translateY(-2px) scale(1.15)}
+.sbtn.selected .sbtn-icon svg path{fill:currentColor}
+.sbtn.s-l3.selected,.sbtn.s-l2.selected,.sbtn.s-l1.selected{
+  filter:drop-shadow(0 0 12px rgba(244,114,182,.7));
+}
+.sbtn.s-n3.selected,.sbtn.s-n2.selected,.sbtn.s-n1.selected{
+  filter:drop-shadow(0 0 12px rgba(34,211,238,.7));
+}
+.qv-hlabels{
+  display:flex;justify-content:space-between;
+  font-family:"Space Mono",monospace;font-size:13px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  margin-top:12px;padding:0 14px;
+}
+.qv-hlabels span:first-child{color:#F472B6}
+.qv-hlabels span:last-child{color:#22D3EE}
+.qv-cta-row{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  margin-top:40px;
+}
+.qv-cta-row .qv-back{
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.2em;
+  color:var(--ink-mute);text-transform:uppercase;cursor:pointer;
+  background:transparent;border:none;padding:8px;
+  transition:color .2s;
+}
+.qv-cta-row .qv-back:hover{color:var(--ink)}
+.qv-warn{
+  text-align:center;font-size:12px;color:#fda4af;
+  margin-top:10px;opacity:0;transition:opacity .3s;
+  pointer-events:none;
+}
+.qv-warn.show{opacity:1}
+
+@media (max-width:600px){
+  .qv-wrap{padding:80px 16px 50px}
+  .qv-item{padding:20px 16px}
+  .qv-item-text{font-size:14px}
+  .qv-item-opts{font-size:12px}
+  .qv-hrow{gap:5px}
+  .qv-hbtn-a3 svg,.qv-hbtn-b3 svg{width:32px;height:32px}
+  .qv-hbtn-a2 svg,.qv-hbtn-b2 svg{width:28px;height:28px}
+  .qv-hbtn-a1 svg,.qv-hbtn-b1 svg{width:22px;height:22px}
+  .qv-hbtn{padding:6px 3px}
+  .qv-hbtn-gap{width:10px}
+  .qv-axis-title{font-size:28px}
 }
 
 /* === Section base === */
