@@ -611,15 +611,22 @@
   }
 
   function pickCode(code){
-    // If clicked the char already in current target slot, toggle off
-    if(picks[target]===code){
-      picks[target] = null;
+    // 既に選択中のキャラを再タップ → どちらのスロットでも解除可能に
+    if(picks[0]===code){
+      picks[0] = null;
+      target = 0;  // 解除したスロットを次のターゲットに
       updateAll();
       return;
     }
-    // Otherwise place into target slot (DUPLICATES ALLOWED — same char on both sides ok)
+    if(picks[1]===code){
+      picks[1] = null;
+      target = 1;
+      updateAll();
+      return;
+    }
+    // 未選択キャラ → target スロットに配置
     picks[target] = code;
-    // Advance target only if the OTHER slot is empty
+    // target を空いてる方へ進める
     if(target===0 && !picks[1]) target = 1;
     else if(target===1 && !picks[0]) target = 0;
     updateAll();
