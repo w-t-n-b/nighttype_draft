@@ -629,7 +629,7 @@
         <img src="${(tt.image||"").startsWith("images/")?"../"+tt.image:(tt.image||`../images/${c}.png`)}" alt="" width="120" height="120" loading="lazy"
              onerror="this.style.display='none'"/>
         <div class="compat-item-body">
-          <div class="compat-item-code">${(types[c]||{}).name||""}</div>
+          <div class="compat-item-code">${(types[c]||{}).axisCode||""}</div>
           <div class="compat-item-name">${tt.name}</div>
         </div>
       </a>
