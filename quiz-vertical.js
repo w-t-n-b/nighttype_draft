@@ -117,14 +117,19 @@
       }
     });
 
-    // クリックハンドラ
+    // クリックハンドラ + 次の質問へ自動スクロール
     rootEl.querySelectorAll('.sbtn').forEach(btn => {
       btn.addEventListener('click', e => {
         const qid = +btn.dataset.qid;
         const val = +btn.dataset.val;
+        const isNew = answers[qid] == null;  // 初回回答か?
         answers[qid] = val;
         saveAnswers(answers);
         applySelection(qid, val);
+        // 初回回答時のみ、次の未回答質問へスクロール
+        if(isNew){
+          setTimeout(() => scrollToNext(rootEl, qs, answers, qid), 250);
+        }
       });
     });
 
@@ -161,6 +166,25 @@
         e.preventDefault();
         location.href = 'quiz.html?p=' + (page - 1);
       });
+    }
+  }
+
+  function scrollToNext(rootEl, qs, answers, currentQid){
+    // 1) このページ内の「現在より下の未回答質問」を最優先
+    let nextIdx = qs.findIndex(q => q.id === currentQid) + 1;
+    while(nextIdx < qs.length){
+      const q = qs[nextIdx];
+      if(answers[q.id] == null){
+        const el = rootEl.querySelector(`.qv-item[data-qid="${q.id}"]`);
+        if(el){ el.scrollIntoView({behavior:'smooth', block:'center'}); return; }
+      }
+      nextIdx++;
+    }
+    // 2) ページ内全部回答済なら「次へ」ボタンへスクロール
+    const allAnswered = qs.every(q => answers[q.id] != null);
+    if(allAnswered){
+      const nextBtn = document.getElementById('qvNext');
+      if(nextBtn){ nextBtn.scrollIntoView({behavior:'smooth', block:'center'}); }
     }
   }
 
