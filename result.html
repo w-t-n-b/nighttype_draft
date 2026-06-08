@@ -1494,10 +1494,31 @@
   })();
 
   // ── Description ──
-  const descHtml = (t.description || '')
-    .split(/\n\s*\n/)
-    .map(p => `<p>${p.replace(/\n/g,'<br/>')}</p>`)
-    .join('');
+  // detailSections があれば: リード(description最初の段落) + 小見出しセクション
+  // 無ければ: 従来通り description 全文
+  const paragraphs = (t.description || '').split(/\n\s*\n/).filter(p => p.trim());
+  const hasSections = Array.isArray(t.detailSections) && t.detailSections.length > 0;
+  let descHtml = '';
+  if(hasSections){
+    // リード(description最初の段落のみ)
+    if(paragraphs[0]){
+      descHtml += `<p class="desc-lead">${paragraphs[0].replace(/\n/g,'<br/>')}</p>`;
+    }
+    // 各セクション
+    t.detailSections.forEach(sec => {
+      const body = (sec.body || '').split(/\n\s*\n/)
+        .map(p => `<p>${p.replace(/\n/g,'<br/>')}</p>`).join('');
+      descHtml += `
+        <section class="desc-section">
+          <h3 class="desc-section-title">${sec.title || ''}</h3>
+          ${body}
+        </section>
+      `;
+    });
+  } else {
+    // フォールバック: 既存の全段落表示
+    descHtml = paragraphs.map(p => `<p>${p.replace(/\n/g,'<br/>')}</p>`).join('');
+  }
   document.getElementById('typeDesc').innerHTML = descHtml;
 
   // ── 5ゲージ・プロファイル ──
@@ -1728,6 +1749,10 @@
     document.getElementById('fpComment').textContent = result.txt;
     const fr = document.getElementById('friendResult');
     fr.classList.remove('show'); void fr.offsetWidth; fr.classList.add('show');
+    // 相性結果まで自動スクロール
+    setTimeout(() => {
+      fr.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 150);
   }
 
   // ── Unified share system (T1: self, T2: pair, T4: invite-return) ──
