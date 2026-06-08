@@ -243,12 +243,56 @@
     padding-left:20px; border-left:2px solid var(--violet);
     margin-bottom:24px; text-wrap:pretty;
   }
+  /* キャッチコピー */
+  .catchphrase{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:17px;font-weight:500;line-height:1.7;
+    color:var(--ink);letter-spacing:.02em;
+    text-align:left;margin:0 0 24px;
+    padding:18px 22px;
+    border-left:3px solid var(--violet);
+    background:linear-gradient(90deg,rgba(155,124,248,.08),transparent);
+    border-radius:0 12px 12px 0;
+    text-wrap:balance;
+  }
+  @media(max-width:600px){
+    .catchphrase{font-size:15px;padding:14px 16px;margin-bottom:20px;line-height:1.7}
+  }
   .desc-text{
     font-size:14.5px; line-height:1.95; color:var(--ink-mute);
     text-wrap:pretty;
   }
   .desc-text p{ margin-bottom:14px; }
   .desc-text p:last-child{ margin-bottom:0; }
+  /* リード文(導入) */
+  .desc-text .desc-lead{
+    font-size:15px;line-height:2;color:var(--ink);
+    margin-bottom:32px;font-weight:400;
+  }
+  /* 異名セクション */
+  .desc-text .desc-section{
+    margin-top:32px;padding-top:24px;
+    border-top:1px solid rgba(255,255,255,0.06);
+  }
+  .desc-text .desc-section:first-of-type{
+    border-top:none;padding-top:0;
+  }
+  .desc-text .desc-section-title{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:18px;font-weight:700;color:var(--violet);
+    margin-bottom:14px;letter-spacing:.02em;
+    line-height:1.4;
+  }
+  .desc-text .desc-section p{
+    font-size:14px;line-height:1.95;color:var(--ink-mute);
+    margin-bottom:0;
+  }
+  @media(max-width:600px){
+    .desc-text .desc-lead{font-size:14px;line-height:1.9;margin-bottom:24px}
+    .desc-text .desc-section{margin-top:24px;padding-top:20px}
+    .desc-text .desc-section-title{font-size:16px;margin-bottom:10px}
+    .desc-text .desc-section p{font-size:13.5px;line-height:1.9}
+  }
 
   /* meta info row */
   .meta-row{
@@ -1244,6 +1288,7 @@
   <section class="section-block">
     <div class="section-eyebrow">01 · あなたの夜</div>
     <h2 class="section-title">あなたの夜を、<em>ひとこと</em>で</h2>
+    <p class="catchphrase" id="catchphrase"></p>
     <div class="desc-card">
       <div class="desc-text" id="typeDesc">—</div>
     </div>
@@ -1492,6 +1537,17 @@
         </div>`;
     }).join('');
   })();
+
+  // ── Catchphrase ──
+  const cp = document.getElementById('catchphrase');
+  if(cp){
+    if(t.catchphrase){
+      cp.textContent = t.catchphrase;
+      cp.style.display = '';
+    } else {
+      cp.style.display = 'none';
+    }
+  }
 
   // ── Description ──
   // detailSections があれば: リード(description最初の段落) + 小見出しセクション
