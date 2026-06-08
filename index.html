@@ -783,6 +783,22 @@ const TYPES = [
       window.QuizVertical.renderPage(root, 1);
     }
   })();
+
+  // 初回の質問選択で quiz_started を発火 (1セッション内1回)
+  (function(){
+    if(sessionStorage.getItem('quiz_started_fired')) return;
+    function handler(e){
+      const btn = e.target && e.target.closest && e.target.closest('.sbtn');
+      if(!btn) return;
+      if(sessionStorage.getItem('quiz_started_fired')) return;
+      sessionStorage.setItem('quiz_started_fired', '1');
+      if(typeof gtag === 'function'){
+        try{ gtag('event', 'quiz_started'); }catch(_){}
+      }
+      document.removeEventListener('click', handler, true);
+    }
+    document.addEventListener('click', handler, true);
+  })();
 </script>
 </body>
 </html>
