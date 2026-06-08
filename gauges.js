@@ -75,7 +75,7 @@
     },
     {
       key: 'difficulty',
-      name: 'ヤる難易度',
+      name: 'あなたと<br>ヤる難易度',
       sub: '「気軽さvsハードルの高さ」',
       icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.2"/><path d="M12 17.2v1.8"/></svg>',
       color: '#a78bfa',
