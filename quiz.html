@@ -202,9 +202,10 @@
     location.replace('index.html');
   }
 
-  // p=1/2/3/4 のみ有効。それ以外はTOPへ
+  // p=1/2/3/4 のみ有効。それ以外はTOPへ(?from= は引き継ぎ)
   if(![1,2,3,4].includes(page)){
-    location.replace('index.html');
+    const from = params.get('from');
+    location.replace('index.html' + (from ? '?from=' + encodeURIComponent(from) : ''));
   }
 
   const root = document.getElementById('qvRoot');

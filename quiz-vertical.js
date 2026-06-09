@@ -150,9 +150,12 @@
         setTimeout(()=>warn.classList.remove('show'), 3000);
         return;
       }
-      // 次へ
+      // 次へ (?from= を引き継いで招待ループを継続)
+      const _params = new URLSearchParams(location.search);
+      const _from = _params.get('from');
+      const _fromSfx = _from ? '&from=' + encodeURIComponent(_from) : '';
       if(page < 4){
-        location.href = 'quiz.html?p=' + (page + 1);
+        location.href = 'quiz.html?p=' + (page + 1) + _fromSfx;
       } else {
         // 最終ページ → プロフィール入力エリア表示
         showProfileSection(answers);
