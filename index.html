@@ -594,39 +594,57 @@
     </div>
   </section>
 
-  <!-- SEO本文（日本語キーワード厚め・FAQ） -->
-  <section style="max-width:760px;margin:0 auto;padding:72px 22px 24px;color:#c9ccd6;line-height:1.95;font-size:15px">
-    <h2 style="font-size:26px;color:#fff;margin-bottom:18px;font-weight:700">夜キャラ診断とは？</h2>
-    <p style="margin-bottom:28px"><strong>夜キャラ診断</strong>は、あなたの“夜の性格”を16タイプに分類する<strong>無料の性格診断</strong>です。沼/塩・S/M・愛/欲・Give/Take の4つの軸を、20問・約2〜3分の質問で測定。登録不要・匿名で、あなたが16キャラのどれに当てはまるかがわかります。さらに、気になる人や恋人・パートナーとの<strong>夜の相性</strong>もチェックできる、新感覚の夜の相性診断です。</p>
-
-    <h2 style="font-size:22px;color:#fff;margin:0 0 14px;font-weight:700">4つの軸でわかること</h2>
-    <ul style="margin:0 0 28px;padding-left:1.2em">
-      <li><strong>沼／塩</strong> … 相手にのめり込むか、あっさりしているか</li>
-      <li><strong>S／M</strong> … 主導したいか、委ねたいか</li>
-      <li><strong>愛／欲</strong> … 心でつながりたいか、本能を優先するか</li>
-      <li><strong>Give／Take</strong> … 尽くしたいか、受け取りたいか</li>
-    </ul>
-
-    <h2 style="font-size:22px;color:#fff;margin:0 0 14px;font-weight:700">こんな人におすすめ</h2>
-    <ul style="margin:0 0 28px;padding-left:1.2em">
-      <li>自分の“夜の本性”を言語化したい人</li>
-      <li>気になる人や恋人との夜の相性を知りたい人</li>
-      <li>性格診断・相性診断が好きな人</li>
-    </ul>
-
-    <h2 style="font-size:22px;color:#fff;margin:0 0 14px;font-weight:700">よくある質問</h2>
-    <div style="margin-bottom:8px">
-      <p style="margin:0 0 4px"><strong>Q. 夜キャラ診断は無料ですか？</strong></p>
-      <p style="margin:0 0 18px">A. はい、完全無料・登録不要で診断できます。</p>
-      <p style="margin:0 0 4px"><strong>Q. 何問・何分くらいかかりますか？</strong></p>
-      <p style="margin:0 0 18px">A. 20問・約2〜3分で診断できます。</p>
-      <p style="margin:0 0 4px"><strong>Q. 恋人との相性診断もできますか？</strong></p>
-      <p style="margin:0 0 18px">A. はい、2人のタイプから「夜の相性」を確認できます。</p>
-      <p style="margin:0 0 4px"><strong>Q. 結果はSNSでシェアできますか？</strong></p>
-      <p style="margin:0 0 18px">A. できます。診断結果のカードをそのままシェアできます。</p>
-      <p style="margin:0 0 4px"><strong>Q. スマホでも使えますか？</strong></p>
-      <p style="margin:0">A. スマホ・PCどちらでも無料で利用できます。</p>
-    </div>
+  <!-- SEO本文（日本語キーワード厚め・FAQ／トグル・初期は閉） -->
+  <style>
+  .seo-wrap details{border-bottom:1px solid rgba(255,255,255,.12)}
+  .seo-wrap details:first-of-type{border-top:1px solid rgba(255,255,255,.12)}
+  .seo-wrap summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 2px;color:#fff;font-weight:700;font-size:18px}
+  .seo-wrap summary::-webkit-details-marker{display:none}
+  .seo-wrap summary::after{content:"＋";color:#9b7cf8;font-size:22px;line-height:1;flex:0 0 auto}
+  .seo-wrap details[open] summary::after{content:"−"}
+  .seo-wrap .acc-body{padding:0 2px 24px;color:#c9ccd6;line-height:1.95;font-size:15px}
+  .seo-wrap .acc-body ul{margin:0;padding-left:1.2em}
+  .seo-wrap .acc-body .q{margin:0 0 4px;font-weight:700;color:#fff}
+  .seo-wrap .acc-body .a{margin:0 0 18px}
+  .seo-wrap .acc-body .a:last-child{margin-bottom:0}
+  </style>
+  <section class="seo-wrap" style="max-width:760px;margin:0 auto;padding:56px 22px 24px">
+    <details>
+      <summary>夜キャラ診断とは？</summary>
+      <div class="acc-body"><p style="margin:0"><strong>夜キャラ診断</strong>は、あなたの“夜の性格”を16タイプに分類する<strong>無料の性格診断</strong>です。沼/塩・S/M・愛/欲・Give/Take の4つの軸を、20問・約2〜3分の質問で測定。登録不要・匿名で、あなたが16キャラのどれに当てはまるかがわかります。さらに、気になる人や恋人・パートナーとの<strong>夜の相性</strong>もチェックできる、新感覚の夜の相性診断です。</p></div>
+    </details>
+    <details>
+      <summary>4つの軸でわかること</summary>
+      <div class="acc-body"><ul>
+        <li><strong>沼／塩</strong> … 相手にのめり込むか、あっさりしているか</li>
+        <li><strong>S／M</strong> … 主導したいか、委ねたいか</li>
+        <li><strong>愛／欲</strong> … 心でつながりたいか、本能を優先するか</li>
+        <li><strong>Give／Take</strong> … 尽くしたいか、受け取りたいか</li>
+      </ul></div>
+    </details>
+    <details>
+      <summary>こんな人におすすめ</summary>
+      <div class="acc-body"><ul>
+        <li>自分の“夜の本性”を言語化したい人</li>
+        <li>気になる人や恋人との夜の相性を知りたい人</li>
+        <li>性格診断・相性診断が好きな人</li>
+      </ul></div>
+    </details>
+    <details>
+      <summary>よくある質問</summary>
+      <div class="acc-body">
+        <p class="q">Q. 夜キャラ診断は無料ですか？</p>
+        <p class="a">A. はい、完全無料・登録不要で診断できます。</p>
+        <p class="q">Q. 何問・何分くらいかかりますか？</p>
+        <p class="a">A. 20問・約2〜3分で診断できます。</p>
+        <p class="q">Q. 恋人との相性診断もできますか？</p>
+        <p class="a">A. はい、2人のタイプから「夜の相性」を確認できます。</p>
+        <p class="q">Q. 結果はSNSでシェアできますか？</p>
+        <p class="a">A. できます。診断結果のカードをそのままシェアできます。</p>
+        <p class="q">Q. スマホでも使えますか？</p>
+        <p class="a">A. スマホ・PCどちらでも無料で利用できます。</p>
+      </div>
+    </details>
   </section>
 </main>
 
