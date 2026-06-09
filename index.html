@@ -16,8 +16,8 @@
 <link rel="shortcut icon" href="favicon.ico" />
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>夜キャラ診断｜あなたの夜のタイプを16キャラで読み解く無料診断</title>
-<meta name="description" content="「夜キャラ診断」公式。沼塩・S/M・愛欲・Give/Take の4軸で、あなたの夜のタイプを16キャラに分類する無料診断。MBTI・ラブタイプの次に来る性格診断を、20問たった2〜3分で。" />
+<title>夜キャラ診断｜“夜の相性”がバレる16タイプ診断【無料】</title>
+<meta name="description" content="「これ私じゃん」が止まらない無料の夜の性格診断。沼塩・S/M・愛欲・Give/Take の4軸で、あなたの“夜の本性”を16キャラに診断。20問・2〜3分・登録不要。恋人との相性もわかる。あなたのタイプは？" />
 <meta name="keywords" content="夜キャラ診断,ナイトタイプ,沼塩診断,愛欲診断,MBTI 夜の性格,16タイプ,夜のMBTI,夜の自分タイプ" />
 <link rel="canonical" href="https://yoruchara16types.com/" />
 <meta property="og:type" content="website" />
@@ -142,8 +142,9 @@
     font-family:"Cormorant Garamond",serif;font-size:26px;color:#F472B6;
   }
   .invite-banner-you{
-    font-size:34px;color:#22D3EE;
+    font-size:56px;color:#22D3EE;
     font-family:"Cormorant Garamond",serif;font-weight:500;
+    line-height:1;
   }
   .invite-banner-title{
     font-family:"Cormorant Garamond",serif;font-style:italic;
@@ -167,7 +168,7 @@
     .invite-banner{margin:20px 12px 4px;padding:20px 16px}
     .invite-banner-char img{width:64px;height:64px}
     .invite-banner-cross{font-size:22px}
-    .invite-banner-you{font-size:28px}
+    .invite-banner-you{font-size:48px}
     .invite-banner-title{font-size:16px}
   }
   /* TOPに埋め込んだ場合のqv-wrap余白詰め */
@@ -889,9 +890,12 @@ const TYPES = [
       document.getElementById('inviteFromCode').textContent = fromCode;
       const cp = (fromT.catchphrase || fromT.tagline || '').replace(/[。．.\s]+$/, '');
       document.getElementById('inviteFromTagline').innerHTML =
-        `招待された相手は『${cp}』タイプ。<br/>下のQ1から答えると、相性が結果ページに表示されます。`;
+        `招待した方は『${cp}』タイプ。<br/>診断すると、あなたとの相性がわかります。`;
       banner.style.display = 'block';
       document.getElementById('inviteStartBtn').addEventListener('click', function(){
+        if(typeof gtag === 'function'){
+          try{ gtag('event','invite_banner_cta_clicked',{event_category:'viral',event_label:fromCode,from_code:fromCode}); }catch(_){}
+        }
         const qv = document.getElementById('qvRoot');
         if(qv) qv.scrollIntoView({behavior:'smooth', block:'start'});
       });

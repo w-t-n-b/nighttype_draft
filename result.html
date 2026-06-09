@@ -1090,6 +1090,141 @@
     .share-btn svg{ width:20px !important; height:20px !important; }
     .share-btn-label{ font-size:9.5px !important; }
   }
+
+  /* ── Share Boost: T1 グロー強調 ── */
+  #shareT1{
+    position:relative;
+    padding:18px 16px 14px;
+    border-radius:20px;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(167,139,250,.22), transparent 65%),
+      radial-gradient(circle at 50% 100%, rgba(34,211,238,.16), transparent 60%),
+      rgba(8,6,22,.5);
+    border:1px solid rgba(167,139,250,.42);
+    box-shadow:
+      0 0 0 1px rgba(167,139,250,.18),
+      0 12px 40px -8px rgba(167,139,250,.35),
+      inset 0 1px 0 rgba(255,255,255,.04);
+    animation: shareGlowPulse 3.2s ease-in-out infinite;
+  }
+  #shareT1::before{
+    content:""; position:absolute; inset:-1px;
+    border-radius:21px;
+    background:linear-gradient(135deg, rgba(167,139,250,.4), rgba(34,211,238,.3), rgba(244,114,182,.4));
+    z-index:-1; opacity:.55;
+    filter:blur(8px);
+    animation: shareGlowPulse 3.2s ease-in-out infinite;
+  }
+  #shareT1 .share-heading{
+    font-size:14.5px; font-weight:700;
+    background:linear-gradient(90deg, #a78bfa, #22d3ee);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+    letter-spacing:.08em; margin-bottom:6px;
+  }
+  #shareT1 .share-sub{
+    font-size:11.5px; color:rgba(255,255,255,.62);
+    margin-bottom:14px; letter-spacing:.04em;
+    line-height:1.55;
+  }
+  @keyframes shareGlowPulse{
+    0%, 100%{ box-shadow: 0 0 0 1px rgba(167,139,250,.18), 0 12px 40px -8px rgba(167,139,250,.35), inset 0 1px 0 rgba(255,255,255,.04); }
+    50%{ box-shadow: 0 0 0 1px rgba(167,139,250,.32), 0 16px 50px -6px rgba(167,139,250,.6), inset 0 1px 0 rgba(255,255,255,.08); }
+  }
+
+  /* ── Floating Sticky Share Button (mobile-priority) ── */
+  .fab-share{
+    position:fixed; z-index:90;
+    right:20px; bottom:24px;
+    width:62px; height:62px;
+    border-radius:50%;
+    border:none;
+    background:linear-gradient(135deg, #a78bfa 0%, #22d3ee 100%);
+    color:#fff; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:
+      0 8px 28px -4px rgba(167,139,250,.6),
+      0 0 0 0 rgba(167,139,250,.5);
+    opacity:0; transform:translateY(20px) scale(.85);
+    transition:opacity .35s, transform .35s;
+    pointer-events:none;
+    animation: fabPulse 2.4s ease-in-out infinite;
+  }
+  .fab-share.shown{
+    opacity:1; transform:translateY(0) scale(1);
+    pointer-events:auto;
+  }
+  .fab-share svg{ width:26px; height:26px; }
+  .fab-share-label{
+    position:absolute; bottom:-22px; left:50%;
+    transform:translateX(-50%);
+    font-size:10px; font-weight:700; color:#fff;
+    background:rgba(8,6,22,.85);
+    padding:2px 8px; border-radius:8px;
+    white-space:nowrap;
+    border:1px solid rgba(167,139,250,.4);
+    letter-spacing:.05em;
+  }
+  @keyframes fabPulse{
+    0%, 100%{ box-shadow: 0 8px 28px -4px rgba(167,139,250,.6), 0 0 0 0 rgba(167,139,250,.5); }
+    70%{ box-shadow: 0 8px 28px -4px rgba(167,139,250,.6), 0 0 0 18px rgba(167,139,250,0); }
+  }
+  @media (max-width:600px){
+    .fab-share{ right:16px; bottom:20px; width:58px; height:58px; }
+  }
+
+  /* ── Bottom Mega Share Section ── */
+  .mega-share{
+    margin:48px auto 24px; max-width:560px;
+    padding:28px 22px 22px;
+    border-radius:22px;
+    background:
+      radial-gradient(circle at 30% 0%, rgba(244,114,182,.2), transparent 60%),
+      radial-gradient(circle at 70% 100%, rgba(34,211,238,.18), transparent 60%),
+      linear-gradient(180deg, rgba(15,12,32,.6), rgba(8,6,22,.7));
+    border:1px solid rgba(244,114,182,.35);
+    text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .mega-share::before{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(135deg, transparent 40%, rgba(244,114,182,.08) 50%, transparent 60%);
+    animation: megaShimmer 4s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes megaShimmer{
+    0%{ transform:translateX(-100%); }
+    100%{ transform:translateX(100%); }
+  }
+  .mega-share-eyebrow{
+    font-family:"Space Mono",monospace;
+    font-size:10.5px; letter-spacing:.32em;
+    color:rgba(244,114,182,.85); text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  .mega-share-title{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:20px; font-weight:800;
+    color:#fff; line-height:1.45;
+    margin-bottom:8px;
+  }
+  .mega-share-title em{
+    font-style:normal;
+    background:linear-gradient(90deg, #f472b6, #a78bfa);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .mega-share-sub{
+    font-size:12.5px; color:rgba(255,255,255,.68);
+    line-height:1.65; margin-bottom:20px;
+    letter-spacing:.02em;
+  }
+  .mega-share .share-row{ margin-bottom:8px; }
+  @media (max-width:600px){
+    .mega-share{ margin:36px 4px 18px; padding:22px 16px 18px; }
+    .mega-share-title{ font-size:17px; }
+    .mega-share-sub{ font-size:11.5px; }
+  }
 </style>
 </head>
 <body>
@@ -1257,7 +1392,8 @@
 
   <!-- T1: Self share (hero直下) ※ SVG非依存・確実表示版 -->
   <div class="share-strip" id="shareT1" data-mode="self" style="display:block !important;">
-    <div class="share-heading">この結果をシェア</div>
+    <div class="share-heading">友達や恋人との相性、見てみる？</div>
+    <div class="share-sub">あなたとの相性、誰に確かめてもらう？</div>
     <div class="share-row" style="display:flex !important; gap:8px; flex-wrap:nowrap; justify-content:center; margin-bottom:10px; visibility:visible !important; opacity:1 !important;">
       <button class="share-btn copy" data-action="copy" style="flex:1 1 0; min-width:60px; min-height:64px; display:flex !important; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:12px 6px; border-radius:14px; border:1px solid rgba(34,211,238,.5); background:rgba(34,211,238,.08); color:#22d3ee; cursor:pointer; font-family:'Noto Sans JP',sans-serif; font-size:11px; font-weight:600;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -1381,6 +1517,31 @@
     </div>
   </section>
 
+  <!-- Bottom Mega Share Section -->
+  <section class="share-strip mega-share" id="shareBottom" data-mode="self">
+    <div class="mega-share-eyebrow">— Share Your Night —</div>
+    <h3 class="mega-share-title">あなたとの<em>夜の相性</em>、<br/>誰に確かめてもらう？</h3>
+    <p class="mega-share-sub">リンクから診断した友達と、自動で相性が出ます。</p>
+    <div class="share-row">
+      <button class="share-btn copy" data-action="copy">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span class="share-btn-label">Copy</span>
+      </button>
+      <button class="share-btn x" data-action="x">
+        <span style="font-size:22px; line-height:1; font-family:Arial,sans-serif; font-weight:700;">𝕏</span>
+        <span class="share-btn-label">X</span>
+      </button>
+      <button class="share-btn line" data-action="line">
+        <span style="line-height:1; font-weight:800;">LINE</span>
+      </button>
+      <button class="share-btn ig" data-action="ig">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        <span class="share-btn-label">その他</span>
+      </button>
+    </div>
+    <button class="share-save-link" data-action="save">または画像を保存</button>
+  </section>
+
   <!-- CTA -->
   <div class="cta-row">
     <a href="characters.html" class="nt-btn">
@@ -1390,6 +1551,15 @@
       気分を新たに再診断 <span class="arrow">↻</span>
     </a>
   </div>
+
+  <!-- Floating Share Button -->
+  <button class="fab-share" id="fabShare" aria-label="シェアする" style="display:none">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+    </svg>
+    <span class="fab-share-label">シェア</span>
+  </button>
 
 </main>
 
@@ -1437,7 +1607,7 @@
     if(typeof gtag === 'function'){ try{ gtag('event', name, params || {}); }catch(_){} }
   }
   // ── CustomEvent → GA4 自動転送（dispatchEventだけのコードもGAに届くように） ──
-  ['share_clicked','invite_detail_clicked','invite_returned_cta_clicked','visitor_cta_clicked','visitor_arrival','result_viewed'].forEach(name=>{
+  ['share_clicked','share_completed','share_section_viewed','floating_share_clicked','bottom_share_clicked','invite_detail_clicked','invite_returned_cta_clicked','visitor_cta_clicked','visitor_arrival','result_viewed'].forEach(name=>{
     window.addEventListener(name, (e)=>{
       if(typeof gtag === 'function'){
         try{ gtag('event', name, e.detail || {}); }catch(_){}
@@ -2048,8 +2218,10 @@
         const text = buildShareText(mode, pairCode());
         if(action === 'copy'){
           const url = withUtm(baseUrl, 'copy', mode);
+          let copied = false;
           try{
             await navigator.clipboard.writeText(url);
+            copied = true;
             const lbl = btn.querySelector('.share-btn-label');
             const orig = lbl.textContent;
             lbl.textContent = 'Copied';
@@ -2057,6 +2229,9 @@
             setTimeout(()=>{ lbl.textContent = orig; btn.classList.remove('copied'); }, 1800);
           }catch(_){ alert(url); }
           window.dispatchEvent(new CustomEvent('share_clicked', {detail:{channel:'copy', mode, from:code, to:pairCode()}}));
+          if(copied){
+            window.dispatchEvent(new CustomEvent('share_completed', {detail:{channel:'copy', mode, from:code, to:pairCode()}}));
+          }
         } else if(action === 'x'){
           const url = withUtm(baseUrl, 'x', mode);
           const u = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
@@ -2079,13 +2254,18 @@
             const fname = mode==='pair'
               ? `nighttype_${code}x${pairCode()}.png`
               : `nighttype_${code}.png`;
+            let shareOk = false;
             if(action === 'save'){
-              await saveImageOrShare(blob, fname);
+              shareOk = await saveImageOrShare(blob, fname);
             } else {
               // IG: 画像DL + 3択モーダル表示
               window.openIgChooser(blob, fname);
+              shareOk = true; // openIgChooser側でユーザー操作 — クリック=導線到達と見なす
             }
             window.dispatchEvent(new CustomEvent('share_clicked', {detail:{channel:action, mode, from:code, to:pairCode()}}));
+            if(shareOk){
+              window.dispatchEvent(new CustomEvent('share_completed', {detail:{channel:action, mode, from:code, to:pairCode()}}));
+            }
           }catch(e){ console.error(e); alert('画像生成に失敗しました'); }
           btn.disabled = false;
           if(btn.querySelector('.share-btn-label')){
@@ -2098,6 +2278,81 @@
     });
   }
   document.querySelectorAll('.share-strip').forEach(attachShareHandlers);
+
+  // ── Bottom share section: trackEvent on click + section_viewed ──
+  (function(){
+    const bottom = document.getElementById('shareBottom');
+    if(!bottom) return;
+    bottom.addEventListener('click', e => {
+      const btn = e.target.closest('.share-btn, .share-save-link');
+      if(!btn) return;
+      try{ gtag && gtag('event','bottom_share_clicked', {channel: btn.dataset.action || 'unknown', from: code}); }catch(_){}
+    }, true);
+  })();
+
+  // ── Share section_viewed (T1 / Bottom) — IntersectionObserver ──
+  (function(){
+    if(!('IntersectionObserver' in window)) return;
+    const seen = new Set();
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting && en.intersectionRatio >= 0.5){
+          const id = en.target.id;
+          if(!id || seen.has(id)) return;
+          seen.add(id);
+          trackEvent('share_section_viewed', {section: id, type: code});
+        }
+      });
+    }, {threshold:[0.5]});
+    const t1 = document.getElementById('shareT1');
+    const tB = document.getElementById('shareBottom');
+    if(t1) io.observe(t1);
+    if(tB) io.observe(tB);
+  })();
+
+  // ── Floating Share Button (fab) ──
+  (function(){
+    const fab = document.getElementById('fabShare');
+    if(!fab) return;
+    const t1 = document.getElementById('shareT1');
+    const tB = document.getElementById('shareBottom');
+    if(!t1) return;
+    fab.style.display = 'flex';
+
+    function update(){
+      // Show fab when T1 is scrolled out of view AND bottom share is not yet visible
+      const t1Bottom = t1.getBoundingClientRect().bottom;
+      const tbTop = tB ? tB.getBoundingClientRect().top : Number.MAX_SAFE_INTEGER;
+      const viewportH = window.innerHeight;
+      const t1Gone = t1Bottom < 80;
+      const tBVisible = tbTop < viewportH - 60;
+      if(t1Gone && !tBVisible){
+        fab.classList.add('shown');
+      } else {
+        fab.classList.remove('shown');
+      }
+    }
+    window.addEventListener('scroll', update, {passive:true});
+    window.addEventListener('resize', update);
+    update();
+
+    fab.addEventListener('click', async ()=>{
+      trackEvent('floating_share_clicked', {type: code});
+      // Native Web Share if available, else scroll to T1
+      const baseUrl = buildShareUrl('self');
+      const url = withUtm(baseUrl, 'fab', 'self');
+      const text = buildShareText('self');
+      if(navigator.share){
+        try{
+          await navigator.share({title:'夜キャラ診断', text, url});
+          trackEvent('share_completed', {channel:'native', mode:'self', from: code});
+        }catch(_){ /* user cancelled */ }
+      } else {
+        // Fallback: scroll to T1 share strip
+        t1.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    });
+  })();
 
   // ── T4: Invite-back CTA (only if ?from= is set) ──
   (function setupInviteBackCta(){
