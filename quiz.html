@@ -210,21 +210,27 @@
   const root = document.getElementById('qvRoot');
   window.QuizVertical.renderPage(root, page);
 
-  // 初回の質問選択で quiz_started を発火 (1セッション内1回)
-  (function(){
-    if(sessionStorage.getItem('quiz_started_fired')) return;
-    function handler(e){
-      const btn = e.target && e.target.closest && e.target.closest('.sbtn');
-      if(!btn) return;
+  // page=1 で最初の5問すべて回答後、「次へ」ボタン押下で quiz_started を発火 (1セッション内1回)
+  if(page === 1){
+    (function(){
       if(sessionStorage.getItem('quiz_started_fired')) return;
-      sessionStorage.setItem('quiz_started_fired', '1');
-      if(typeof gtag === 'function'){
-        try{ gtag('event', 'quiz_started'); }catch(_){}
+      function handler(e){
+        const next = e.target && e.target.closest && e.target.closest('#qvNext');
+        if(!next) return;
+        if(sessionStorage.getItem('quiz_started_fired')) return;
+        const answers = (window.QuizVertical && window.QuizVertical.loadAnswers)
+                        ? window.QuizVertical.loadAnswers() : {};
+        const allAnswered = [1,2,3,4,5].every(id => answers[id] != null);
+        if(!allAnswered) return;
+        sessionStorage.setItem('quiz_started_fired', '1');
+        if(typeof gtag === 'function'){
+          try{ gtag('event', 'quiz_started'); }catch(_){}
+        }
+        document.removeEventListener('click', handler, true);
       }
-      document.removeEventListener('click', handler, true);
-    }
-    document.addEventListener('click', handler, true);
-  })();
+      document.addEventListener('click', handler, true);
+    })();
+  }
 
   // ── p=4 で「次へ」を押した時はプロフィール表示を要求するため、
   //    QuizVertical のショープロフィール関数をオーバーライドしてここで処理 ──
