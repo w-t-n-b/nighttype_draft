@@ -19,13 +19,13 @@
 <title>Result — 夜キャラ診断</title>
 <meta property="og:title" id="ogTitle" content="あなたの夜キャラ診断結果">
 <meta property="og:description" id="ogDesc" content="あなたの夜キャラも診断して、相性を見てみよう">
-<meta property="og:image" id="ogImage" content="images/A1.png">
+<meta property="og:image" id="ogImage" content="https://yoruchara16types.com/images/og_top.png">
 <meta property="og:url" id="ogUrl" content="">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" id="twTitle" content="あなたの夜キャラ診断結果">
 <meta name="twitter:description" id="twDesc" content="あなたの夜キャラも診断して、相性を見てみよう">
-<meta name="twitter:image" id="twImage" content="images/A1.png">
+<meta name="twitter:image" id="twImage" content="https://yoruchara16types.com/images/og_top.png">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" />
@@ -1414,9 +1414,9 @@
 
   // ── OGP / Twitter meta tags (dynamic) ──
   (function setOGP(){
-    const ogTitle = `${t.name}さんの夜キャラは「${t.name}」`;
-    const ogDesc = 'あなたの夜キャラも診断して、相性を見てみよう';
-    const ogImage = location.origin + location.pathname.replace(/result\.html$/, '') + (t.image || ('images/' + code + '.png'));
+    const ogTitle = `私の夜キャラは「${t.name}」｜夜キャラ診断16types`;
+    const ogDesc = `${t.tagline || ''} ── あなたの夜のタイプは？4軸×16キャラで診断。`;
+    const ogImage = location.origin + location.pathname.replace(/result\.html$/, '') + 'images/og_' + code + '.png';
     const ogUrl = location.href;
     const set = (id, val)=> { const el = document.getElementById(id); if(el) el.setAttribute('content', val); };
     set('ogTitle', ogTitle);
