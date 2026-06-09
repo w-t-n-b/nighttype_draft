@@ -1834,6 +1834,12 @@
     }
     return selfShareUrl;
   }
+  // 共有/招待リンクにUTMを付与（Direct埋もれを解消し、チャネル別に流入を計測）
+  function withUtm(url, source, mode){
+    const campaign = mode === 'pair' ? 'viral_pair' : (mode === 'invite' ? 'viral_invite' : 'viral_self');
+    return url + (url.includes('?') ? '&' : '?') +
+      'utm_source=' + encodeURIComponent(source) + '&utm_medium=social&utm_campaign=' + campaign;
+  }
 
   // ── Image generation (Canvas) ──
   async function loadImage(src){
@@ -2004,8 +2010,8 @@
       }
     }
 
-    // Footer: QR + URL
-    const url = mode==='pair' ? buildShareUrl('pair', pairCode) : selfShareUrl;
+    // Footer: QR + URL（画像経由＝IG/Threads等の流入を qr として計測）
+    const url = withUtm(mode==='pair' ? buildShareUrl('pair', pairCode) : selfShareUrl, 'qr', mode);
     const qr = await generateQrDataUrl(url);
     if(qr){
       try{ const qrImg = await loadImage(qr); g.drawImage(qrImg, W/2-80, H-280, 160, 160); }catch(e){}
@@ -2040,9 +2046,10 @@
       btn.addEventListener('click', async (e)=>{
         e.preventDefault();
         const action = btn.dataset.action;
-        const url = buildShareUrl(mode, pairCode());
+        const baseUrl = buildShareUrl(mode, pairCode());
         const text = buildShareText(mode, pairCode());
         if(action === 'copy'){
+          const url = withUtm(baseUrl, 'copy', mode);
           try{
             await navigator.clipboard.writeText(url);
             const lbl = btn.querySelector('.share-btn-label');
@@ -2053,10 +2060,12 @@
           }catch(_){ alert(url); }
           window.dispatchEvent(new CustomEvent('share_clicked', {detail:{channel:'copy', mode, from:code, to:pairCode()}}));
         } else if(action === 'x'){
+          const url = withUtm(baseUrl, 'x', mode);
           const u = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
           window.open(u, '_blank', 'noopener');
           window.dispatchEvent(new CustomEvent('share_clicked', {detail:{channel:'x', mode, from:code, to:pairCode()}}));
         } else if(action === 'line'){
+          const url = withUtm(baseUrl, 'line', mode);
           const u = `https://line.me/R/msg/text/?${encodeURIComponent(text + '\n' + url)}`;
           window.open(u, '_blank', 'noopener');
           window.dispatchEvent(new CustomEvent('share_clicked', {detail:{channel:'line', mode, from:code, to:pairCode()}}));
@@ -2106,21 +2115,22 @@
 
     // The invite URL is the user's quiz.html?from={selfCode}
     const inviteUrl = location.origin + location.pathname.replace(/result\.html$/, 'quiz.html') + '?from=' + code;
-    const inviteText = `私の夜キャラは「${t.name}」だった！\nあなたの夜キャラは？`;
+    const inviteText = buildShareText('self');
 
     // Primary copy button
     const btn = document.getElementById('ibcBtn');
     const toast = document.getElementById('ibcToast');
     btn.addEventListener('click', async ()=>{
+      const u = withUtm(inviteUrl, 'copy', 'invite');
       try{
-        await navigator.clipboard.writeText(inviteUrl);
+        await navigator.clipboard.writeText(u);
         toast.style.display = 'block';
         btn.textContent = '✓ コピー済み';
         setTimeout(()=>{
           toast.style.display = 'none';
           btn.textContent = '招待リンクをコピー';
         }, 2500);
-      }catch(_){ alert(inviteUrl); }
+      }catch(_){ alert(u); }
       trackEvent('invite_returned_cta_clicked', {from: code});
       trackEvent('share_clicked', {channel:'copy', mode:'invite', from: code});
     });
@@ -2131,9 +2141,9 @@
         e.preventDefault();
         const action = b.dataset.action;
         if(action === 'x'){
-          window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(inviteText)}&url=${encodeURIComponent(inviteUrl)}`, '_blank', 'noopener');
+          window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(inviteText)}&url=${encodeURIComponent(withUtm(inviteUrl, 'x', 'invite'))}`, '_blank', 'noopener');
         } else if(action === 'line'){
-          window.open(`https://line.me/R/msg/text/?${encodeURIComponent(inviteText + '\n' + inviteUrl)}`, '_blank', 'noopener');
+          window.open(`https://line.me/R/msg/text/?${encodeURIComponent(inviteText + '\n' + withUtm(inviteUrl, 'line', 'invite'))}`, '_blank', 'noopener');
         } else if(action === 'ig' || action === 'save'){
           // Generate self image (mode='self')
           b.disabled = true;
