@@ -1821,10 +1821,11 @@
       const info = TIER_COPY[tier];
       const me = types[code], you = types[pairCode];
       const taunt = info.taunt ? info.taunt + '\n' : '';
-      return taunt + `${me.name} × ${you.name} の相性は${info.label}\nあなたの夜キャラは？`;
+      return taunt + `${me.name} × ${you.name} の夜の相性は【${info.label}】\nあなたとの相性も見てみない？ #夜キャラ診断`;
     }
-    // self mode
-    return `私の夜キャラは「${t.name}」だった！\nあなたの夜キャラは？`;
+    // self mode（V1: 結果名→毒の一行→自虐ツッコミ→CTA＋ハッシュタグ）
+    const cp = (t.catchphrase || t.tagline || '').replace(/[。．.\s]+$/, '');
+    return `夜キャラ診断やったら「${t.name}」だった\n→「${cp}」\n辛口すぎて草、でも当たってる🥲\nあなたの夜キャラは？ #夜キャラ診断`;
   }
   function buildShareUrl(mode, pairCode){
     if(mode === 'pair' && pairCode){
