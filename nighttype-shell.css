@@ -416,3 +416,27 @@ main, .nt-main{position:relative;z-index:5}
   0%{opacity:0;transform:scale(.92)}
   100%{opacity:1;transform:scale(1)}
 }
+
+/* === Footer Links (内部リンクSEO) === */
+.footer-links{
+  text-align:center;
+  margin-top:14px;
+  font-size:11px;
+  color:var(--ink-mute, #9a96b8);
+  letter-spacing:.04em;
+  line-height:2.2;
+}
+.footer-links a{
+  display:inline-block;
+  margin:0 8px;
+  color:var(--ink-mute, #9a96b8);
+  text-decoration:none;
+  transition:color .2s;
+}
+.footer-links a:hover{
+  color:var(--violet, #9B7CF8);
+}
+@media (max-width:600px){
+  .footer-links{ font-size:10.5px; }
+  .footer-links a{ margin:0 6px; }
+}
