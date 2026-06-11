@@ -650,106 +650,118 @@
     background:linear-gradient(90deg,#22d3ee,#6366f1);
   }
 
-  /* ── Invite Preview (招待リンク経由の相性スナップ) ── */
+  /* ── Invite Preview (招待リンク経由の相性スナップ) ── スクショ映え1スクリーン完結UI */
   .invite-preview{
-    max-width:680px; margin:24px auto 8px;
-    padding:32px 28px;
+    max-width:480px; margin:20px auto 12px;
+    padding:24px 22px 22px;
     border-radius:24px;
     background:
-      radial-gradient(circle at 20% 30%, rgba(244,114,182,.22), transparent 60%),
-      radial-gradient(circle at 80% 70%, rgba(155,124,248,.18), transparent 60%),
-      linear-gradient(135deg, rgba(60,30,80,.45), rgba(8,6,22,.65));
-    border:1px solid rgba(244,114,182,.32);
+      radial-gradient(circle at 25% 15%, rgba(244,114,182,.22), transparent 60%),
+      radial-gradient(circle at 75% 85%, rgba(155,124,248,.2), transparent 60%),
+      linear-gradient(135deg, rgba(40,20,60,.7), rgba(8,6,22,.85));
+    border:1px solid rgba(244,114,182,.42);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,.08),
-      0 24px 60px rgba(0,0,0,.45);
+      0 16px 50px rgba(0,0,0,.45);
     text-align:center;
     animation:ntFadeUp .5s ease;
   }
-  .inv-eyebrow{
+  /* — 上部ブランド — */
+  .ip-brand{
     font-family:"Space Mono",monospace;
-    font-size:10.5px; letter-spacing:.32em;
-    color:var(--pink); margin-bottom:14px;
-    text-transform:uppercase;
+    font-size:12px; letter-spacing:.32em;
+    color:var(--cyan); margin-bottom:14px;
+    font-weight:700;
   }
-  .inv-title{
-    font-family:"Cormorant Garamond","Noto Serif JP",serif;
-    font-size:clamp(22px,4.2vw,30px);
-    font-weight:500; line-height:1.4;
-    margin-bottom:22px;
-    text-wrap:balance;
-    color:#fff;
+  /* — 2キャラ並び — */
+  .ip-pair{
+    display:flex; align-items:flex-start; justify-content:center;
+    gap:10px; margin:0 0 14px;
   }
-  .inv-title span{
-    color:var(--pink);
-    font-style:italic;
+  .ip-char{
+    flex:1; max-width:160px;
+    display:flex; flex-direction:column; align-items:center;
+    gap:5px;
   }
-  .inv-pair{
-    display:flex; align-items:center; justify-content:center;
-    gap:18px; margin-bottom:20px; flex-wrap:nowrap;
+  .ip-char img{
+    width:104px; height:104px; object-fit:contain;
+    border-radius:18px;
+    background:radial-gradient(ellipse at 50% 65%, rgba(124,58,237,.18), rgba(0,0,0,.25) 70%);
+    border:1px solid rgba(255,255,255,.06);
   }
-  .inv-char{
-    display:flex; flex-direction:column; align-items:center; gap:8px;
-    flex:1; max-width:140px;
+  .ip-char-label{
+    font-size:10px; letter-spacing:.2em;
+    color:rgba(255,255,255,.5);
+    font-family:"Space Mono",monospace;
+    margin-top:4px;
   }
-  .inv-char img{
-    width:96px; height:96px; object-fit:contain;
-    background:radial-gradient(ellipse at 50% 65%, rgba(124,58,237,.2) 0%, rgba(0,0,0,.3) 70%);
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,.08);
+  .ip-char-name{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:13.5px; font-weight:700;
+    color:#fff; line-height:1.3;
+    text-wrap:balance; min-height:34px;
   }
-  .inv-char-name{
-    font-family:"Cormorant Garamond",serif;
-    font-size:13px; color:var(--ink);
-    text-wrap:pretty;
+  .ip-char-axis{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:10.5px; color:rgba(196,181,253,.85);
+    letter-spacing:.04em; font-weight:500;
   }
-  .inv-cross{
+  .ip-cross{
+    flex-shrink:0; align-self:center;
     font-family:"Cormorant Garamond",serif; font-style:italic;
-    font-size:32px; flex-shrink:0;
-    background:linear-gradient(135deg,var(--pink),var(--violet));
+    font-size:48px; line-height:1;
+    background:linear-gradient(135deg,var(--pink),var(--cyan));
     -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-top:38px;
   }
-  .inv-score{ text-align:center; margin-bottom:14px; }
-  .inv-hearts{
-    font-size:24px; letter-spacing:4px;
-    background:linear-gradient(135deg,var(--pink),var(--violet));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    margin-bottom:6px;
-    font-family:"Noto Sans JP",sans-serif;
+  /* — 相性スコア(star+ラベル) — */
+  .ip-score-block{
+    margin:6px 0 10px;
+    padding:14px 0 10px;
+    border-top:1px solid rgba(255,255,255,.08);
   }
-  .inv-label{
+  .ip-stars{
     font-family:"Noto Sans JP",sans-serif;
-    font-size:14px; font-weight:700;
+    font-size:30px; letter-spacing:3px;
     color:var(--pink);
+    margin-bottom:4px;
+    text-shadow:0 0 16px rgba(244,114,182,.4);
   }
-  .inv-summary{
+  .ip-label{
     font-family:"Noto Sans JP",sans-serif;
-    font-size:13px; color:var(--ink);
-    margin:8px 0 0; font-weight:500;
-    text-wrap:balance;
+    font-size:24px; font-weight:800; color:#fff;
+    background:linear-gradient(135deg,var(--pink),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    letter-spacing:.05em;
   }
-  .inv-share-muted{
-    opacity:.55; background:transparent !important;
-    border-color:var(--line) !important; color:var(--ink-mute) !important;
+  /* — コメント — */
+  .ip-comment{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:13px; line-height:1.7;
+    color:rgba(252,165,209,.92);
+    margin:8px 8px 16px;
+    text-wrap:pretty; font-style:italic;
   }
-  .inv-share-muted::before{ display:none !important; }
-  .inv-comment{
-    font-size:13.5px; line-height:1.85;
-    color:var(--ink-mute);
-    margin-bottom:22px;
-    text-wrap:pretty;
+  /* — スクロール誘導ヒント — */
+  .ip-scroll-hint{
+    margin:14px 0 0;
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:11.5px; letter-spacing:.05em;
+    color:rgba(34,211,238,.7);
+    animation:ipBob 1.8s ease-in-out infinite;
   }
-  .inv-cta-row{
-    display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+  @keyframes ipBob{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(4px); }
   }
-  .inv-cta-row .nt-btn{ padding:12px 22px; font-size:11px; }
   @media (max-width:480px){
-    .invite-preview{ padding:24px 18px; margin:18px 12px 8px; }
-    .inv-pair{ gap:12px; }
-    .inv-char img{ width:78px; height:78px; }
-    .inv-cross{ font-size:24px; }
-    .inv-cta-row{ flex-direction:column; }
-    .inv-cta-row .nt-btn{ width:100%; }
+    .invite-preview{ padding:20px 16px 18px; margin:14px 10px 10px; }
+    .ip-char img{ width:88px; height:88px; }
+    .ip-cross{ font-size:38px; margin-top:30px; }
+    .ip-char-name{ font-size:12.5px; min-height:32px; }
+    .ip-stars{ font-size:26px; }
+    .ip-label{ font-size:21px; }
+    .ip-comment{ font-size:12px; }
   }
 
   /* ── Visitor mode landing (実装指示#3 §6 — 招待者×? + Q1 teaser) ── */
@@ -956,6 +968,47 @@
     margin-bottom:14px;
     letter-spacing:.1em; font-weight:500;
   }
+
+  /* ── T4 2-Lane: A=ペア相性シェア / B=新規招待 ── */
+  .ibc-lane{
+    margin-top:22px;
+    padding:18px 16px 14px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(8,6,22,.5);
+  }
+  .ibc-lane + .ibc-lane{ margin-top:14px; }
+  .ibc-lane-pair{
+    border-color:rgba(167,139,250,.4);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(167,139,250,.18), transparent 60%),
+      rgba(8,6,22,.55);
+    box-shadow:0 0 0 1px rgba(167,139,250,.15), 0 10px 32px -10px rgba(167,139,250,.35);
+  }
+  .ibc-lane-invite{
+    border-color:rgba(34,211,238,.32);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(34,211,238,.14), transparent 60%),
+      rgba(8,6,22,.55);
+  }
+  .ibc-lane-eyebrow{
+    font-family:"Space Mono",monospace;
+    font-size:10px; letter-spacing:.3em;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .ibc-lane-pair .ibc-lane-eyebrow{ color:rgba(167,139,250,.9); }
+  .ibc-lane-invite .ibc-lane-eyebrow{ color:rgba(34,211,238,.9); }
+  .ibc-lane-title{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:15px; font-weight:700;
+    color:#fff; margin-bottom:6px; line-height:1.5;
+  }
+  .ibc-lane-sub{
+    font-size:11.5px; color:rgba(255,255,255,.6);
+    margin-bottom:14px; line-height:1.65;
+  }
+  .ibc-lane .share-row{ margin-bottom:6px; }
 
   /* ── Unified share strip (T1 & T2) ── */
   .share-strip{
@@ -1304,30 +1357,33 @@
     </div>
   </section>
 
-  <!-- Invite Preview (visible only when ?from= param is set) -->
+  <!-- Invite Preview (visible only when ?from= param is set) — スクショ映え1スクリーン完結 -->
   <section class="invite-preview" id="invitePreview" style="display:none">
-    <div class="inv-eyebrow">— INVITED · 相性スナップ —</div>
-    <h2 class="inv-title">あなた × <span id="invFromName">—</span>(<span id="invFromCode">—</span>) の相性</h2>
-    <div class="inv-pair">
-      <div class="inv-char">
-        <img id="invMeImg" src="" alt="" width="120" height="120" loading="lazy" />
-        <div class="inv-char-name" id="invMeName">あなた</div>
+    <div class="ip-brand">— 夜キャラ診断 · 相性スナップ —</div>
+
+    <div class="ip-pair">
+      <div class="ip-char">
+        <img id="ipMeImg" src="" alt="" width="104" height="104" loading="lazy" />
+        <div class="ip-char-label">YOU</div>
+        <div class="ip-char-name" id="ipMeName">—</div>
+        <div class="ip-char-axis" id="ipMeAxis">—</div>
       </div>
-      <div class="inv-cross">×</div>
-      <div class="inv-char">
-        <img id="invFromImg" src="" alt="" width="120" height="120" loading="lazy" />
-        <div class="inv-char-name" id="invFromShort">—</div>
+      <div class="ip-cross">×</div>
+      <div class="ip-char">
+        <img id="ipFromImg" src="" alt="" width="104" height="104" loading="lazy" />
+        <div class="ip-char-label">THEM</div>
+        <div class="ip-char-name" id="ipFromName">—</div>
+        <div class="ip-char-axis" id="ipFromAxis">—</div>
       </div>
     </div>
-    <div class="inv-score">
-      <div class="inv-hearts" id="invHearts">★★★☆☆</div>
-      <div class="inv-label" id="invLabel">—</div>
+
+    <div class="ip-score-block">
+      <div class="ip-stars" id="ipStars">★★★☆☆</div>
+      <div class="ip-label" id="ipLabel">—</div>
     </div>
-    <p class="inv-comment" id="invComment">—</p>
-    <div class="inv-cta-row">
-      <button class="nt-btn inv-cta-detail" id="invDetailBtn">詳しく見る <span class="arrow">↓</span></button>
-      <button class="nt-btn nt-btn-primary inv-cta-share" id="invShareBtn">この相性をシェア <span class="arrow">→</span></button>
-    </div>
+
+    <p class="ip-comment" id="ipComment">—</p>
+    <p class="ip-scroll-hint">↓ あなたの夜の正体は下で読める</p>
   </section>
 
   <!-- Hero -->
@@ -1361,39 +1417,13 @@
     <div class="axis-gauge-list" id="axisGaugeList"></div>
   </section>
 
-  <!-- T4: Invite-return CTA (shown when ?from= is set) -->
-  <section class="invite-back-cta" id="inviteBackCta" style="display:none">
-    <div class="ibc-eyebrow">— 招待返し —</div>
-    <h3 class="ibc-title">あなたも友達を誘ってみる？</h3>
-    <p class="ibc-sub">あなたのリンクから診断した人と、自動で相性が見れます。</p>
-    <button class="nt-btn nt-btn-primary ibc-btn" id="ibcBtn">招待リンクをコピー</button>
-    <p class="ibc-copied-toast" id="ibcToast" style="display:none">✓ リンクをコピーしました</p>
-
-    <!-- Share channels below (same set as T1, but for invite URL) -->
-    <div class="ibc-share-channels">
-      <div class="ibc-share-heading">他のSNSでもシェア</div>
-      <div class="share-row">
-        <button class="share-btn x" data-action="x" data-ibc="1">
-          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          <span class="share-btn-label">X</span>
-        </button>
-        <button class="share-btn line" data-action="line" data-ibc="1">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 5.589 2 10c0 3.978 3.659 7.293 8.575 7.916.335.072.79.221.905.508.103.259.067.665.033.927l-.146.879c-.045.26-.207 1.017.891.554 1.099-.462 5.926-3.488 8.085-5.969 1.491-1.635 2.207-3.298 2.207-5.815C22 5.589 17.514 2 12 2zm-3.954 11.04H6.142a.42.42 0 0 1-.42-.42V8.853a.42.42 0 0 1 .84 0v3.347h1.484a.42.42 0 0 1 0 .84zm1.66-.42a.42.42 0 0 1-.84 0V8.853a.42.42 0 0 1 .84 0v3.767zm4.578 0a.42.42 0 0 1-.421.42.418.418 0 0 1-.336-.168l-1.937-2.635v2.383a.42.42 0 0 1-.84 0V8.853a.42.42 0 0 1 .42-.42c.131 0 .254.06.336.168l1.937 2.638V8.853a.42.42 0 0 1 .84 0v3.767zm3.337-2.304a.42.42 0 0 1 0 .84h-1.484v.624h1.484a.42.42 0 0 1 0 .84h-1.904a.42.42 0 0 1-.42-.42V8.853a.42.42 0 0 1 .42-.42h1.904a.42.42 0 0 1 0 .84h-1.484v.624h1.484v.42z"/></svg>
-          <span class="share-btn-label">LINE</span>
-        </button>
-        <button class="share-btn ig" data-action="ig" data-ibc="1">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
-          <span class="share-btn-label">その他</span>
-        </button>
-      </div>
-      <button class="share-save-link" data-action="save" data-ibc="1">または画像を保存</button>
-    </div>
-  </section>
+  <!-- T4 セクション(inviteBackCta)はスクショファースト方針につき完全削除済み -->
+  <!-- 招待された人向けのシェア導線は shareT1 と shareMid に集約 -->
 
   <!-- T1: Self share (hero直下) ※ SVG非依存・確実表示版 -->
   <div class="share-strip" id="shareT1" data-mode="self" style="display:block !important;">
-    <div class="share-heading">友達や恋人との相性、見てみる？</div>
-    <div class="share-sub">あなたとの相性、誰に確かめてもらう？</div>
+    <div class="share-heading">あの人との相性、見てみる？</div>
+    <div class="share-sub">気になるあの人にだけ、こっそり送ってみる</div>
     <div class="share-row" style="display:flex !important; gap:8px; flex-wrap:nowrap; justify-content:center; margin-bottom:10px; visibility:visible !important; opacity:1 !important;">
       <button class="share-btn copy" data-action="copy" style="flex:1 1 0; min-width:60px; min-height:64px; display:flex !important; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:12px 6px; border-radius:14px; border:1px solid rgba(34,211,238,.5); background:rgba(34,211,238,.08); color:#22d3ee; cursor:pointer; font-family:'Noto Sans JP',sans-serif; font-size:11px; font-weight:600;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -1435,6 +1465,31 @@
     <div class="section-eyebrow">02 · あるある</div>
     <h2 class="section-title">あなただけが頷ける、<em>夜のあるある</em></h2>
     <div class="aruaru-list" id="aruaruList"></div>
+  </section>
+
+  <!-- Mid Share (あるあるの直後、相性スナップの上) — 2つ目のシェア帯 -->
+  <section class="share-strip mega-share" id="shareMid" data-mode="self">
+    <div class="mega-share-eyebrow" id="shareMidEyebrow">— Share Your Night —</div>
+    <h3 class="mega-share-title" id="shareMidTitle">あなたとの<em>夜の相性</em>、<br/>誰に確かめてもらう？</h3>
+    <p class="mega-share-sub" id="shareMidSub">リンクから診断した友達と、自動で相性が出ます。</p>
+    <div class="share-row">
+      <button class="share-btn copy" data-action="copy">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span class="share-btn-label">Copy</span>
+      </button>
+      <button class="share-btn x" data-action="x">
+        <span style="font-size:22px; line-height:1; font-family:Arial,sans-serif; font-weight:700;">𝕏</span>
+        <span class="share-btn-label">X</span>
+      </button>
+      <button class="share-btn line" data-action="line">
+        <span style="line-height:1; font-weight:800;">LINE</span>
+      </button>
+      <button class="share-btn ig" data-action="ig">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        <span class="share-btn-label">その他</span>
+      </button>
+    </div>
+    <button class="share-save-link" data-action="save">または画像を保存</button>
   </section>
 
   <!-- Items CTA は未公開のため一時非表示 -->
@@ -1517,30 +1572,7 @@
     </div>
   </section>
 
-  <!-- Bottom Mega Share Section -->
-  <section class="share-strip mega-share" id="shareBottom" data-mode="self">
-    <div class="mega-share-eyebrow">— Share Your Night —</div>
-    <h3 class="mega-share-title">あなたとの<em>夜の相性</em>、<br/>誰に確かめてもらう？</h3>
-    <p class="mega-share-sub">リンクから診断した友達と、自動で相性が出ます。</p>
-    <div class="share-row">
-      <button class="share-btn copy" data-action="copy">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        <span class="share-btn-label">Copy</span>
-      </button>
-      <button class="share-btn x" data-action="x">
-        <span style="font-size:22px; line-height:1; font-family:Arial,sans-serif; font-weight:700;">𝕏</span>
-        <span class="share-btn-label">X</span>
-      </button>
-      <button class="share-btn line" data-action="line">
-        <span style="line-height:1; font-weight:800;">LINE</span>
-      </button>
-      <button class="share-btn ig" data-action="ig">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-        <span class="share-btn-label">その他</span>
-      </button>
-    </div>
-    <button class="share-save-link" data-action="save">または画像を保存</button>
-  </section>
+  <!-- shareBottom / fabShare は廃止: シェア導線は shareT1(ヒーロー直下) + shareMid(あるある下) の2箇所構成 -->
 
   <!-- CTA -->
   <div class="cta-row">
@@ -1551,15 +1583,6 @@
       気分を新たに再診断 <span class="arrow">↻</span>
     </a>
   </div>
-
-  <!-- Floating Share Button -->
-  <button class="fab-share" id="fabShare" aria-label="シェアする" style="display:none">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-    </svg>
-    <span class="fab-share-label">シェア</span>
-  </button>
 
 </main>
 
@@ -1607,7 +1630,7 @@
     if(typeof gtag === 'function'){ try{ gtag('event', name, params || {}); }catch(_){} }
   }
   // ── CustomEvent → GA4 自動転送（dispatchEventだけのコードもGAに届くように） ──
-  ['share_clicked','share_completed','share_section_viewed','floating_share_clicked','bottom_share_clicked','invite_detail_clicked','invite_returned_cta_clicked','visitor_cta_clicked','visitor_arrival','result_viewed'].forEach(name=>{
+  ['share_clicked','share_completed','share_section_viewed','mid_share_clicked','invite_detail_clicked','invite_returned_cta_clicked','visitor_cta_clicked','visitor_arrival','result_viewed'].forEach(name=>{
     window.addEventListener(name, (e)=>{
       if(typeof gtag === 'function'){
         try{ gtag('event', name, e.detail || {}); }catch(_){}
@@ -1982,9 +2005,8 @@
   }
 
   // ── Unified share system (T1: self, T2: pair, T4: invite-return) ──
-  // Phase2修正B: 招待URLはindex.html(クイズQ1-5+招待バナー)へ
-  const shareUrlBase = location.origin + location.pathname.replace(/result\.html$/, 'index.html');
-  const selfShareUrl = shareUrlBase + '?from=' + code;
+  // Phase2修正B: 招待URLは静的 /invite/{code}.html(LINE OG プレビュー対応)
+  const selfShareUrl = location.origin + '/invite/' + code + '.html';
 
   function buildShareText(mode, pairCode){
     if(mode === 'pair' && pairCode){
@@ -1992,11 +2014,11 @@
       const info = TIER_COPY[tier];
       const me = types[code], you = types[pairCode];
       const comment = info.comment ? `『${info.comment}』\n\n` : '';
-      return `私「${me.name}」× ${you.name} の夜の相性は【${info.label}】\n\n${comment}私との相性、みてみる？\n#夜キャラ診断`;
+      return `私「${me.name}」× ${you.name} の夜の相性は【${info.label}】\n\n${comment}恥ずい。。あなたとの相性を教えて！\n#夜キャラ診断`;
     }
     // self mode: catchphrase を毒一行として引用
     const cp = (t.catchphrase || t.tagline || '').replace(/[。．.\s]+$/, '');
-    return `私の夜キャラは「${t.name}」\n\n『${cp}。』\n\n私との相性、みてみる？\n#夜キャラ診断`;
+    return `私の夜キャラは『${t.name}』\n\n『${cp}。』\n\n恥ずい。。あなたとの相性を教えて！\n#夜キャラ診断`;
   }
   function buildShareUrl(mode, pairCode){
     // 全モード共通: 自分の招待URL(index.html?from=自分) を返してバイラルループを統一
@@ -2119,78 +2141,8 @@
       }
 
       return new Promise(res => c.toBlob(res, 'image/png'));
-    } else {
-      // Pair モードは従来通り Canvasで全部組む
-      const bg = g.createLinearGradient(0, 0, 0, H);
-      bg.addColorStop(0, '#1a0a2e');
-      bg.addColorStop(.5, '#0d0420');
-      bg.addColorStop(1, '#1a0a2e');
-      g.fillStyle = bg; g.fillRect(0, 0, W, H);
-      const r1 = g.createRadialGradient(W*.2, H*.25, 0, W*.2, H*.25, W*.7);
-      r1.addColorStop(0, 'rgba(244,114,182,.22)'); r1.addColorStop(1, 'rgba(0,0,0,0)');
-      g.fillStyle = r1; g.fillRect(0, 0, W, H);
-      const r2 = g.createRadialGradient(W*.8, H*.7, 0, W*.8, H*.7, W*.7);
-      r2.addColorStop(0, 'rgba(155,124,248,.2)'); r2.addColorStop(1, 'rgba(0,0,0,0)');
-      g.fillStyle = r2; g.fillRect(0, 0, W, H);
-      g.fillStyle = 'rgba(34,211,238,.85)';
-      g.font = '500 32px "Space Mono", monospace';
-      g.textAlign = 'center';
-      g.fillText('— 夜キャラ診断 —', W/2, 130);
-      // Pair image: 2 chars + × + rating + label + summary
-      const tier = getCompatTier(code, pairCode);
-      const info = TIER_COPY[tier];
-      const me = types[code], you = types[pairCode];
-      try{
-        const meImg = await loadImage(me.image || `images/${code}.png`);
-        g.drawImage(meImg, 120, 280, 380, 380);
-      }catch(e){}
-      try{
-        const youImg = await loadImage(you.image || `images/${pairCode}.png`);
-        g.drawImage(youImg, W-500, 280, 380, 380);
-      }catch(e){}
-      // × between
-      g.fillStyle = 'rgba(244,114,182,.95)';
-      g.font = 'italic 80px "Cormorant Garamond", serif';
-      g.fillText('×', W/2, 500);
-      // names
-      g.fillStyle = '#fff';
-      g.font = '500 30px "Cormorant Garamond", serif';
-      g.fillText(me.name, 310, 720);
-      g.fillText(you.name, W-310, 720);
-      g.fillStyle = 'rgba(196,181,253,.7)';
-      g.font = '500 22px "Space Mono", monospace';
-      g.fillText(code, 310, 760);
-      g.fillText(pairCode, W-310, 760);
-      // Stars
-      g.fillStyle = 'rgba(244,114,182,1)';
-      g.font = '700 96px "Noto Sans JP", sans-serif';
-      g.fillText('★'.repeat(tier) + '☆'.repeat(5-tier), W/2, 920);
-      // Label
-      g.fillStyle = '#fff';
-      g.font = '700 64px "Noto Sans JP", sans-serif';
-      g.fillText(info.label, W/2, 1020);
-      // Summary
-      if(info.summary){
-        g.fillStyle = 'rgba(252,165,209,.85)';
-        g.font = '500 36px "Noto Sans JP", sans-serif';
-        const lines = wrapText(g, '「' + info.summary + '」', W-200);
-        lines.forEach((ln, i)=> g.fillText(ln, W/2, 1100 + i*55));
-      }
     }
-
-    // Footer: QR + URL（画像経由＝IG/Threads等の流入を qr として計測）
-    const url = withUtm(mode==='pair' ? buildShareUrl('pair', pairCode) : selfShareUrl, 'qr', mode);
-    const qr = await generateQrDataUrl(url);
-    if(qr){
-      try{ const qrImg = await loadImage(qr); g.drawImage(qrImg, W/2-80, H-280, 160, 160); }catch(e){}
-    }
-    g.fillStyle = 'rgba(255,255,255,.65)';
-    g.font = '500 28px "Space Mono", monospace';
-    g.fillText('夜キャラ診断', W/2, H-90);
-    g.fillStyle = 'rgba(196,181,253,.55)';
-    g.font = '400 22px "Space Mono", monospace';
-    g.fillText(location.host + location.pathname.replace('result.html', ''), W/2, H-50);
-
+    // Pair モードは廃止(スクショファースト方針)
     return new Promise(res => c.toBlob(res, 'image/png'));
   }
   function wrapText(ctx, text, maxWidth){
@@ -2279,18 +2231,18 @@
   }
   document.querySelectorAll('.share-strip').forEach(attachShareHandlers);
 
-  // ── Bottom share section: trackEvent on click + section_viewed ──
+  // ── Mid share section: trackEvent on click ──
   (function(){
-    const bottom = document.getElementById('shareBottom');
-    if(!bottom) return;
-    bottom.addEventListener('click', e => {
+    const mid = document.getElementById('shareMid');
+    if(!mid) return;
+    mid.addEventListener('click', e => {
       const btn = e.target.closest('.share-btn, .share-save-link');
       if(!btn) return;
-      try{ gtag && gtag('event','bottom_share_clicked', {channel: btn.dataset.action || 'unknown', from: code}); }catch(_){}
+      try{ gtag && gtag('event','mid_share_clicked', {channel: btn.dataset.action || 'unknown', from: code}); }catch(_){}
     }, true);
   })();
 
-  // ── Share section_viewed (T1 / Bottom) — IntersectionObserver ──
+  // ── Share section_viewed (T1 / Mid) — IntersectionObserver ──
   (function(){
     if(!('IntersectionObserver' in window)) return;
     const seen = new Set();
@@ -2305,57 +2257,16 @@
       });
     }, {threshold:[0.5]});
     const t1 = document.getElementById('shareT1');
-    const tB = document.getElementById('shareBottom');
+    const tM = document.getElementById('shareMid');
     if(t1) io.observe(t1);
-    if(tB) io.observe(tB);
+    if(tM) io.observe(tM);
   })();
+  // フローティングシェアボタンは廃止: 2箇所(T1+shareMid)構成で十分
 
-  // ── Floating Share Button (fab) ──
-  (function(){
-    const fab = document.getElementById('fabShare');
-    if(!fab) return;
-    const t1 = document.getElementById('shareT1');
-    const tB = document.getElementById('shareBottom');
-    if(!t1) return;
-    fab.style.display = 'flex';
-
-    function update(){
-      // Show fab when T1 is scrolled out of view AND bottom share is not yet visible
-      const t1Bottom = t1.getBoundingClientRect().bottom;
-      const tbTop = tB ? tB.getBoundingClientRect().top : Number.MAX_SAFE_INTEGER;
-      const viewportH = window.innerHeight;
-      const t1Gone = t1Bottom < 80;
-      const tBVisible = tbTop < viewportH - 60;
-      if(t1Gone && !tBVisible){
-        fab.classList.add('shown');
-      } else {
-        fab.classList.remove('shown');
-      }
-    }
-    window.addEventListener('scroll', update, {passive:true});
-    window.addEventListener('resize', update);
-    update();
-
-    fab.addEventListener('click', async ()=>{
-      trackEvent('floating_share_clicked', {type: code});
-      // Native Web Share if available, else scroll to T1
-      const baseUrl = buildShareUrl('self');
-      const url = withUtm(baseUrl, 'fab', 'self');
-      const text = buildShareText('self');
-      if(navigator.share){
-        try{
-          await navigator.share({title:'夜キャラ診断', text, url});
-          trackEvent('share_completed', {channel:'native', mode:'self', from: code});
-        }catch(_){ /* user cancelled */ }
-      } else {
-        // Fallback: scroll to T1 share strip
-        t1.scrollIntoView({behavior:'smooth', block:'center'});
-      }
-    });
-  })();
-
-  // ── T4: Invite-back CTA (only if ?from= is set) ──
+  // ── T4: Invite-back CTA — スクショファースト方針につき廃止 ──
+  // 招待された人向けのシェア導線は invitePreview セクション下部に集約
   (function setupInviteBackCta(){
+    return;  // 早期終了: 関連HTMLはコメントアウト済み
     const fromCode = params.get('from');
     if(!fromCode || !types[fromCode]) return;
     const cta = document.getElementById('inviteBackCta');
@@ -2366,9 +2277,46 @@
     const t1 = document.getElementById('shareT1');
     if(t1) t1.style.display = 'none';
 
-    // The invite URL is the user's quiz.html?from={selfCode}
-    const inviteUrl = location.origin + location.pathname.replace(/result\.html$/, 'quiz.html') + '?from=' + code;
+    // Show inviter name on Lane A
+    const pairNameEl = document.getElementById('ibcPairFromName');
+    if(pairNameEl) pairNameEl.textContent = types[fromCode].name;
+
+    // The invite URL points to static /invite/{code}.html for LINE OG preview
+    const inviteUrl = location.origin + '/invite/' + code + '.html';
     const inviteText = buildShareText('self');
+
+    // Lane A: ペア相性シェア (画像なし・リンク+テキストのみ:スクショファースト方針)
+    cta.querySelectorAll('[data-pair="1"]').forEach(b=>{
+      b.addEventListener('click', async (e)=>{
+        e.preventDefault();
+        const action = b.dataset.action;
+        const pairText = buildShareText('pair', fromCode);
+        const pairUrl = selfShareUrl; // 招待用URL(自分の/invite/{code}.html)
+        if(action === 'copy'){
+          const url = withUtm(pairUrl, 'copy', 'pair');
+          try{
+            await navigator.clipboard.writeText(url);
+            const lbl = b.querySelector('.share-btn-label');
+            const orig = lbl.textContent;
+            lbl.textContent = 'Copied'; b.classList.add('copied');
+            setTimeout(()=>{ lbl.textContent = orig; b.classList.remove('copied'); }, 1800);
+          }catch(_){ alert(url); }
+        } else if(action === 'x'){
+          window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(pairText)}&url=${encodeURIComponent(withUtm(pairUrl, 'x', 'pair'))}`, '_blank', 'noopener');
+        } else if(action === 'line'){
+          window.open(`https://line.me/R/msg/text/?${encodeURIComponent(pairText + '\n' + withUtm(pairUrl, 'line', 'pair'))}`, '_blank', 'noopener');
+        } else if(action === 'ig' || action === 'save'){
+          // システムシェアシート(text+urlのみ。画像生成はしない)
+          const url = withUtm(pairUrl, 'native', 'pair');
+          if(navigator.share){
+            try{ await navigator.share({text: pairText, url}); }catch(_){ /* user cancelled */ }
+          } else {
+            try{ await navigator.clipboard.writeText(url); alert('リンクをコピーしました'); }catch(_){ alert(url); }
+          }
+        }
+        trackEvent('share_clicked', {channel:action, mode:'pair', from:code, to:fromCode});
+      });
+    });
 
     // Primary copy button
     const btn = document.getElementById('ibcBtn');
@@ -2429,8 +2377,6 @@
     if(!fromCode) return;
     const fromT = types[fromCode];
     if(!fromT) return;  // invalid code → silently ignore
-    // If invited by themselves with the same type, skip (not meaningful)
-    if(fromCode === code){ /* still show — "似た者同士" comment */ }
 
     const block = document.getElementById('invitePreview');
     if(!block) return;
@@ -2439,71 +2385,54 @@
     const r = compatScore(code, fromCode);
     if(!r) return;
 
-    block.style.display = 'block';   // ← Phase2修正A: 相性スナップを表示
-
-    // Populate
-    document.getElementById('invFromName').textContent = fromT.name;
-    document.getElementById('invFromCode').textContent = fromCode;
-    document.getElementById('invMeImg').src = t.image || `images/${code}.png`;
-    document.getElementById('invMeImg').alt = t.name;
-    document.getElementById('invMeName').textContent = `あなた (${code})`;
-    document.getElementById('invFromImg').src = fromT.image || `images/${fromCode}.png`;
-    document.getElementById('invFromImg').alt = fromT.name;
-    document.getElementById('invFromShort').textContent = `${fromT.name} (${fromCode})`;
-    document.getElementById('invHearts').textContent = r.hearts;
-    document.getElementById('invLabel').textContent = r.label;
-    // Update title to include summary
-    const sumEl = block.querySelector('.inv-summary');
-    if(!sumEl && r.summary){
-      const sumNode = document.createElement('p');
-      sumNode.className = 'inv-summary';
-      sumNode.textContent = '「' + r.summary + '」';
-      block.querySelector('.inv-score').appendChild(sumNode);
-    }
-    // Comment: take first sentence (up to first 。or first 80 chars)
-    let txt = r.txt || '';
-    const firstSentence = txt.split(/(。|——)/)[0] + (txt.includes('。') ? '。' : '');
-    document.getElementById('invComment').textContent = firstSentence.length > 100 ? firstSentence.slice(0, 100) + '…' : firstSentence;
-
     block.style.display = 'block';
 
-    // CTA: 詳しく見る → match.html (pair detail page with both characters pre-selected)
-    document.getElementById('invDetailBtn').addEventListener('click', ()=>{
-      window.dispatchEvent(new CustomEvent('invite_detail_clicked', {detail:{from:fromCode, me:code}}));
-      const detailUrl = location.origin + location.pathname.replace(/result\.html$/, 'match.html')
-                      + '?a=' + encodeURIComponent(code) + '&b=' + encodeURIComponent(fromCode);
-      window.location.href = detailUrl;
-    });
-    // CTA: この相性をシェア → directly fire pair share (no scroll). Uses native share if available, else X intent.
-    document.getElementById('invShareBtn').addEventListener('click', async ()=>{
-      const shareText = buildShareText('pair', fromCode);
-      const shareLink = buildShareUrl('pair', fromCode);
-      window.dispatchEvent(new CustomEvent('share_clicked', {detail:{channel:'invite_pair', mode:'pair', from:code, to:fromCode}}));
-      // Prefer native share sheet on mobile
-      if(navigator.share){
-        try{
-          await navigator.share({text: shareText, url: shareLink});
-          return;
-        }catch(_){ /* fall through */ }
-      }
-      // Fallback: open X intent in a new tab
-      const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLink)}`;
-      window.open(xUrl, '_blank', 'noopener');
-    });
-    // Tier 3: tone down (no taunt), tier 1-2 and 4-5: prominent
-    if(r.tier === 3){
-      document.getElementById('invShareBtn').classList.add('inv-share-muted');
-    }
-    // If invite has a taunt, prefix the share text with it
-    if(r.taunt){
-      // Override share text used by X/LINE buttons
-      const newTaunt = r.taunt;
-      const shareTextTaunt = newTaunt + '\n私の夜キャラは「' + t.name + '」、相手は「' + fromT.name + '」(' + fromCode + ')。\nあなたの夜キャラは？';
-      document.getElementById('btnX').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTextTaunt)}&url=${encodeURIComponent(shareUrl)}`;
-      document.getElementById('btnLine').href = `https://line.me/R/msg/text/?${encodeURIComponent(shareTextTaunt + '\n' + shareUrl)}`;
+    // 招待された人向け: shareMid(あるある下) の文言を「他の人とも見てみる?」に切替
+    // T1(ヒーロー直下) は表示維持(2箇所構成: T1 + shareMid)
+    const shareMid = document.getElementById('shareMid');
+    if(shareMid){
+      const titleEl = shareMid.querySelector('#shareMidTitle');
+      const subEl = shareMid.querySelector('#shareMidSub');
+      const eyeEl = shareMid.querySelector('#shareMidEyebrow');
+      if(eyeEl) eyeEl.textContent = '— Next —';
+      if(titleEl) titleEl.innerHTML = '他の人との<em>相性</em>も<br/>見てみる？';
+      if(subEl) subEl.innerHTML = 'あなたのリンクから診断すれば、もう一人とも<br/>自動で相性が出る。';
     }
 
-    // Analytics hook
+    // 軸表示用マップ
+    const axisMap = [
+      { N:'沼', S:'塩' },
+      { S:'S', M:'M' },
+      { A:'愛', Y:'欲' },
+      { G:'Give', T:'Take' }
+    ];
+    function axisOf(code2){
+      const tt = types[code2]; if(!tt) return '';
+      return (tt.axisCode || '').split('-')
+        .map((c,i)=>(axisMap[i]||{})[c]||c).join(' · ');
+    }
+
+    // Populate (管理番号A1/B2は一切表示しない)
+    document.getElementById('ipMeImg').src = t.image || `images/${code}.png`;
+    document.getElementById('ipMeImg').alt = t.name;
+    document.getElementById('ipMeName').textContent = t.name;
+    document.getElementById('ipMeAxis').textContent = axisOf(code);
+    document.getElementById('ipFromImg').src = fromT.image || `images/${fromCode}.png`;
+    document.getElementById('ipFromImg').alt = fromT.name;
+    document.getElementById('ipFromName').textContent = fromT.name;
+    document.getElementById('ipFromAxis').textContent = axisOf(fromCode);
+    document.getElementById('ipStars').textContent = r.hearts;
+    document.getElementById('ipLabel').textContent = r.label;
+
+    // コメント(1文目で切る、長すぎたら100文字+…)
+    let txt = r.txt || '';
+    const firstSentence = txt.split(/(。|——)/)[0] + (txt.includes('。') ? '。' : '');
+    document.getElementById('ipComment').textContent = '「' +
+      (firstSentence.length > 100 ? firstSentence.slice(0, 100) + '…' : firstSentence) + '」';
+
+    // シェア導線は結果ページ末尾(shareBottom)に集約 — 個別ハンドラは attachShareHandlers が処理
+
+    // Analytics
     window.dispatchEvent(new CustomEvent('invited_arrival', {detail:{from:fromCode, me:code, label:r.label}}));
   })();
 

@@ -953,7 +953,7 @@ const TYPES = [
       document.getElementById('inviteFromCode').textContent = fromCode;
       const cp = (fromT.catchphrase || fromT.tagline || '').replace(/[。．.\s]+$/, '');
       document.getElementById('inviteFromTagline').innerHTML =
-        `招待した方は『${cp}』タイプ。<br/>診断すると、あなたとの相性がわかります。`;
+        `『${fromT.name}』の<strong>あの人</strong>が、<br/>あなたとの相性を<strong>知りたがっています</strong>。`;
       banner.style.display = 'block';
       document.getElementById('inviteStartBtn').addEventListener('click', function(){
         if(typeof gtag === 'function'){
