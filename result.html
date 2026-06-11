@@ -742,18 +742,7 @@
     margin:8px 8px 16px;
     text-wrap:pretty; font-style:italic;
   }
-  /* — スクロール誘導ヒント — */
-  .ip-scroll-hint{
-    margin:14px 0 0;
-    font-family:"Noto Sans JP",sans-serif;
-    font-size:11.5px; letter-spacing:.05em;
-    color:rgba(34,211,238,.7);
-    animation:ipBob 1.8s ease-in-out infinite;
-  }
-  @keyframes ipBob{
-    0%, 100%{ transform:translateY(0); }
-    50%{ transform:translateY(4px); }
-  }
+  /* スクロール誘導ヒントは削除済み */
   @media (max-width:480px){
     .invite-preview{ padding:20px 16px 18px; margin:14px 10px 10px; }
     .ip-char img{ width:88px; height:88px; }
@@ -1383,7 +1372,6 @@
     </div>
 
     <p class="ip-comment" id="ipComment">—</p>
-    <p class="ip-scroll-hint">↓ あなたの夜の正体は下で読める</p>
   </section>
 
   <!-- Hero -->
