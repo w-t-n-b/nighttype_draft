@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<script>try{if(localStorage.getItem('nightTypeResult')){document.documentElement.classList.add('dx-done')}}catch(e){}</script>
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QB8NMCQJ7R"></script>
 <script>
@@ -459,6 +461,16 @@
   .cm-label{ font-size:9.5px; color:var(--ink-mute); margin-top:2px; letter-spacing:.1em; }
 
 </style>
+<style id="dx-cta-style">
+.dx-cta{position:relative;z-index:3;max-width:520px;margin:0 auto 30px;padding:18px 20px;border:1px solid rgba(155,124,248,.35);border-radius:16px;background:linear-gradient(180deg,rgba(155,124,248,.13),rgba(155,124,248,.04));backdrop-filter:blur(6px);text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.28)}
+.dx-cta-lead{margin:0 0 12px;font-size:15px;line-height:1.55;color:var(--ink,#eae6ff)}
+.dx-cta-lead strong{color:var(--violet,#9b7cf8)}
+.dx-cta-btn{display:inline-block;padding:13px 26px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;color:#fff;background:linear-gradient(135deg,#9b7cf8,#6d4bd8);box-shadow:0 6px 20px rgba(123,79,216,.45);transition:transform .2s,box-shadow .2s}
+.dx-cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(123,79,216,.6)}
+.dx-cta-sub{display:block;margin-top:10px;font-size:11px;letter-spacing:.05em;color:var(--ink-mute,#a99fce)}
+.dx-done .dx-cta{display:none}
+@media(max-width:480px){.dx-cta{margin:0 12px 24px;padding:16px}}
+</style>
 </head>
 <body>
 
@@ -487,6 +499,11 @@
   <div class="hero-blur-img" id="heroBg" style="background-image:url('../images/B1.png')"></div>
 
   <div class="type-hero-inner">
+    <div class="dx-cta">
+      <p class="dx-cta-lead">これは夜キャラ診断<strong>16タイプの1つ</strong>。<br>あなたの夜キャラは何タイプ？</p>
+      <a href="../quiz.html?p=1" class="dx-cta-btn">▶ 無料で自分のタイプを診断する</a>
+      <span class="dx-cta-sub">20問・約2〜3分／登録不要・匿名</span>
+    </div>
     <div class="breadcrumb">
       <a href="../characters.html">All Characters</a>
       <span>/</span>
