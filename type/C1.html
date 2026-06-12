@@ -460,6 +460,23 @@
   .cm-stars{ font-size:12px; color:var(--pink); letter-spacing:1px; }
   .cm-label{ font-size:9.5px; color:var(--ink-mute); margin-top:2px; letter-spacing:.1em; }
 
+  /* — description リード + 異名セクション (result.htmlと統一) — */
+  .desc-text .desc-lead{font-size:15px;line-height:2;color:var(--ink);margin-bottom:32px;font-weight:400;}
+  .desc-text .desc-section{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);}
+  .desc-text .desc-section:first-of-type{border-top:none;padding-top:0;}
+  .desc-text .desc-section-title{font-family:"Noto Sans JP",sans-serif;font-size:18px;font-weight:700;color:var(--violet);margin-bottom:14px;letter-spacing:.02em;line-height:1.4;}
+  .desc-text .desc-section p{font-size:14px;line-height:1.95;color:var(--ink-mute);margin-bottom:0;}
+  @media(max-width:600px){
+    .desc-text .desc-lead{font-size:14px;line-height:1.9;margin-bottom:24px}
+    .desc-text .desc-section{margin-top:24px;padding-top:20px}
+    .desc-text .desc-section-title{font-size:16px;margin-bottom:10px}
+    .desc-text .desc-section p{font-size:13.5px;line-height:1.9}
+  }
+
+  /* — catchphrase (毒一行) result.htmlと統一 — */
+  .catchphrase{font-family:"Noto Sans JP",sans-serif;font-size:17px;font-weight:500;line-height:1.7;color:var(--ink);letter-spacing:.02em;text-align:left;margin:0 auto 24px;padding:18px 22px;border-left:3px solid var(--violet);background:linear-gradient(90deg,rgba(155,124,248,.08),transparent);border-radius:0 12px 12px 0;text-wrap:balance;max-width:760px;}
+  @media(max-width:600px){.catchphrase{font-size:15px;padding:14px 16px;margin-bottom:20px;line-height:1.7}}
+
 </style>
 <style id="dx-cta-style">
 .dx-cta{position:relative;z-index:3;max-width:520px;margin:0 auto 30px;padding:18px 20px;border:1px solid rgba(155,124,248,.35);border-radius:16px;background:linear-gradient(180deg,rgba(155,124,248,.13),rgba(155,124,248,.04));backdrop-filter:blur(6px);text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.28)}
@@ -549,8 +566,12 @@
 
   <section class="ts-block">
     <h2 class="ts-title">01 · このキャラの<em>夜</em>、その本質</h2>
-    <div class="ts-card">
-      <div class="ts-text" id="typeDesc"><p>「素直に欲しがってるだけ」——それ、自制心がないことの言い換えですよね。その場の熱で流されて、朝になったら「やっぱ違った」。そのパターンを何回繰り返しましたか？ 「また流された」を繰り返しているのは偶然じゃなくて、あなたの意志が弱いだけ。いい加減認めてください。</p></div>
+    <p class="catchphrase">勢いだけで後先考えない、自制心が壊れた欲望の奴隷。</p>
+    <div class="ts-card desc-text">
+    <p class="desc-lead">「素直に欲しがってるだけ」——それ、自制心がないことの言い換えですよね。その場の熱で流されて、朝になったら「やっぱ違った」。そのパターンを何回繰り返しましたか？ 「また流された」を繰り返しているのは偶然じゃなくて、あなたの意志が弱いだけ。いい加減認めてください。</p>
+    <section class="desc-section"><h3 class="desc-section-title">ブレーキが壊れた欲望マシン</h3><p>欲しいと思った瞬間に止まれない。それを「情熱的」と呼ぶのは自分だけ。相手から見れば、判断力のない人が勢いで脱いでるだけです。</p></section>
+    <section class="desc-section"><h3 class="desc-section-title">学習しない後悔の常連</h3><p>夜の勢いで決めて朝に後悔。その繰り返しを「自由」と言い換えて、ただ欲に弱い自分から目を逸らしている。同じ失敗を繰り返す人を世間では「学習能力がない」と呼びます。</p></section>
+    <section class="desc-section"><h3 class="desc-section-title">誰でもいい快楽主義者</h3><p>欲望に忠実すぎて、相手が誰でもよくなっている。名前すら怪しい相手と朝を迎えたこと、一度じゃないですよね。その場限りの熱に流される軽さ、自分で思っている以上に相手に伝わっています。</p></section>
     </div>
   </section>
 

@@ -460,6 +460,23 @@
   .cm-stars{ font-size:12px; color:var(--pink); letter-spacing:1px; }
   .cm-label{ font-size:9.5px; color:var(--ink-mute); margin-top:2px; letter-spacing:.1em; }
 
+  /* — description リード + 異名セクション (result.htmlと統一) — */
+  .desc-text .desc-lead{font-size:15px;line-height:2;color:var(--ink);margin-bottom:32px;font-weight:400;}
+  .desc-text .desc-section{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);}
+  .desc-text .desc-section:first-of-type{border-top:none;padding-top:0;}
+  .desc-text .desc-section-title{font-family:"Noto Sans JP",sans-serif;font-size:18px;font-weight:700;color:var(--violet);margin-bottom:14px;letter-spacing:.02em;line-height:1.4;}
+  .desc-text .desc-section p{font-size:14px;line-height:1.95;color:var(--ink-mute);margin-bottom:0;}
+  @media(max-width:600px){
+    .desc-text .desc-lead{font-size:14px;line-height:1.9;margin-bottom:24px}
+    .desc-text .desc-section{margin-top:24px;padding-top:20px}
+    .desc-text .desc-section-title{font-size:16px;margin-bottom:10px}
+    .desc-text .desc-section p{font-size:13.5px;line-height:1.9}
+  }
+
+  /* — catchphrase (毒一行) result.htmlと統一 — */
+  .catchphrase{font-family:"Noto Sans JP",sans-serif;font-size:17px;font-weight:500;line-height:1.7;color:var(--ink);letter-spacing:.02em;text-align:left;margin:0 auto 24px;padding:18px 22px;border-left:3px solid var(--violet);background:linear-gradient(90deg,rgba(155,124,248,.08),transparent);border-radius:0 12px 12px 0;text-wrap:balance;max-width:760px;}
+  @media(max-width:600px){.catchphrase{font-size:15px;padding:14px 16px;margin-bottom:20px;line-height:1.7}}
+
 </style>
 <style id="dx-cta-style">
 .dx-cta{position:relative;z-index:3;max-width:520px;margin:0 auto 30px;padding:18px 20px;border:1px solid rgba(155,124,248,.35);border-radius:16px;background:linear-gradient(180deg,rgba(155,124,248,.13),rgba(155,124,248,.04));backdrop-filter:blur(6px);text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.28)}
@@ -549,8 +566,12 @@
 
   <section class="ts-block">
     <h2 class="ts-title">01 · このキャラの<em>夜</em>、その本質</h2>
-    <div class="ts-card">
-      <div class="ts-text" id="typeDesc"><p>「まっすぐ求めてるだけ」と思っていますが、その「まっすぐ」は相手にとっては「逃げ場がない」です。好きになった瞬間からアクセル全開で距離を詰め、欲望を全部ぶつける。あなたが「情熱」だと思っているもの、相手にとっては圧でしかありません。引かれている空気を読めないのも、このタイプの致命的なところです。</p></div>
+    <p class="catchphrase">好きが暴走して全方位に引かれる、自覚なきドン引き製造機。</p>
+    <div class="ts-card desc-text">
+    <p class="desc-lead">「まっすぐ求めてるだけ」と思っていますが、その「まっすぐ」は相手にとっては「逃げ場がない」です。好きになった瞬間からアクセル全開で距離を詰め、欲望を全部ぶつける。あなたが「情熱」だと思っているもの、相手にとっては圧でしかありません。引かれている空気を読めないのも、このタイプの致命的なところです。</p>
+    <section class="desc-section"><h3 class="desc-section-title">ガツガツ丸出しの暴走機関車</h3><p>欲望を抑えられず突っ走る。その前のめりさが出るたび、相手は一歩ずつ後退しています。あなたが近づいた分だけ相手が引いている事実、いい加減気づいてください。</p></section>
+    <section class="desc-section"><h3 class="desc-section-title">余裕ゼロの圧迫系</h3><p>好きと欲が抑えられず全部ぶつける。それが情熱に見えるのは自分だけ。相手にとっては、息ができないほどの圧。「重い」と言われた回数、数えてみたことありますか。</p></section>
+    <section class="desc-section"><h3 class="desc-section-title">引かれてることに気づかないモンスター</h3><p>駆け引きゼロで欲望直球。盛り上がっているのは自分だけで、相手はどう逃げるか考えている——その温度差に気づけないのが、あなたの一番の問題です。</p></section>
     </div>
   </section>
 

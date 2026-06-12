@@ -460,6 +460,23 @@
   .cm-stars{ font-size:12px; color:var(--pink); letter-spacing:1px; }
   .cm-label{ font-size:9.5px; color:var(--ink-mute); margin-top:2px; letter-spacing:.1em; }
 
+  /* — description リード + 異名セクション (result.htmlと統一) — */
+  .desc-text .desc-lead{font-size:15px;line-height:2;color:var(--ink);margin-bottom:32px;font-weight:400;}
+  .desc-text .desc-section{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);}
+  .desc-text .desc-section:first-of-type{border-top:none;padding-top:0;}
+  .desc-text .desc-section-title{font-family:"Noto Sans JP",sans-serif;font-size:18px;font-weight:700;color:var(--violet);margin-bottom:14px;letter-spacing:.02em;line-height:1.4;}
+  .desc-text .desc-section p{font-size:14px;line-height:1.95;color:var(--ink-mute);margin-bottom:0;}
+  @media(max-width:600px){
+    .desc-text .desc-lead{font-size:14px;line-height:1.9;margin-bottom:24px}
+    .desc-text .desc-section{margin-top:24px;padding-top:20px}
+    .desc-text .desc-section-title{font-size:16px;margin-bottom:10px}
+    .desc-text .desc-section p{font-size:13.5px;line-height:1.9}
+  }
+
+  /* — catchphrase (毒一行) result.htmlと統一 — */
+  .catchphrase{font-family:"Noto Sans JP",sans-serif;font-size:17px;font-weight:500;line-height:1.7;color:var(--ink);letter-spacing:.02em;text-align:left;margin:0 auto 24px;padding:18px 22px;border-left:3px solid var(--violet);background:linear-gradient(90deg,rgba(155,124,248,.08),transparent);border-radius:0 12px 12px 0;text-wrap:balance;max-width:760px;}
+  @media(max-width:600px){.catchphrase{font-size:15px;padding:14px 16px;margin-bottom:20px;line-height:1.7}}
+
 </style>
 <style id="dx-cta-style">
 .dx-cta{position:relative;z-index:3;max-width:520px;margin:0 auto 30px;padding:18px 20px;border:1px solid rgba(155,124,248,.35);border-radius:16px;background:linear-gradient(180deg,rgba(155,124,248,.13),rgba(155,124,248,.04));backdrop-filter:blur(6px);text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.28)}
@@ -549,8 +566,12 @@
 
   <section class="ts-block">
     <h2 class="ts-title">01 · このキャラの<em>夜</em>、その本質</h2>
-    <div class="ts-card">
-      <div class="ts-text" id="typeDesc"><p>「全部見えてるから動かない」——いいえ、怖くて動けないだけです。観察して分析して賢いフリをして、結局当事者になる覚悟がない。「愛してるから見守る」は、あなたの辞書では「欲しいけど傷つくのが怖い」の同義語です。その臆病さ、相手はとっくに見抜いていて、だからあなたを本気の選択肢に入れないんですよ。</p></div>
+    <p class="catchphrase">見てるだけで何もしない、欲望すら認められない最も臆病なタイプ。</p>
+    <div class="ts-card desc-text">
+    <p class="desc-lead">「全部見えてるから動かない」——いいえ、怖くて動けないだけです。観察して分析して賢いフリをして、結局当事者になる覚悟がない。「愛してるから見守る」は、あなたの辞書では「欲しいけど傷つくのが怖い」の同義語です。その臆病さ、相手はとっくに見抜いていて、だからあなたを本気の選択肢に入れないんですよ。</p>
+    <section class="desc-section"><h3 class="desc-section-title">欲を認められない傍観者</h3><p>欲しがっていないフリをしますが、あなたの視線は全部語っています。その隠した飢えが目に出ていることに気づいていないのは、あなただけです。</p></section>
+    <section class="desc-section"><h3 class="desc-section-title">動けない言い訳製造機</h3><p>動かない理由を並べるのだけは天才的。でもその言い訳の数だけ、チャンスを逃していることに気づいていますか。分析している間に、相手は別の人の腕の中にいますよ。</p></section>
+    <section class="desc-section"><h3 class="desc-section-title">観察に逃げる臆病者</h3><p>行為より観察を好むのは、傷つかない安全な距離を保ちたいから。でもその距離感は相手からすれば冷たさでしかなく、あなたが「見守ってる」と思っている間に、相手の気持ちは離れていっています。</p></section>
     </div>
   </section>
 

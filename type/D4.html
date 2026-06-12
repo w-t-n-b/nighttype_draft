@@ -460,6 +460,23 @@
   .cm-stars{ font-size:12px; color:var(--pink); letter-spacing:1px; }
   .cm-label{ font-size:9.5px; color:var(--ink-mute); margin-top:2px; letter-spacing:.1em; }
 
+  /* — リード + 異名セクション (result.htmlと統一) — */
+  .desc-text .desc-lead{font-size:15px;line-height:2;color:var(--ink);margin-bottom:32px;font-weight:400;}
+  .desc-text .desc-section{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);}
+  .desc-text .desc-section:first-of-type{border-top:none;padding-top:0;}
+  .desc-text .desc-section-title{font-family:"Noto Sans JP",sans-serif;font-size:18px;font-weight:700;color:var(--violet);margin-bottom:14px;letter-spacing:.02em;line-height:1.4;}
+  .desc-text .desc-section p{font-size:14px;line-height:1.95;color:var(--ink-mute);margin-bottom:0;}
+  @media(max-width:600px){
+    .desc-text .desc-lead{font-size:14px;line-height:1.9;margin-bottom:24px}
+    .desc-text .desc-section{margin-top:24px;padding-top:20px}
+    .desc-text .desc-section-title{font-size:16px;margin-bottom:10px}
+    .desc-text .desc-section p{font-size:13.5px;line-height:1.9}
+  }
+
+  /* — catchphrase (毒一行) result.htmlと統一 — */
+  .catchphrase{font-family:"Noto Sans JP",sans-serif;font-size:17px;font-weight:500;line-height:1.7;color:var(--ink);letter-spacing:.02em;text-align:left;margin:0 auto 24px;padding:18px 22px;border-left:3px solid var(--violet);background:linear-gradient(90deg,rgba(155,124,248,.08),transparent);border-radius:0 12px 12px 0;text-wrap:balance;max-width:760px;}
+  @media(max-width:600px){.catchphrase{font-size:15px;padding:14px 16px;margin-bottom:20px;line-height:1.7}}
+
 </style>
 <style id="dx-cta-style">
 .dx-cta{position:relative;z-index:3;max-width:520px;margin:0 auto 30px;padding:18px 20px;border:1px solid rgba(155,124,248,.35);border-radius:16px;background:linear-gradient(180deg,rgba(155,124,248,.13),rgba(155,124,248,.04));backdrop-filter:blur(6px);text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.28)}
@@ -549,8 +566,12 @@
 
   <section class="ts-block">
     <h2 class="ts-title">01 · このキャラの<em>夜</em>、その本質</h2>
-    <div class="ts-card">
-      <div class="ts-text" id="typeDesc"><p>表向きは落ち着いて見えますが、あなたの内側には「この夜に意味はあるのか」「私は特別なのか」がぐるぐる回っています。ただの行為に意味と特別を求めずにいられない——その重さ、静かなフリをしても全部漏れています。相手が距離を取り始めたとき「何か悪いことした？」と聞くその顔が、一番重いんですよ。</p></div>
+    <p class="catchphrase">静かな顔して重い独占、意味を欲しがるこじらせの極み。</p>
+    <div class="ts-card desc-text">
+    <p class="desc-lead">表向きは落ち着いて見えますが、あなたの内側には「この夜に意味はあるのか」「私は特別なのか」がぐるぐる回っています。ただの行為に意味と特別を求めずにいられない——その重さ、静かなフリをしても全部漏れています。相手が距離を取り始めたとき「何か悪いことした？」と聞くその顔が、一番重いんですよ。</p>
+    <section class="desc-section"><h3 class="desc-section-title">意味中毒の重い人</h3><p>体だけの関係を許せず、一回一回に意味を欲しがる。あなたにとっては誠実さでも、相手にとっては息苦しさ。「そんなに深く考えなくていいよ」と言われた回数、覚えていますか。</p></section>
+    <section class="desc-section"><h3 class="desc-section-title">隠れ本命厨</h3><p>「軽い関係でいい」と口では言いながら、内心は本命扱いを求めている。その建前と本音のズレが相手に伝わるたび、「重い…」と思われている。嘘をつくなら最後までつき通してください。</p></section>
+    <section class="desc-section"><h3 class="desc-section-title">こじらせ独占欲の塊</h3><p>夜のたびに関係の意味を問い直す。深いつもりでしょうが、相手にとっては毎回面接を受けているような気分。あなたの「大切にしたい」は、相手を縛る鎖と同じだと気づいていますか。</p></section>
     </div>
   </section>
 
