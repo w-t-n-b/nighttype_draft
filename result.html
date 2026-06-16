@@ -1639,7 +1639,7 @@
     document.getElementById('visitorLanding').style.display = 'block';
     document.getElementById('vlInviterImg').src = t.image || `images/${code}.png`;
     document.getElementById('vlInviterImg').alt = t.name;
-    document.getElementById('vlInviterCode').textContent = code + ' · ' + (t.axisCode || '');
+    document.getElementById('vlInviterCode').textContent = (t.axisCode || '');
     document.getElementById('vlInviterName').textContent = t.name;
     function populateQ1(){
       if(typeof questions === 'undefined' || !questions[0]) return false;
@@ -1673,7 +1673,7 @@
     itemsCtaImg.src = t.image || `images/${code}.png`;
     itemsCtaImg.alt = t.name;
   }
-  document.getElementById('typeCode').textContent = `${code} · ${t.axisCode || ''}`;
+  document.getElementById('typeCode').textContent = `${t.axisCode || ''}`;
   document.getElementById('typeName').textContent = t.name;
   document.getElementById('typeTagline').textContent = `"${t.tagline || ''}"`;
 

@@ -10,12 +10,18 @@
   gtag('config', 'G-QB8NMCQJ7R');
 </script>
 
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+<link rel="shortcut icon" href="favicon.ico" />
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Compatibility — NightType</title>
+<title>Compatibility — 夜キャラ診断</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" /></noscript>
 <link rel="stylesheet" href="nighttype-shell.css" />
 <style>
   .cp-hero{
@@ -432,7 +438,7 @@
 
 <!-- Top Nav -->
 <nav class="nt-nav">
-  <a href="index.html" class="nt-brand"><span class="nt-brand-mark"></span>NightType</a>
+  <a href="index.html" class="nt-brand"><span class="nt-brand-mark"></span>夜キャラ診断</a>
   <div class="nt-nav-links" id="navLinks">
     <a href="index.html">Home</a>
     <a href="quiz.html">Quiz</a>
@@ -446,7 +452,7 @@
 <!-- Hero -->
 <section class="cp-hero">
   <div class="cp-eyebrow">Compatibility Arena</div>
-  <h1 class="cp-title">Pick <em>two</em>.<br/>See how their nights collide.</h1>
+  <h1 class="cp-title">ふたりの夜の<br/><em>相性</em>をみる</h1>
   <p class="cp-sub">2人のキャラを選んで、その夜の相性を診断する。<br/>下の16タイプから直感で選んでみて。</p>
 </section>
 
@@ -494,19 +500,19 @@
     <div class="result-label" id="resLabel">—</div>
     <div class="result-pair">
       <div class="rp-char">
-        <img id="rp1Img" alt=""/>
+        <img id="rp1Img" alt="" width="200" height="200" loading="lazy"/>
         <div class="rp-char-name" id="rp1Name">—</div>
       </div>
       <div class="rp-cross">×</div>
       <div class="rp-char">
-        <img id="rp2Img" alt=""/>
+        <img id="rp2Img" alt="" width="200" height="200" loading="lazy"/>
         <div class="rp-char-name" id="rp2Name">—</div>
       </div>
     </div>
     <div class="result-comment" id="resComment">—</div>
     <div class="arena-cta">
       <a href="characters.html" class="nt-btn">Browse characters</a>
-      <a href="quiz.html" class="nt-btn nt-btn-primary">Find your own <span class="arrow">→</span></a>
+      <a href="quiz.html" class="cta-start">診断をはじめる<span class="arrow">→</span></a>
     </div>
   </div>
 </section>
@@ -522,7 +528,7 @@
     const t = types[c];
     return `
       <div class="roster-cell" data-code="${c}">
-        <img src="${t.image || `images/${c}.png`}" alt="${t.name}"
+        <img src="${t.image || `images/${c}.png`}" alt="${t.name}" width="120" height="120" loading="lazy"
              onerror="this.style.display='none'"/>
         <div class="roster-cell-code">${t.name}</div>
       </div>
@@ -556,9 +562,9 @@
     const t = types[code];
     slot.innerHTML = `
       <div class="slot-fill">
-        <img src="${t.image || `images/${code}.png`}" alt="${t.name}"/>
+        <img src="${t.image || `images/${code}.png`}" alt="${t.name}" width="120" height="120" loading="lazy"/>
         <div class="slot-fill-info">
-          <div class="slot-fill-code">${code} · ${t.axisCode || ''}</div>
+          <div class="slot-fill-code">${t.axisCode || ''}</div>
           <div class="slot-fill-name">${t.name}</div>
         </div>
       </div>
