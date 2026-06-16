@@ -959,7 +959,7 @@ const TYPES = [
       document.getElementById('inviteFromImg').src = fromT.image || `images/${fromCode}.png`;
       document.getElementById('inviteFromImg').alt = fromT.name;
       document.getElementById('inviteFromName').textContent = fromT.name;
-      document.getElementById('inviteFromCode').textContent = fromCode;
+      document.getElementById('inviteFromCode').textContent = fromT.axisCode || '';
       const cp = (fromT.catchphrase || fromT.tagline || '').replace(/[。．.\s]+$/, '');
       document.getElementById('inviteFromTagline').innerHTML =
         `『${fromT.name}』の<strong>あの人</strong>が、<br/>あなたとの相性を<strong>知りたがっています</strong>。`;
