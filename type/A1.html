@@ -153,7 +153,7 @@
     -webkit-background-clip:text;background-clip:text;color:transparent;
     margin-bottom:18px; letter-spacing:-.01em;
     text-wrap:balance;
-    word-break:auto-phrase; line-break:strict; overflow-wrap:break-word;
+    word-break:keep-all; line-break:strict; overflow-wrap:break-word;
     animation:ntFadeUp .7s cubic-bezier(.4,0,.2,1) .5s both;
   }
   .hero-tagline{
@@ -538,7 +538,7 @@
     </div>
 
     <div class="hero-code" id="heroCode">N-S-A-G</div>
-    <h1 class="hero-name" id="heroName">オンリーユー没入者</h1>
+    <h1 class="hero-name" id="heroName">オンリーユー<wbr>没入者</h1>
     <p class="hero-tagline" id="heroTagline">"尽くしてるのは、半分は見返りのため"</p>
     <div class="hero-axes" id="heroAxes">
       <span><strong id="axNuma">沼</strong></span>
@@ -696,7 +696,7 @@
 
   const _bc = document.getElementById('bcCode'); if(_bc) _bc.textContent = t.name;
   document.getElementById('heroCode').textContent = `${t.axisCode || ''}`;
-  document.getElementById('heroName').textContent = t.name;
+  const _nameMap = {'A1':'オンリーユー<wbr>没入者','A2':'色欲の<wbr>共鳴者','A3':'感情同期<wbr>ドリフター','A4':'沼化<wbr>プランナー','B1':'ムード<wbr>絶対主義者','B2':'儀式化<wbr>ナイト','B3':'快楽<wbr>エンジニア','B4':'空気読解<wbr>オペレーター','C1':'本能解放<wbr>ランナー','C2':'フィジカル<wbr>優位者','C3':'欲望<wbr>直結タイプ','C4':'スピード<wbr>重視型','D1':'観測者<wbr>ポジション','D2':'妄想シナリオ<wbr>ライター','D3':'依存<wbr>ドミネーター','D4':'隠れ独占<wbr>ウィザード'}; const _heroEl = document.getElementById('heroName'); _heroEl.innerHTML = _nameMap[code] || t.name;
   document.getElementById('heroTagline').textContent = `"${t.tagline || ''}"`;
 
   const axesParts = (t.axes || '').split('×').map(s=>s.trim());
