@@ -2092,42 +2092,7 @@
       // 動的QRを既存QR位置に上書き
       // 検出結果: QR本体は約 x=448..625, y=1664..1847 (中心 536,1755 / サイズ ~180)
       const url = selfShareUrl;
-      const qr = await generateQrDataUrl(url);
-      if(qr){
-        const qrSize = 210;
-        const qrX = (W - qrSize) / 2;
-        const qrY = 1655;
-        // 1) 既存QRエリアを暗い角丸で塗りつぶし(覆い隠す)
-        const pad = 14;
-        g.save();
-        const radius = 18;
-        const rx = qrX - pad, ry = qrY - pad;
-        const rw = qrSize + pad * 2, rh = qrSize + pad * 2;
-        g.beginPath();
-        g.moveTo(rx + radius, ry);
-        g.lineTo(rx + rw - radius, ry);
-        g.quadraticCurveTo(rx + rw, ry, rx + rw, ry + radius);
-        g.lineTo(rx + rw, ry + rh - radius);
-        g.quadraticCurveTo(rx + rw, ry + rh, rx + rw - radius, ry + rh);
-        g.lineTo(rx + radius, ry + rh);
-        g.quadraticCurveTo(rx, ry + rh, rx, ry + rh - radius);
-        g.lineTo(rx, ry + radius);
-        g.quadraticCurveTo(rx, ry, rx + radius, ry);
-        g.closePath();
-        g.fillStyle = 'rgba(8,4,24,0.94)';
-        g.fill();
-        // 細い金フチ
-        g.strokeStyle = 'rgba(212,175,110,0.7)';
-        g.lineWidth = 1.5;
-        g.stroke();
-        g.restore();
-        // 2) QR本体
-        try{
-          const qrImg = await loadImage(qr);
-          g.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
-        }catch(_){}
-      }
-
+      // シェア画像v2(検索カード入り・QRなし)に統一済み — QR上書きは不要
       return new Promise(res => c.toBlob(res, 'image/png'));
     }
     // Pair モードは廃止(スクショファースト方針)
