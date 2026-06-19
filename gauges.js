@@ -8,6 +8,8 @@
   const LINEAR = {  3:100,  2:80,  1:60, '-1':40, '-2':20, '-3':0 };
   // 両極端カーブ(変態度): |val| が大きいほど高い
   const SYMMETRIC = { 3:100, 2:80, 1:20, '-1':20, '-2':80, '-3':100 };
+  // メンヘラ度専用: 全体に+5〜+10%シフト(平均ユーザーがちょい高めに出る)
+  const MENHERA_UP = { 3:100, 2:85, 1:70, '-1':35, '-2':15, '-3':5 };
 
   // ── 各ゲージ定義 ──
   // dir: 'A' = LIKE側で+, 'B' = NOPE側で+
@@ -110,7 +112,7 @@
       icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/><path d="m12 13-1-1 2-2-3-2.5 2.77-2.92"/></svg>',
       color: '#db2777',
       colorTo: '#7c3aed',
-      curve: 'linear',
+      curve: 'menhera_up',
       questions: [
         { qid: 1,  dir: 'A' },
         { qid: 2,  dir: 'A' },
@@ -184,7 +186,10 @@
     if(val == null) return null;
     // dir 'B' は val を反転
     const v = (dir === 'A') ? val : -val;
-    const map = (curve === 'symmetric') ? SYMMETRIC : LINEAR;
+    let map;
+    if(curve === 'symmetric') map = SYMMETRIC;
+    else if(curve === 'menhera_up') map = MENHERA_UP;
+    else map = LINEAR;
     return map[v] != null ? map[v] : 50;
   }
 
