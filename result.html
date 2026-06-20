@@ -753,6 +753,60 @@
     .ip-comment{ font-size:12px; }
   }
 
+  /* ── Shared mode banner (リンク受信者向け) ── */
+  .shared-banner{
+    max-width:560px; margin:120px auto 18px;
+    padding:24px 22px 22px;
+    border-radius:22px;
+    background:
+      radial-gradient(circle at 30% 0%, rgba(34,211,238,.18), transparent 60%),
+      radial-gradient(circle at 70% 100%, rgba(167,139,250,.16), transparent 60%),
+      linear-gradient(180deg, rgba(15,12,32,.6), rgba(8,6,22,.7));
+    border:1px solid rgba(34,211,238,.42);
+    text-align:center; position:relative;
+  }
+  .sb-eyebrow{
+    font-family:"Space Mono",monospace;
+    font-size:10.5px; letter-spacing:.32em;
+    color:rgba(34,211,238,.9); text-transform:uppercase;
+    margin-bottom:10px; font-weight:700;
+  }
+  .sb-title{
+    font-family:"Noto Sans JP",sans-serif;
+    font-size:20px; font-weight:800;
+    color:#fff; line-height:1.5;
+    margin:0 0 8px;
+  }
+  .sb-title span{
+    background:linear-gradient(90deg, #a78bfa, #22d3ee);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .sb-sub{
+    font-size:12.5px; color:rgba(255,255,255,.6);
+    margin:0 0 18px; line-height:1.6;
+  }
+  .sb-cta-row{
+    display:flex; flex-direction:column; gap:12px;
+    align-items:center;
+  }
+  .sb-cta-row .cta-start{ display:inline-flex; }
+  .sb-cta-mine{
+    font-size:12px; color:rgba(196,181,253,.85);
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .sb-cta-mine:hover{ color:#fff; }
+  @media(max-width:480px){
+    .shared-banner{ margin:90px 10px 14px; padding:20px 16px; }
+    .sb-title{ font-size:17px; }
+  }
+
+  /* shared モード時: 不要セクションを隠す */
+  body.shared-mode .nt-nav{ /* keep visible */ }
+  body.shared-mode #shareT1,
+  body.shared-mode #shareMid{ display:none !important; }
+
   /* ── Visitor mode landing (実装指示#3 §6 — 招待者×? + Q1 teaser) ── */
   .visitor-landing{
     max-width:640px; margin:18px auto 28px;
@@ -1299,6 +1353,17 @@
 
 <main class="result-main">
 
+  <!-- Shared mode banner (リンク受信者向け: 招待者の結果ページであることを明示+CTA) -->
+  <section class="shared-banner" id="sharedBanner" style="display:none">
+    <div class="sb-eyebrow">— SHARED —</div>
+    <h2 class="sb-title">これは『<span id="sbName">—</span>』の<br/>夜キャラ診断結果</h2>
+    <p class="sb-sub" id="sbSub">下までスクロールして見てみる？</p>
+    <div class="sb-cta-row">
+      <a href="quiz.html?p=1" class="cta-start sb-cta-new" id="sbCtaNew">あなたも診断してみる <span class="arrow">→</span></a>
+      <a href="result.html" class="sb-cta-mine" id="sbCtaMine" style="display:none">← 自分の結果を見る</a>
+    </div>
+  </section>
+
   <!-- Visitor mode landing (招待者 × ? + Q1 teaser) -->
   <section class="visitor-landing" id="visitorLanding" style="display:none">
     <div class="vl-eyebrow">— あなたへの招待 —</div>
@@ -1583,14 +1648,23 @@
 <script>
   // ── Get type code ──
   const params = new URLSearchParams(location.search);
-  // Visitor mode detection (実装指示#3 §6)
   const hasCompletedQuiz = !!localStorage.getItem('nightTypeResult');
   const urlTypeCode = params.get('type');
   const urlFromCode = params.get('from');
-  const isVisitorMode = !hasCompletedQuiz && urlTypeCode && types[urlTypeCode];
-  const code = isVisitorMode
-    ? urlTypeCode
-    : (params.get('type') || localStorage.getItem('nightTypeResult') || 'A1');
+  const urlSharedCode = params.get('shared');
+  const myCode = localStorage.getItem('nightTypeResult');  // 受信者本人(あれば)
+
+  // shared モード: ?shared={code} があれば、リンク受信者に招待者の結果を見せる
+  const isSharedMode = !!(urlSharedCode && types[urlSharedCode]);
+  const isVisitorMode = !isSharedMode && !hasCompletedQuiz && urlTypeCode && types[urlTypeCode];
+  let code;
+  if(isSharedMode) {
+    code = urlSharedCode;  // 表示するのは招待者
+  } else if(isVisitorMode) {
+    code = urlTypeCode;
+  } else {
+    code = params.get('type') || localStorage.getItem('nightTypeResult') || 'A1';
+  }
   const t = types[code] || types.A1;
 
   // ── OGP / Twitter meta tags (dynamic) ──
@@ -1632,6 +1706,33 @@
   // ── Hero ──
   document.getElementById('charImg').src = t.image || `images/${code}.png`;
   document.getElementById('charImg').alt = t.name;
+
+  // ── Shared mode UI setup (リンク受信者向け: 招待者の結果表示+受診状態別CTA) ──
+  if(isSharedMode){
+    document.body.classList.add('shared-mode');
+    document.getElementById('sharedBanner').style.display = 'block';
+    document.getElementById('sbName').textContent = t.name;
+    const sbMine = document.getElementById('sbCtaMine');
+    const sbNew = document.getElementById('sbCtaNew');
+    const sbSub = document.getElementById('sbSub');
+    if(myCode && types[myCode] && myCode !== urlSharedCode){
+      // 受信者が別キャラで診断済み → 「あなたとの相性」表示 + 自分の結果に戻るリンク
+      sbSub.innerHTML = `あなた(<strong>${types[myCode].name}</strong>)との相性は、下にあります。`;
+      sbNew.style.display = 'none';  // 既に診断済みなので「あなたも診断」CTAは不要
+      sbMine.style.display = 'inline-block';
+    } else if(myCode === urlSharedCode){
+      // 受信者本人(自分のリンクをチェック) → 普通の結果として表示
+      sbSub.textContent = 'これはあなたの結果ページです。';
+      sbNew.style.display = 'none';
+      sbMine.textContent = '通常表示に戻る';
+      sbMine.style.display = 'inline-block';
+    } else {
+      // 受信者未診断 → 「あなたも診断」CTA を強調
+      sbSub.textContent = '気になったら、あなたも診断してみる?';
+      sbNew.style.display = 'inline-flex';
+    }
+    trackEvent('shared_view', {shared: urlSharedCode, viewer_has_quiz: !!myCode});
+  }
 
   // ── Visitor mode UI setup (招待者 × ? + Q1) ──
   if(isVisitorMode){
@@ -2325,16 +2426,21 @@
   })();
 
   // ── Invite preview (?from=XX で来訪した時の相性スナップブロック) ──
+  // shared モードでは「招待者(code) × 受信者本人(myCode)」の相性を表示
   (function setupInvitePreview(){
-    const fromCode = params.get('from');
+    // 通常モード: ?from= から、 shared モード: myCode から
+    let fromCode = params.get('from');
+    if(isSharedMode && !fromCode && myCode && types[myCode] && myCode !== urlSharedCode){
+      fromCode = myCode;  // shared モードでは受信者が「from」役
+    }
     if(!fromCode) return;
     const fromT = types[fromCode];
-    if(!fromT) return;  // invalid code → silently ignore
+    if(!fromT) return;
 
     const block = document.getElementById('invitePreview');
     if(!block) return;
 
-    // Compute compatibility using existing compatScore
+    // Compute compatibility
     const r = compatScore(code, fromCode);
     if(!r) return;
 
