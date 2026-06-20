@@ -1667,6 +1667,15 @@
   }
   const t = types[code] || types.A1;
 
+  // URLバー手動コピー対策: 通常モード(=本人が自分の結果を見ている)時にURLに ?shared={code} を自動付与
+  // これでユーザーが URLバーをコピーして送っても、 受信者は shared モードで開ける
+  if(!isSharedMode && !isVisitorMode && !urlFromCode && !params.get('type') && hasCompletedQuiz){
+    try{
+      const newUrl = location.pathname + '?shared=' + code + location.hash;
+      history.replaceState(null, '', newUrl);
+    }catch(_){}
+  }
+
   // ── OGP / Twitter meta tags (dynamic) ──
   (function setOGP(){
     const ogTitle = `私の夜キャラは「${t.name}」｜夜キャラ診断16types`;
