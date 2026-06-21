@@ -723,9 +723,11 @@
   .ip-stars{
     font-family:"Noto Sans JP",sans-serif;
     font-size:30px; letter-spacing:3px;
-    color:var(--pink);
+    background:linear-gradient(90deg, #ec4899 0%, #c026d3 50%, #d946ef 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    filter:drop-shadow(0 0 14px rgba(236,72,153,.7)) drop-shadow(0 0 6px rgba(192,38,211,.5));
     margin-bottom:4px;
-    text-shadow:0 0 16px rgba(244,114,182,.4);
   }
   .ip-label{
     font-family:"Noto Sans JP",sans-serif;
