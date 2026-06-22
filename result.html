@@ -846,9 +846,11 @@
   }
   .vl-q-mark{
     font-family:"Cormorant Garamond",serif;
-    font-size:76px; font-style:italic; font-weight:500;
-    background:linear-gradient(135deg,rgba(34,211,238,.95),rgba(155,124,248,.85));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-size:76px; font-style:italic; font-weight:700;
+    background:linear-gradient(135deg, #22d3ee 0%, #a78bfa 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    filter:drop-shadow(0 0 14px rgba(34,211,238,.6)) drop-shadow(0 0 6px rgba(167,139,250,.5));
     line-height:1.2;
     padding:0 0 .1em;
     display:inline-block;
@@ -1667,7 +1669,8 @@
   const myCode = localStorage.getItem('nightTypeResult');  // 受信者本人(あれば)
 
   // shared モード: ?shared={code} があれば、リンク受信者に招待者の結果を見せる
-  const isSharedMode = !!(urlSharedCode && types[urlSharedCode]);
+  // ただし、自分のコードと同じ shared は「自分の結果ページ」として通常モードで表示
+  const isSharedMode = !!(urlSharedCode && types[urlSharedCode] && myCode !== urlSharedCode);
   const isVisitorMode = !isSharedMode && !hasCompletedQuiz && urlTypeCode && types[urlTypeCode];
   let code;
   if(isSharedMode) {
