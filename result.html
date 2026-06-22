@@ -946,11 +946,18 @@
     text-align:center; font-family:"Space Mono",monospace;
     font-size:9.5px; letter-spacing:.18em; color:var(--ink-faint); margin:0;
   }
+  /* visitor mode: visitorLanding だけ見せて他は全部隠す(招待者の夜キャラ+Q1 + 「自分も診断」だけ) */
   body.visitor-mode .result-hero,
   body.visitor-mode .axis-gauges,
   body.visitor-mode .invite-back-cta,
-  body.visitor-mode #shareT1{ display:none !important; }
-  body.visitor-mode .items-cta{ margin-top:60px; }
+  body.visitor-mode #shareT1,
+  body.visitor-mode #gaugesSection,
+  body.visitor-mode #invitePreview,
+  body.visitor-mode #sharedBanner,
+  body.visitor-mode #shareMid,
+  body.visitor-mode .items-cta,
+  body.visitor-mode .section-block{ display:none !important; }
+  body.visitor-mode .visitor-landing{ display:block !important; }
   @media (max-width:520px){
     .vl-pair{ gap:6px; } .vl-side{ max-width:140px; }
     .vl-char-wrap{ width:110px; height:110px; } .vl-q-mark{ font-size:56px; line-height:1.2; padding-bottom:.1em; }
@@ -1668,13 +1675,20 @@
   const urlSharedCode = params.get('shared');
   const myCode = localStorage.getItem('nightTypeResult');  // 受信者本人(あれば)
 
-  // shared モード: ?shared={code} があれば、リンク受信者に招待者の結果を見せる
-  // ただし、自分のコードと同じ shared は「自分の結果ページ」として通常モードで表示
-  const isSharedMode = !!(urlSharedCode && types[urlSharedCode] && myCode !== urlSharedCode);
-  const isVisitorMode = !isSharedMode && !hasCompletedQuiz && urlTypeCode && types[urlTypeCode];
+  // shared モード判定
+  //   自分のコードと一致 → 通常表示(自分の結果)
+  //   診断済みの別キャラ受信者 → 相性表示モード(SHAREDバナー+相性スナップ)
+  //   未診断者 → visitor モードに乗せる(招待者の夜キャラだけ見せて自分の診断を始められる)
+  const sharedHit = !!(urlSharedCode && types[urlSharedCode] && myCode !== urlSharedCode);
+  const isSharedMate    = sharedHit && hasCompletedQuiz;    // 診断済み別キャラ
+  const isSharedVisitor = sharedHit && !hasCompletedQuiz;   // 未診断 → visitor UI へ
+  const isSharedMode    = isSharedMate;                     // SHAREDバナーは相性表示時のみ
+  const isVisitorMode   = isSharedVisitor
+    || (!sharedHit && !hasCompletedQuiz && urlTypeCode && types[urlTypeCode]);
+
   let code;
-  if(isSharedMode) {
-    code = urlSharedCode;  // 表示するのは招待者
+  if(isSharedMate || isSharedVisitor) {
+    code = urlSharedCode;  // 招待者を主体に
   } else if(isVisitorMode) {
     code = urlTypeCode;
   } else {
@@ -2452,20 +2466,25 @@
   // ── Invite preview (?from=XX で来訪した時の相性スナップブロック) ──
   // shared モードでは「招待者(code) × 受信者本人(myCode)」の相性を表示
   (function setupInvitePreview(){
-    // 通常モード: ?from= から、 shared モード: myCode から
+    // YOU/THEM を正しく出すために meCode(自分側) と fromCode(相手側) を別々に持つ
+    // 通常モード: meCode = code(=myCode), fromCode = ?from= の招待者
+    // shared モード: meCode = myCode(=受信者), fromCode = urlSharedCode(=招待者)
     let fromCode = params.get('from');
+    let meCode = code;
     if(isSharedMode && !fromCode && myCode && types[myCode] && myCode !== urlSharedCode){
-      fromCode = myCode;  // shared モードでは受信者が「from」役
+      meCode = myCode;          // YOU = 受信者(自分)
+      fromCode = urlSharedCode; // THEM = 招待者
     }
     if(!fromCode) return;
+    const meT = types[meCode];
     const fromT = types[fromCode];
-    if(!fromT) return;
+    if(!meT || !fromT) return;
 
     const block = document.getElementById('invitePreview');
     if(!block) return;
 
     // Compute compatibility
-    const r = compatScore(code, fromCode);
+    const r = compatScore(meCode, fromCode);
     if(!r) return;
 
     block.style.display = 'block';
@@ -2496,10 +2515,10 @@
     }
 
     // Populate (管理番号A1/B2は一切表示しない)
-    document.getElementById('ipMeImg').src = t.image || `images/${code}.png`;
-    document.getElementById('ipMeImg').alt = t.name;
-    document.getElementById('ipMeName').textContent = t.name;
-    document.getElementById('ipMeAxis').textContent = axisOf(code);
+    document.getElementById('ipMeImg').src = meT.image || `images/${meCode}.png`;
+    document.getElementById('ipMeImg').alt = meT.name;
+    document.getElementById('ipMeName').textContent = meT.name;
+    document.getElementById('ipMeAxis').textContent = axisOf(meCode);
     document.getElementById('ipFromImg').src = fromT.image || `images/${fromCode}.png`;
     document.getElementById('ipFromImg').alt = fromT.name;
     document.getElementById('ipFromName').textContent = fromT.name;
@@ -2516,7 +2535,7 @@
     // シェア導線は結果ページ末尾(shareBottom)に集約 — 個別ハンドラは attachShareHandlers が処理
 
     // Analytics
-    window.dispatchEvent(new CustomEvent('invited_arrival', {detail:{from:fromCode, me:code, label:r.label}}));
+    window.dispatchEvent(new CustomEvent('invited_arrival', {detail:{from:fromCode, me:meCode, label:r.label}}));
   })();
 
   // ── Hide loader ──
