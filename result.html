@@ -44,13 +44,13 @@
   /* ── Hero ── */
   .result-hero{
     text-align:center;
-    margin-bottom:60px;
+    margin-bottom:24px;
     animation:ntFadeUp .8s cubic-bezier(.4,0,.2,1) both;
   }
   .result-eyebrow{
     font-family:"Space Mono",monospace; font-size:11px;
     letter-spacing:.4em; text-transform:uppercase;
-    color:var(--cyan); margin-bottom:36px;
+    color:var(--cyan); margin-bottom:16px;
     display:inline-flex; align-items:center; gap:12px;
   }
   .result-eyebrow::before,
@@ -1174,9 +1174,19 @@
     .desc-quote{ font-size:18px; }
     .friend-grid{ grid-template-columns:repeat(4,1fr); gap:6px }
     .friend-card{ padding:22px 18px; }
-    .section-title{ font-size:24px; }
-    .char-orbit{ width:240px; height:240px }
-    .char-frame{ width:220px; height:220px; }
+    .section-title{ font-size:22px; }
+    .char-orbit{ width:200px; height:200px }
+    .char-frame{ width:180px; height:180px; }
+    .result-hero{ margin-bottom:18px; }
+    .result-eyebrow{ margin-bottom:12px; }
+    .type-name{ font-size:32px !important; margin-bottom:8px; }
+    .type-tagline{ font-size:14px !important; margin-bottom:14px; }
+    .type-axes{ margin-bottom:0; }
+    /* 5ゲージセクションのコンパクト化 */
+    #gaugesSection{ margin-top:14px !important; margin-bottom:18px !important; }
+    #gaugesSection .section-eyebrow{ margin-bottom:8px; }
+    #gaugesSection .section-title{ margin-bottom:16px; font-size:22px; }
+    .gauges-wrap{ padding:8px 6px !important; gap:6px !important; }
     /* Mobile share buttons: 4 columns, each compact but visible */
     .share-strip{ padding:0 4px; }
     .share-row{ gap:6px !important; flex-wrap:nowrap !important; }
@@ -1466,16 +1476,23 @@
   </section>
 
 
-  <!-- 4-Axis Score Gauges -->
-  <section class="axis-gauges" id="axisGauges">
+  <!-- T4 セクション(inviteBackCta)はスクショファースト方針につき完全削除済み -->
+  <!-- 招待された人向けのシェア導線は shareT1 と shareMid に集約 -->
+
+  <!-- Risk Profile (5 Gauges) - ヒーロー直後に配置 -->
+  <section class="section-block" id="gaugesSection" style="margin-top:20px; margin-bottom:24px;">
+    <div class="section-eyebrow">00 · 危険度解析</div>
+    <h2 class="section-title">あなたの<em>危険度</em>プロファイル</h2>
+    <div class="gauges-wrap" id="gaugesWrap"></div>
+  </section>
+
+  <!-- 4-Axis Score Gauges (5ゲージの後に移動) -->
+  <section class="axis-gauges" id="axisGauges" style="margin-top:24px">
     <div class="axis-gauges-eyebrow">— スコア分布 —</div>
     <div class="axis-gauge-list" id="axisGaugeList"></div>
   </section>
 
-  <!-- T4 セクション(inviteBackCta)はスクショファースト方針につき完全削除済み -->
-  <!-- 招待された人向けのシェア導線は shareT1 と shareMid に集約 -->
-
-  <!-- T1: Self share (hero直下) ※ SVG非依存・確実表示版 -->
+  <!-- T1: Self share (5ゲージ・スコア分布の後に移動) -->
   <div class="share-strip" id="shareT1" data-mode="self" style="display:block !important;">
     <div class="share-heading">あの人との相性、見てみる？</div>
     <div class="share-sub">気になるあの人にだけ、こっそり送ってみる</div>
@@ -1497,13 +1514,6 @@
     </div>
     <button class="share-save-link" data-action="save" style="display:inline-block; background:transparent; border:none; color:rgba(255,255,255,.5); font-size:11px; cursor:pointer; text-decoration:underline; text-underline-offset:3px; padding:6px; font-family:'Noto Sans JP',sans-serif;">または画像を保存</button>
   </div>
-
-  <!-- Risk Profile (5 Gauges) -->
-  <section class="section-block" id="gaugesSection">
-    <div class="section-eyebrow">00 · 危険度解析</div>
-    <h2 class="section-title">あなたの<em>危険度</em>プロファイル</h2>
-    <div class="gauges-wrap" id="gaugesWrap"></div>
-  </section>
 
   <!-- Description -->
   <section class="section-block">
