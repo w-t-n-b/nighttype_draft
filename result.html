@@ -1778,7 +1778,18 @@
     document.getElementById('visitorLanding').style.display = 'block';
     document.getElementById('vlInviterImg').src = t.image || `images/${code}.png`;
     document.getElementById('vlInviterImg').alt = t.name;
-    document.getElementById('vlInviterCode').textContent = (t.axisCode || '');
+    // 軸表示は人間語(沼・S・愛・Give 等)に変換、管理番号(N-S-A-G)は出さない
+    (function setAxis(){
+      const axisMap = [
+        { N:'沼', S:'塩' },
+        { S:'S', M:'M' },
+        { A:'愛', Y:'欲' },
+        { G:'Give', T:'Take' }
+      ];
+      const human = (t.axisCode || '').split('-')
+        .map((c,i)=>(axisMap[i]||{})[c]||c).join(' · ');
+      document.getElementById('vlInviterCode').textContent = human;
+    })();
     document.getElementById('vlInviterName').textContent = t.name;
     function populateQ1(){
       if(typeof questions === 'undefined' || !questions[0]) return false;
