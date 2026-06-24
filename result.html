@@ -1380,7 +1380,8 @@
   <!-- Shared mode banner (リンク受信者向け: 招待者の結果ページであることを明示+CTA) -->
   <section class="shared-banner" id="sharedBanner" style="display:none">
     <div class="sb-eyebrow">— SHARED —</div>
-    <h2 class="sb-title">これは『<span id="sbName">—</span>』の<br/>夜キャラ診断結果</h2>
+    <h2 class="sb-title">『<span id="sbName">—</span>』の<br/>夜キャラ診断結果</h2>
+    <p class="sb-charline" id="sbCharLine" style="margin:6px 0 4px;font-size:13px;color:var(--cyan);letter-spacing:.04em">—— <span id="sbCharName">—</span></p>
     <p class="sb-sub" id="sbSub">下までスクロールして見てみる？</p>
     <div class="sb-cta-row">
       <a href="quiz.html?p=1" class="cta-start sb-cta-new" id="sbCtaNew">あなたも診断してみる <span class="arrow">→</span></a>
@@ -1442,14 +1443,12 @@
     <div class="ip-pair">
       <div class="ip-char">
         <img id="ipMeImg" src="" alt="" width="104" height="104" loading="lazy" />
-        <div class="ip-char-label">YOU</div>
         <div class="ip-char-name" id="ipMeName">—</div>
         <div class="ip-char-axis" id="ipMeAxis">—</div>
       </div>
       <div class="ip-cross">×</div>
       <div class="ip-char">
         <img id="ipFromImg" src="" alt="" width="104" height="104" loading="lazy" />
-        <div class="ip-char-label">THEM</div>
         <div class="ip-char-name" id="ipFromName">—</div>
         <div class="ip-char-axis" id="ipFromAxis">—</div>
       </div>
@@ -1678,6 +1677,25 @@
   const urlSharedCode = params.get('shared');
   const myCode = localStorage.getItem('nightTypeResult');  // 受信者本人(あれば)
 
+  // ── ニックネーム関連ユーティリティ ──
+  // 任意・全角10文字まで・XSS対策のため厳密にサニタイズ(タグ記号や引用符は除去)
+  function sanitizeNickname(raw){
+    if(!raw) return '';
+    let s = String(raw).replace(/[<>&"'\\\/\r\n\t]/g, '').trim();
+    if(s.length > 10) s = s.slice(0, 10);
+    return s;
+  }
+  // 自分(送信者)のニックネーム
+  const myNickname = sanitizeNickname(localStorage.getItem('nightTypeNickname') || '');
+  // URL ?n= から渡ってきた、 招待者のニックネーム
+  const urlNickname = sanitizeNickname(params.get('n') || '');
+  // 受信者視点で送信者(招待者)を呼ぶ語: ニックネームか「あの人」
+  function callerName(){ return urlNickname || 'あの人'; }
+  // 送信者視点で自分を呼ぶ語: ニックネームか「私」
+  function selfName(){ return myNickname || '私'; }
+  // 受信者本人を呼ぶ語: 自分のニックネームか「あなた」
+  function youName(){ return myNickname || 'あなた'; }
+
   // shared モード判定
   //   自分のコードと一致 → 通常表示(自分の結果)
   //   診断済みの別キャラ受信者 → 相性表示モード(SHAREDバナー+相性スナップ)
@@ -1699,11 +1717,13 @@
   }
   const t = types[code] || types.A1;
 
-  // URLバー手動コピー対策: 通常モード(=本人が自分の結果を見ている)時にURLに ?shared={code} を自動付与
-  // これでユーザーが URLバーをコピーして送っても、 受信者は shared モードで開ける
+  // URLバー手動コピー対策: 通常モード(=本人が自分の結果を見ている)時にURLに ?shared={code}&n={nick} を自動付与
+  // これでユーザーが URLバーをコピーして送っても、 受信者は shared モードで開ける + ニックネームも引き継ぐ
   if(!isSharedMode && !isVisitorMode && !urlFromCode && !params.get('type') && hasCompletedQuiz){
     try{
-      const newUrl = location.pathname + '?shared=' + code + location.hash;
+      const newUrl = location.pathname + '?shared=' + code
+        + (myNickname ? '&n=' + encodeURIComponent(myNickname) : '')
+        + location.hash;
       history.replaceState(null, '', newUrl);
     }catch(_){}
   }
@@ -1752,13 +1772,16 @@
   if(isSharedMode){
     document.body.classList.add('shared-mode');
     document.getElementById('sharedBanner').style.display = 'block';
-    document.getElementById('sbName').textContent = t.name;
+    // 1行目: ニックネーム or 「あの人」、 2行目: キャラ名
+    document.getElementById('sbName').textContent = callerName();
+    document.getElementById('sbCharName').textContent = t.name;
     const sbMine = document.getElementById('sbCtaMine');
     const sbNew = document.getElementById('sbCtaNew');
     const sbSub = document.getElementById('sbSub');
     if(myCode && types[myCode] && myCode !== urlSharedCode){
-      // 受信者が別キャラで診断済み → 「あなたとの相性」表示 + 自分の結果に戻るリンク
-      sbSub.innerHTML = `あなた(<strong>${types[myCode].name}</strong>)との相性は、下にあります。`;
+      // 受信者が別キャラで診断済み → 「あなた(or 自分のニックネーム)との相性」表示 + 自分の結果に戻るリンク
+      // テキスト改行で確実に textContent 経由(XSS安全)
+      sbSub.textContent = `${youName()}との相性は、下にあります。`;
       sbNew.style.display = 'none';  // 既に診断済みなので「あなたも診断」CTAは不要
       sbMine.style.display = 'inline-block';
     } else if(myCode === urlSharedCode){
@@ -1772,7 +1795,7 @@
       sbSub.textContent = '気になったら、あなたも診断してみる?';
       sbNew.style.display = 'inline-flex';
     }
-    trackEvent('shared_view', {shared: urlSharedCode, viewer_has_quiz: !!myCode});
+    trackEvent('shared_view', {shared: urlSharedCode, viewer_has_quiz: !!myCode, has_nickname: urlNickname ? 1 : 0});
   }
 
   // ── Visitor mode UI setup (招待者 × ? + Q1) ──
@@ -1793,7 +1816,16 @@
         .map((c,i)=>(axisMap[i]||{})[c]||c).join(' · ');
       document.getElementById('vlInviterCode').textContent = human;
     })();
-    document.getElementById('vlInviterName').textContent = t.name;
+    // ニックネームがあれば大きく表示、 キャラ名は小さい補足行に。 無ければ従来通りキャラ名のみ。
+    const vlInviterNameEl = document.getElementById('vlInviterName');
+    vlInviterNameEl.textContent = urlNickname || t.name;
+    if(urlNickname){
+      const sub = document.createElement('div');
+      sub.className = 'vl-side-charname';
+      sub.style.cssText = 'font-size:11px;color:var(--ink-mute);margin-top:3px;letter-spacing:.05em';
+      sub.textContent = t.name;
+      vlInviterNameEl.after(sub);
+    }
     function populateQ1(){
       if(typeof questions === 'undefined' || !questions[0]) return false;
       const q1 = questions[0];
@@ -2147,19 +2179,22 @@
 
   // ── Unified share system (T1: self, T2: pair, T4: invite-return) ──
   // Phase2修正B: 招待URLは静的 /invite/{code}.html(LINE OG プレビュー対応)
-  const selfShareUrl = location.origin + '/invite/' + code + '.html';
+  // ニックネームがあれば ?n= でURLに付与 → 受信側 result.html で表示に使う
+  const selfShareUrl = location.origin + '/invite/' + code + '.html'
+    + (myNickname ? '?n=' + encodeURIComponent(myNickname) : '');
 
   function buildShareText(mode, pairCode){
+    const me = selfName(); // ニックネーム or 「私」
     if(mode === 'pair' && pairCode){
       const tier = getCompatTier(code, pairCode);
       const info = TIER_COPY[tier];
-      const me = types[code], you = types[pairCode];
+      const meT = types[code], you = types[pairCode];
       const comment = info.comment ? `『${info.comment}』\n\n` : '';
-      return `私「${me.name}」× ${you.name} の夜の相性は【${info.label}】\n\n${comment}恥ずい。。あなたとの相性を教えて！\n#夜キャラ診断`;
+      return `${me}「${meT.name}」× ${you.name} の夜の相性は【${info.label}】\n\n${comment}恥ずい。。あなたとの相性を教えて！\n#夜キャラ診断`;
     }
     // self mode: catchphrase を毒一行として引用
     const cp = (t.catchphrase || t.tagline || '').replace(/[。．.\s]+$/, '');
-    return `私の夜キャラは『${t.name}』\n\n『${cp}。』\n\n恥ずい。。あなたとの相性を教えて！\n#夜キャラ診断`;
+    return `${me}の夜キャラは『${t.name}』\n\n『${cp}。』\n\n恥ずい。。あなたとの相性を教えて！\n#夜キャラ診断`;
   }
   function buildShareUrl(mode, pairCode){
     // 全モード共通: 自分の招待URL(index.html?from=自分) を返してバイラルループを統一
@@ -2529,13 +2564,28 @@
     }
 
     // Populate (管理番号A1/B2は一切表示しない)
+    // ニックネームがあれば人名を主表示、 キャラ名は補助に
     document.getElementById('ipMeImg').src = meT.image || `images/${meCode}.png`;
     document.getElementById('ipMeImg').alt = meT.name;
-    document.getElementById('ipMeName').textContent = meT.name;
+    const ipMeNameEl = document.getElementById('ipMeName');
+    ipMeNameEl.textContent = myNickname || meT.name;
+    if(myNickname){
+      const sub = document.createElement('div');
+      sub.style.cssText = 'font-size:10px;color:var(--ink-mute);margin-top:1px;letter-spacing:.04em';
+      sub.textContent = meT.name;
+      ipMeNameEl.after(sub);
+    }
     document.getElementById('ipMeAxis').textContent = axisOf(meCode);
     document.getElementById('ipFromImg').src = fromT.image || `images/${fromCode}.png`;
     document.getElementById('ipFromImg').alt = fromT.name;
-    document.getElementById('ipFromName').textContent = fromT.name;
+    const ipFromNameEl = document.getElementById('ipFromName');
+    ipFromNameEl.textContent = urlNickname || fromT.name;
+    if(urlNickname){
+      const sub = document.createElement('div');
+      sub.style.cssText = 'font-size:10px;color:var(--ink-mute);margin-top:1px;letter-spacing:.04em';
+      sub.textContent = fromT.name;
+      ipFromNameEl.after(sub);
+    }
     document.getElementById('ipFromAxis').textContent = axisOf(fromCode);
     document.getElementById('ipStars').textContent = r.hearts;
     document.getElementById('ipLabel').textContent = r.label;

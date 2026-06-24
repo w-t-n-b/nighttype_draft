@@ -102,6 +102,17 @@
   .psubmit:not(:disabled):hover{transform:translateY(-2px);
     box-shadow:0 12px 40px rgba(155,124,248,.4)}
   .perr{color:#fda4af;font-size:12px;margin-top:10px;min-height:14px}
+  /* ニックネーム入力 */
+  .pinput{width:100%;padding:14px 16px;border-radius:14px;
+    background:rgba(255,255,255,0.04);border:1px solid var(--line);
+    color:var(--ink);font-family:inherit;font-size:14px;
+    transition:border-color .2s,background .2s; box-sizing:border-box}
+  .pinput:focus{outline:none;border-color:var(--violet);
+    background:rgba(255,255,255,0.06)}
+  .pinput::placeholder{color:var(--ink-mute);opacity:.6}
+  .phint{font-size:11px;color:var(--ink-mute);margin-top:6px;line-height:1.5}
+  .pcount{font-size:11px;color:var(--ink-mute);margin-top:4px;text-align:right}
+  .pcount.over{color:#fda4af}
 
   /* Reveal overlay */
   .reveal{position:fixed;inset:0;z-index:90;background:rgba(4,4,14,0.96);
@@ -145,6 +156,14 @@
   <form class="psheet" id="profileForm" novalidate>
     <div class="ptitle">あと少し。</div>
     <div class="pdesc">より正確な分析と、年代×タイプの傾向集計のため<br/>2つだけ教えてください。</div>
+
+    <div class="pfield">
+      <span class="plabel">ニックネーム <span style="color:var(--ink-mute);font-weight:400">(任意)</span></span>
+      <input type="text" id="pNickname" class="pinput" placeholder="例: ヨルコ"
+             maxlength="10" autocomplete="off" />
+      <div class="pcount" id="pNickCount">0 / 10</div>
+      <div class="phint">シェア時に「『ヨルコ』 の夜キャラ診断結果」 のように表示されます。</div>
+    </div>
 
     <div class="pfield">
       <span class="plabel">あなたの恋愛対象は?</span>
@@ -260,6 +279,24 @@
   bindGroup('pInterest', b => { interest = b.dataset.i; });
   bindGroup('pAge', b => { ageRange = b.dataset.a; });
 
+  // ニックネーム入力(任意・全角10文字まで・サニタイズ)
+  const pNicknameEl = document.getElementById('pNickname');
+  const pNickCountEl = document.getElementById('pNickCount');
+  function sanitizeNickname(raw){
+    if(!raw) return '';
+    // 制御文字・タグ的記号を除去、 前後空白トリム
+    let s = String(raw).replace(/[<>&"'\\\/\r\n\t]/g, '').trim();
+    // 全角10文字相当(=最大10文字)に制限
+    if(s.length > 10) s = s.slice(0, 10);
+    return s;
+  }
+  function updateNickCount(){
+    const len = (pNicknameEl.value || '').length;
+    pNickCountEl.textContent = len + ' / 10';
+    pNickCountEl.classList.toggle('over', len > 10);
+  }
+  pNicknameEl.addEventListener('input', updateNickCount);
+
   // p=4の場合のみ profile form 表示が必要
   // QuizVertical の showProfileSection が #profileSection を探すので、
   // 代わりに povl を発火させる仕組みにする
@@ -317,14 +354,31 @@
     localStorage.setItem('nightTypeResult', code);
     localStorage.setItem('nightTypeScores', JSON.stringify(axisScores));
 
-    const profile = { ageRange, romanticInterest:interest, type:code, ts:Date.now() };
+    // ニックネーム(任意):
+    //   入力あり → サニタイズして保存
+    //   空欄 + 恋愛対象=男性 → 「ヨルコ」 (女性想起ネーム)を自動セット
+    //   空欄 + 恋愛対象=女性 → 「ヨルオ」 (男性想起ネーム)を自動セット
+    //   空欄 + どちらも → 何もセットせず受信側で「あの人」 フォールバック
+    let nickname = sanitizeNickname(pNicknameEl.value);
+    if(!nickname){
+      if(interest === 'male') nickname = 'ヨルコ';
+      else if(interest === 'female') nickname = 'ヨルオ';
+      // 'both' は空のまま
+    }
+    if(nickname){
+      localStorage.setItem('nightTypeNickname', nickname);
+    } else {
+      localStorage.removeItem('nightTypeNickname');
+    }
+
+    const profile = { ageRange, romanticInterest:interest, nickname, type:code, ts:Date.now() };
     localStorage.setItem('nightTypeProfile', JSON.stringify(profile));
 
     // GA4
     if(typeof gtag === 'function'){
       try{
         gtag('event', 'quiz_completed', {type:code});
-        gtag('event', 'profile_collected', {age_range:ageRange, romantic_interest:interest, type:code});
+        gtag('event', 'profile_collected', {age_range:ageRange, romantic_interest:interest, has_nickname: nickname ? 1 : 0, type:code});
       }catch(_){}
     }
 
@@ -352,7 +406,7 @@
       fetch(NEW_WEBHOOK_URL, {
         method:'POST', mode:'no-cors', keepalive:true,
         headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify({ type:code, age_range:ageRange, romantic_interest:interest, answers:ansArr, ua:navigator.userAgent })
+        body: JSON.stringify({ type:code, age_range:ageRange, romantic_interest:interest, nickname, answers:ansArr, ua:navigator.userAgent })
       }).catch(e=>console.error('[NewWebhook] failed', e));
     }catch(_){}
 
