@@ -194,13 +194,6 @@
   @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
   .hero-sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(18px,2.4vw,28px);color:#cfc8ee;margin-top:18px;letter-spacing:.04em}
   .hero-jp{margin-top:28px;font-size:clamp(15px,1.6vw,18px);color:var(--ink-mute);max-width:560px;line-height:1.9;text-wrap:pretty}
-  .hero-jp-strong{color:var(--ink);font-weight:700}
-  .hero-jp-sub{display:block;margin-top:6px;font-size:clamp(12px,1.3vw,14px);color:var(--ink-mute);opacity:.8}
-  /* 5ゲージのバッジ行：折り返し禁止＋自動縮小でどの端末でも必ず1行 */
-  /* 3文字×5を1行固定。極狭端末(≤339px)だけ折り返して横スクロールは出さない */
-  .gauge-badges{display:flex;flex-wrap:nowrap;gap:2px;justify-content:center;align-items:center;margin:18px auto 0;padding:0 4px;list-style:none;max-width:100%;box-sizing:border-box}
-  .gauge-badges li{font-size:clamp(8.5px,2.4vw,11px);font-weight:700;letter-spacing:-.04em;white-space:nowrap;padding:4px 5px;border-radius:999px;color:var(--g);background:rgba(255,255,255,.04);border:1px solid var(--g);box-shadow:0 0 8px -2px var(--g)}
-  @media (max-width:339px){.gauge-badges{flex-wrap:wrap}}
   .hero-cta{display:flex;gap:18px;margin-top:48px;flex-wrap:wrap;justify-content:center}
 
   /* ── リピーター帯 ── */
@@ -431,6 +424,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"夜キャラ診断","alternateName":"夜キャラ診断16types","url":"https://yoruchara16types.com/","logo":"https://yoruchara16types.com/favicon-192.png","description":"夜の自己理解を提供する16タイプ性格診断サービス。"}
 </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8982481388531362" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -463,14 +457,7 @@
       <h1 class="hero-title hero-title-sm">夜キャラ診断</h1>
     </div>
     <div class="hero-sub reveal">What's Your Night Character?</div>
-    <p class="hero-jp reveal"><span class="hero-jp-strong">5つの指標で、あなたをプロファイル。</span></p>
-    <ul class="gauge-badges reveal" aria-label="診断で出る5つの指標">
-      <li style="--g:#F472B6">変態度</li>
-      <li style="--g:#22D3EE">満足度</li>
-      <li style="--g:#a78bfa">難易度</li>
-      <li style="--g:#db2777">ヘラ度</li>
-      <li style="--g:#ef4444">クズ度</li>
-    </ul>
+    <p class="hero-jp reveal">あなたの夜の価値観タイプは？<br/>4軸(沼/塩 S/M 愛/欲 Give/Take)・20問</p>
 
     <!-- Phase2修正C: 招待リンク経由(?from=A1)のときだけ表示 -->
     <section class="invite-banner" id="inviteBanner" style="display:none">
