@@ -992,7 +992,8 @@
   .sticker-fab:hover{ transform:translateY(-2px); }
   .sticker-fab-img{
     width:72px; height:72px; border-radius:10px;
-    object-fit:cover; display:block;
+    object-fit:contain; display:block;
+    background:rgba(255,255,255,.06);
   }
   .sticker-fab-text{
     font-size:10px; line-height:1.35; margin-top:6px;
@@ -1637,6 +1638,9 @@
   </section>
   -->
 
+  <!-- マッチング広告スロット(JSが18歳以上のときだけ中身を注入。未成年には一切描画しない) -->
+  <div id="matchAdSlot" data-state="empty" style="max-width:680px;margin:0 auto"></div>
+
 
   <!-- Compatibility -->
   <section class="section-block">
@@ -1705,6 +1709,7 @@
 <script src="nighttype-shell.js"></script>
 <script src="questions.js"></script>
 <script src="gauges.js"></script>
+<script src="sticker-fab.js"></script>
 <script>
   // ── Get type code ──
   const params = new URLSearchParams(location.search);
@@ -2640,70 +2645,13 @@
   })();
 
   // ── LINE スタンプ Floating CTA: 「あるある」 到達後に右下表示 ──
-  (function setupStickerFab(){
-    const fab = document.getElementById('stickerFab');
-    if(!fab) return;
-    // セッション内で閉じてあるなら表示しない
-    if(sessionStorage.getItem('stickerFab_closed') === '1') return;
-
-    // 画像とリンク
-    const fabImg = document.getElementById('stickerFabImg');
-    if(fabImg){
-      fabImg.src = t.image || `images/${code}.png`;
-      fabImg.alt = (t.name || '夜キャラ') + 'のスタンプ';
-    }
-    // LINE スタンプストアURL(全キャラ版・現状プレースホルダー、 確定次第差し替え)
-    const STAMP_URL_ALL = 'https://store.line.me/stickershop/product/PLACEHOLDER';
-    fab.href = STAMP_URL_ALL;
-
-    // 「あるある」 セクションが画面に入ったら表示
-    const target = document.getElementById('aruaruList');
-    function showFab(){
-      if(fab.classList.contains('show')) return;
-      fab.classList.add('show');
-      trackEvent('stamp_fab_view', {type: code});
-    }
-    if(target && 'IntersectionObserver' in window){
-      const io = new IntersectionObserver((entries)=>{
-        if(entries.some(e => e.isIntersecting)){
-          showFab();
-          io.disconnect();
-        }
-      }, { threshold:0.15 });
-      io.observe(target);
-    } else {
-      // フォールバック: scroll 位置で判定
-      function onScroll(){
-        const el = document.getElementById('aruaruList');
-        if(!el) return;
-        const rect = el.getBoundingClientRect();
-        if(rect.top < window.innerHeight * 0.85){
-          showFab();
-          window.removeEventListener('scroll', onScroll);
-        }
-      }
-      window.addEventListener('scroll', onScroll, {passive:true});
-      onScroll();
-    }
-
-    // クリック計測(×ボタン以外)
-    fab.addEventListener('click', (e)=>{
-      if(e.target.closest('.sticker-fab-close')) return;
-      trackEvent('stamp_fab_clicked', {type: code});
+  // ロジック/スタンプIDは共有スクリプト sticker-fab.js に集約(キャラページと共通)
+  if(typeof window.mountStickerFab === 'function'){
+    window.mountStickerFab(code, {
+      imgFallback: t.image || `images/${code}.png`,
+      target: document.getElementById('aruaruList')
     });
-
-    // ×ボタン: 閉じる + セッションに記録
-    const closeBtn = document.getElementById('stickerFabClose');
-    if(closeBtn){
-      closeBtn.addEventListener('click', (e)=>{
-        e.preventDefault();
-        e.stopPropagation();
-        fab.classList.remove('show');
-        try{ sessionStorage.setItem('stickerFab_closed', '1'); }catch(_){}
-        trackEvent('stamp_fab_dismissed', {type: code});
-      });
-    }
-  })();
+  }
 
   // ── Hide loader ──
   setTimeout(()=>{
@@ -2766,6 +2714,97 @@
       }
     }, 2000);
   });
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     マッチング広告 出し分け (年齢ゲート)
+     18歳以上(isAdult===true)と確定できたときだけ描画する。
+     未成年・判定不能・旧データで曖昧 → 一切描画しない(fail-closed)。
+     アフィリンクは成人ブロックの内側でのみ組み立てる。
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  // ── 出稿する案件の設定(★ここに実際のアフィリンクを入れる) ──
+  // メイン: ウィッピー(無料会員登録・男女とも成果)。paters/イククル/性癖系は出さない。
+  const WHIPPY_URL = 'https://REPLACE_WITH_WHIPPY_AFFILIATE_URL';   // ★要差し替え
+  const WHIPPY_IMG = '';   // 任意: バナー画像URL。空ならテキストCTAのみ。
+
+  const slot = document.getElementById('matchAdSlot');
+  if(!slot) return;
+
+  // profile 読み込み(無い/壊れている場合は未成年扱い=広告なし)
+  let profile = null;
+  try { profile = JSON.parse(localStorage.getItem('nightTypeProfile') || 'null'); } catch(_) {}
+
+  const adult = isAdultProfile(profile);
+
+  // ★セーフティ: 成人と確定できない限り、マッチング広告は出さない
+  if(!adult){
+    slot.dataset.state = 'blocked';
+    slot.innerHTML = '';   // 何も描画しない(DOMにリンクを残さない)
+    return;
+  }
+
+  // ★セーフティ2: URL未設定(差し替え前)はリンク切れカードを出さない = 何も描画しない
+  if(WHIPPY_URL.indexOf('REPLACE_WITH') !== -1){
+    slot.dataset.state = 'unconfigured';
+    slot.innerHTML = '';
+    console.warn('[matchAd] WHIPPY_URL が未設定です。result.html の WHIPPY_URL を実アフィリンクに差し替えてください。');
+    return;
+  }
+
+  // 18歳以上 → 案件を描画
+  const interest = profile.romanticInterest; // 'male' | 'female' | 'both'
+  slot.dataset.state = 'shown';
+  slot.innerHTML = buildMatchAdHtml(interest);
+
+  if(typeof gtag === 'function'){
+    try { gtag('event', 'match_ad_shown', { interest, type: profile.type }); } catch(_){}
+  }
+
+  // 成人判定: 新フラグ優先。旧データ(isAdult無し)は年齢コードから安全側で判定
+  function isAdultProfile(p){
+    if(!p) return false;
+    if(typeof p.isAdult === 'boolean') return p.isAdult;
+    // 旧 nightTypeProfile 救済(18歳以上と断定できるコードのみ true)
+    // ※旧 '10l'(10代後半)/'10e' は18歳を跨ぐ or 未成年なので false(安全側)
+    const ADULT_CODES = ['18_19','20e','20l','30e','30l','40','50plus'];
+    return ADULT_CODES.includes(p.ageRange);
+  }
+
+  // 案件クリエイティブ(成人ブロックの内側でのみ呼ばれる)
+  function buildMatchAdHtml(interest){
+    const img = WHIPPY_IMG
+      ? '<img src="' + WHIPPY_URL_ESC(WHIPPY_IMG) + '" alt="" width="120" height="120" loading="lazy" ' +
+        'style="width:120px;height:120px;border-radius:16px;object-fit:cover;flex-shrink:0" />'
+      : '';
+    return ''
+      + '<section class="section-block" style="margin-top:8px">'
+      + '  <div style="border:1px solid rgba(255,255,255,0.10);border-radius:20px;'
+      +      'padding:28px 24px;background:rgba(20,16,42,0.5);display:flex;gap:20px;'
+      +      'align-items:center;flex-wrap:wrap;justify-content:center;text-align:left">'
+      +      img
+      + '    <div style="flex:1;min-width:200px">'
+      + '      <div style="font-family:\'Space Mono\',monospace;font-size:10px;letter-spacing:.25em;'
+      +          'text-transform:uppercase;color:#9a96b8;margin-bottom:8px">Sponsored</div>'
+      + '      <h3 style="font-size:18px;margin:0 0 6px;color:#e9e6ff;line-height:1.4">'
+      +          '夜の相性、<em style="font-style:normal;color:#F472B6">本気で試してみる</em>?</h3>'
+      + '      <p style="font-size:13px;color:#9a96b8;margin:0 0 16px;line-height:1.6">'
+      +          '診断で分かった好みに合う相手を、無料登録でさがしてみる。</p>'
+      + '      <a href="' + WHIPPY_URL_ESC(WHIPPY_URL) + '" target="_blank" rel="noopener sponsored nofollow" '
+      +          'class="nt-btn nt-btn-primary" '
+      +          'style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:99px;'
+      +          'font-size:14px;font-weight:600">無料ではじめる <span>→</span></a>'
+      + '    </div>'
+      + '  </div>'
+      + '</section>';
+  }
+
+  // URL属性用の最小エスケープ(" と < > を無害化)
+  function WHIPPY_URL_ESC(u){
+    return String(u).replace(/"/g,'%22').replace(/</g,'%3C').replace(/>/g,'%3E');
+  }
+})();
 </script>
 
 <!-- Instagram 3択モーダル -->
