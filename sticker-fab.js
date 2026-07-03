@@ -19,7 +19,9 @@
 
   var CDN = 'https://stickershop.line-scdn.net/stickershop/v1/product/';
   function stickerImg(id){ return CDN + id + '/iphone/main.png'; }
-  function stickerLink(id){ return 'https://line.me/S/sticker/' + id; }
+  // アプリ用ディープリンク(line.me/S/sticker)はPCブラウザで英語ロケールの
+  // 別ページに転送され表示崩れするため、日本語のストアWebページを直接開く。
+  function stickerLink(id){ return 'https://store.line.me/stickershop/product/' + id + '/ja'; }
 
   /* CSS は一度だけ注入(結果ページは既にインラインCSSを持つのでスキップ) */
   function injectCSS(){
