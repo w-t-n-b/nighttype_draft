@@ -19,9 +19,18 @@
 
   var CDN = 'https://stickershop.line-scdn.net/stickershop/v1/product/';
   function stickerImg(id){ return CDN + id + '/iphone/main.png'; }
-  // アプリ用ディープリンク(line.me/S/sticker)はPCブラウザで英語ロケールの
-  // 別ページに転送され表示崩れするため、日本語のストアWebページを直接開く。
-  function stickerLink(id){ return 'https://store.line.me/stickershop/product/' + id + '/ja'; }
+  // 端末で最適なリンクを出し分ける:
+  //  - モバイル: ディープリンク(line.me/S/sticker)→ LINEアプリのスタンプ画面を直接開く
+  //  - PC: 上記はPCだと英語ロケールの別ページに転送され表示崩れするため、
+  //        日本語のストアWebページ(/ja)を直接開く
+  var IS_MOBILE = /iPhone|iPad|iPod|Android/i.test(
+    (navigator && navigator.userAgent) || ''
+  );
+  function stickerLink(id){
+    return IS_MOBILE
+      ? 'https://line.me/S/sticker/' + id
+      : 'https://store.line.me/stickershop/product/' + id + '/ja';
+  }
 
   /* CSS は一度だけ注入(結果ページは既にインラインCSSを持つのでスキップ) */
   function injectCSS(){
