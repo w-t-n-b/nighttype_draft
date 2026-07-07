@@ -177,9 +177,21 @@
     }
   };
 
+  /* 全キャラ入りスタンプバナー(data-sticker-id 属性の a) をモバイル/PCで切り替え */
+  function bindStickerBanners(){
+    var els = document.querySelectorAll('a[data-sticker-id]');
+    for(var i = 0; i < els.length; i++){
+      var el = els[i];
+      var id = el.getAttribute('data-sticker-id');
+      if(!id) continue;
+      el.href = stickerLink(id);
+    }
+  }
+
   /* キャラページ(/type/XX.html)は自動マウント。
      結果ページ(result.html)は自前で code を持つので側で明示的に呼ぶ。 */
   function autoMount(){
+    bindStickerBanners();  // 全キャラ入りバナーのリンク切替(全ページ共通)
     var m = location.pathname.match(/\/type\/([A-Da-d][1-4])\.html?$/);
     if(m){
       var code = m[1].toUpperCase();

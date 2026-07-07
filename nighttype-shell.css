@@ -440,3 +440,73 @@ main, .nt-main{position:relative;z-index:5}
   .footer-links{ font-size:10.5px; }
   .footer-links a{ margin:0 6px; }
 }
+
+/* ── 全キャラ入りLINEスタンプ CTA (result.html / characters.html / stickers.html 共通) ── */
+.all-stamp-cta{
+  display:flex; align-items:center; gap:14px;
+  max-width:640px; margin:32px auto;
+  padding:18px 22px;
+  border-radius:18px;
+  background:linear-gradient(135deg, rgba(6,199,85,.14) 0%, rgba(155,124,248,.12) 100%);
+  border:1px solid rgba(6,199,85,.35);
+  box-shadow:0 8px 30px rgba(6,199,85,.18), 0 2px 10px rgba(0,0,0,.3);
+  text-decoration:none; color:var(--ink);
+  transition:transform .25s, box-shadow .25s, border-color .25s;
+  position:relative; overflow:hidden;
+}
+.all-stamp-cta::before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle at 20% 30%, rgba(6,199,85,.12) 0%, transparent 60%);
+  pointer-events:none;
+}
+.all-stamp-cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 40px rgba(6,199,85,.28), 0 4px 16px rgba(0,0,0,.4);
+  border-color:rgba(6,199,85,.6);
+}
+.asc-icon{
+  width:64px; height:64px; flex-shrink:0;
+  border-radius:14px;
+  background:rgba(6,199,85,.15);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.asc-icon img{ width:100%; height:100%; object-fit:cover; }
+.asc-body{ flex:1; min-width:0; }
+.asc-eyebrow{
+  font-family:"Space Mono",monospace;
+  font-size:10px; letter-spacing:.24em;
+  color:#06C755; margin-bottom:4px;
+  text-transform:uppercase;
+}
+.asc-title{
+  font-family:"Noto Sans JP",sans-serif;
+  font-size:16px; font-weight:700; line-height:1.4;
+  color:var(--ink); margin-bottom:2px;
+  word-break:keep-all;
+}
+.asc-title em{
+  font-style:normal;
+  background:linear-gradient(90deg, #06C755, #9B7CF8);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+}
+.asc-sub{
+  font-size:11px; color:var(--ink-mute);
+  line-height:1.5;
+}
+.asc-arrow{
+  flex-shrink:0;
+  font-family:"Space Mono",monospace;
+  font-size:20px; color:#06C755;
+  transition:transform .25s;
+}
+.all-stamp-cta:hover .asc-arrow{ transform:translateX(4px); }
+
+@media(max-width:480px){
+  .all-stamp-cta{ padding:14px 16px; gap:10px; margin:24px 16px; }
+  .asc-icon{ width:52px; height:52px; border-radius:12px; }
+  .asc-title{ font-size:14px; }
+  .asc-sub{ font-size:10px; }
+  .asc-arrow{ font-size:16px; }
+}
