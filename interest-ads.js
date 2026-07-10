@@ -18,35 +18,40 @@
   'use strict';
 
   // ▼▼▼▼▼ 恋愛対象別の広告素材をここに設定 ▼▼▼▼▼
-  //   img      : 広告画像URL(バナー。横長〜正方形推奨)
-  //   href     : 遷移先URL(アフィリエイトリンク等)
-  //   headline : 画像の下に出す一言(任意。空文字 '' でも可)
-  //   cta      : ボタン文言
-  //   img か href が空の恋愛対象は、その人には広告を出さない(枠ごと非表示)
-  //   ※ 画像にCTAボタン・PR/18禁が焼き込まれている素材は cta:'' にしておく
-  //      (カード側のボタンは出さず、画像クリックのみになる)
+  //   href      : 遷移先URL(アフィリエイトリンク等)
+  //   square    : 正方形(1:1)画像 … スマホ(狭い画面)で使用。縦に大きく出て目に入りやすい
+  //   landscape : 横長(約1.9:1)画像 … PC/タブレット等の広い画面で使用
+  //   noPr:true … 画像にPR/18禁が焼き込み済みなのでカード側のPRバッジを出さない
+  //   href か画像が欠けている恋愛対象は、その人には広告を出さない(枠ごと非表示)
+  //
+  //   ※ 3サイズ目「横長帯(3:1)」は素材差し替え待ち(お待ち中)。届いたら各CRに
+  //     strip:'…' を足し、下の buildPicture の <source> 分岐に一行追加すればよい。
   const CREATIVES = {
     // 恋愛対象=女性 → 「男性向け」広告(性癖マッチング / バーの女性)
     female: {
-      img: 'images/ads/ad-seiheki-matching.jpg',
       href: 'https://ad.ignite-ad.jp/a77r26r8054911bb/cl/?bId=5W56W45f',
-      headline: '', cta: ''
+      square:    'images/ads/ad-seiheki-square.jpg',
+      landscape: 'images/ads/ad-seiheki-landscape.jpg'
     },
-    // 恋愛対象=どちらも → 女性向けの人(=男性向け広告)に合わせる
+    // 恋愛対象=どちらも → 男性向け広告(性癖マッチング)に合わせる
     both: {
-      img: 'images/ads/ad-seiheki-matching.jpg',
       href: 'https://ad.ignite-ad.jp/a77r26r8054911bb/cl/?bId=5W56W45f',
-      headline: '', cta: ''
+      square:    'images/ads/ad-seiheki-square.jpg',
+      landscape: 'images/ads/ad-seiheki-landscape.jpg'
     },
     // 恋愛対象=男性 → 「女性向け」広告(いつもの恋の外側へ / 窓辺の女性)
     //   noPr:true … 画像にPR/18禁が焼き込まれているのでカード側のPRバッジは出さない
     male: {
-      img: 'images/ads/ad-itsumono-koi.jpg',
       href: 'https://px.a8.net/svt/ejp?a8mat=4B7WD7+GFSW36+1KZ4+601S2',
-      headline: '', cta: '', noPr: true
+      square:    'images/ads/ad-itsumono-square.jpg',
+      landscape: 'images/ads/ad-itsumono-landscape.jpg',
+      noPr: true
     }
   };
   // ▲▲▲▲▲ ここまで設定 ▲▲▲▲▲
+
+  // スマホ判定の境界。この幅以下(<=)は square、それより広ければ landscape。
+  const MOBILE_MAX = 599; // px
 
   // 18歳未満とみなす ageRange 値。
   //   新: 'u18'(17歳以下)
@@ -101,6 +106,21 @@
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
+  // 端末幅で最適サイズを出し分ける <picture> を組み立てる。
+  //   スマホ(<=MOBILE_MAX): square / 広い画面: landscape。
+  //   ブラウザが media を見て自前で選ぶので、回転・リサイズにも追従する。
+  //   3サイズ目(横長帯)を足すときは、ここに更に広い画面向けの <source> を1行追加。
+  function buildPicture(c){
+    var def = c.landscape || c.square;            // 既定(広い画面) = landscape
+    var srcs = '';
+    if(c.square && c.landscape){
+      srcs = '<source media="(max-width:' + MOBILE_MAX + 'px)" srcset="' + esc(c.square) + '">';
+    }
+    return '<picture>' + srcs +
+      '<img class="nia-img" src="' + esc(def) + '" alt="" loading="lazy">' +
+      '</picture>';
+  }
+
   // containerId の要素に広告を描画。条件を満たさなければ枠ごと非表示。
   function render(containerId){
     var el = document.getElementById(containerId);
@@ -108,10 +128,10 @@
     var p = loadProfile();
     if(!isEligible(p)){ el.style.display = 'none'; return false; }
     var c = pickCreative(p);
-    if(!c || !c.img || !c.href){ el.style.display = 'none'; return false; }
+    if(!c || !c.href || !(c.square || c.landscape)){ el.style.display = 'none'; return false; }
     injectStyle();
     // headline か cta があるときだけ、画像下のテキスト帯(nia-body)を出す。
-    // 画像にボタンが焼き込まれている素材は headline/cta を空にしておく。
+    // (今の素材はボタンが画像に焼き込み済みなので通常は出ない)
     var bodyParts = '';
     if(c.headline) bodyParts += '<span class="nia-headline">' + esc(c.headline) + '</span>';
     if(c.cta)      bodyParts += '<span class="nia-cta">' + esc(c.cta) + ' →</span>';
@@ -121,7 +141,7 @@
         '<div class="nia-eyebrow">Sponsored</div>' +
         '<a class="nia-card" href="' + esc(c.href) + '" target="_blank" rel="sponsored noopener nofollow">' +
           (c.noPr ? '' : '<span class="nia-pr">PR</span>') +
-          '<img class="nia-img" src="' + esc(c.img) + '" alt="" loading="lazy">' +
+          buildPicture(c) +
           body +
         '</a>' +
       '</div>';
