@@ -31,13 +31,15 @@
     female: {
       href: 'https://ad.ignite-ad.jp/a77r26r8054911bb/cl/?bId=5W56W45f',
       square:    'images/ads/ad-seiheki-square.jpg',
-      landscape: 'images/ads/ad-seiheki-landscape.jpg'
+      landscape: 'images/ads/ad-seiheki-landscape.jpg',
+      strip:     'images/ads/ad-seiheki-strip.jpg'
     },
     // 恋愛対象=どちらも → 男性向け広告(性癖マッチング)に合わせる
     both: {
       href: 'https://ad.ignite-ad.jp/a77r26r8054911bb/cl/?bId=5W56W45f',
       square:    'images/ads/ad-seiheki-square.jpg',
-      landscape: 'images/ads/ad-seiheki-landscape.jpg'
+      landscape: 'images/ads/ad-seiheki-landscape.jpg',
+      strip:     'images/ads/ad-seiheki-strip.jpg'
     },
     // 恋愛対象=男性 → 「女性向け」広告(いつもの恋の外側へ / 窓辺の女性)
     //   noPr:true … 画像にPR/18禁が焼き込まれているのでカード側のPRバッジは出さない
@@ -45,6 +47,7 @@
       href: 'https://px.a8.net/svt/ejp?a8mat=4B7WD7+GFSW36+1KZ4+601S2',
       square:    'images/ads/ad-itsumono-square.jpg',
       landscape: 'images/ads/ad-itsumono-landscape.jpg',
+      strip:     'images/ads/ad-itsumono-strip.jpg',
       noPr: true
     }
   };
@@ -106,29 +109,36 @@
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
-  // 端末幅で最適サイズを出し分ける <picture> を組み立てる。
-  //   スマホ(<=MOBILE_MAX): square / 広い画面: landscape。
-  //   ブラウザが media を見て自前で選ぶので、回転・リサイズにも追従する。
-  //   3サイズ目(横長帯)を足すときは、ここに更に広い画面向けの <source> を1行追加。
-  function buildPicture(c){
-    var def = c.landscape || c.square;            // 既定(広い画面) = landscape
-    var srcs = '';
-    if(c.square && c.landscape){
-      srcs = '<source media="(max-width:' + MOBILE_MAX + 'px)" srcset="' + esc(c.square) + '">';
+  // レイアウトに応じて <picture> を組み立てる。
+  //   layout='hero'  … 結果ページ等。スマホ(<=MOBILE_MAX)=square / 広い画面=landscape
+  //   layout='strip' … 相性ページ等。全端末で横長帯(strip)を軽く添える
+  //   ブラウザが media を見て自前で選ぶので回転・リサイズにも追従する。
+  function buildPicture(c, layout){
+    if(layout === 'strip'){
+      var s = c.strip || c.landscape || c.square;
+      return '<picture><img class="nia-img" src="' + esc(s) + '" alt="" loading="lazy"></picture>';
     }
+    // hero(既定): スマホ=square / 広い画面=landscape
+    var def = c.landscape || c.square;
+    var srcs = (c.square && c.landscape)
+      ? '<source media="(max-width:' + MOBILE_MAX + 'px)" srcset="' + esc(c.square) + '">' : '';
     return '<picture>' + srcs +
       '<img class="nia-img" src="' + esc(def) + '" alt="" loading="lazy">' +
       '</picture>';
   }
 
   // containerId の要素に広告を描画。条件を満たさなければ枠ごと非表示。
-  function render(containerId){
+  //   opts.layout   : 'hero'(既定) | 'strip'
+  //   opts.maxWidth : カード最大幅(px)。各ページの本文幅に合わせる(既定480)
+  function render(containerId, opts){
+    var layout = (opts && opts.layout) || 'hero';
+    var maxW = (opts && opts.maxWidth) || 480;
     var el = document.getElementById(containerId);
     if(!el) return false;
     var p = loadProfile();
     if(!isEligible(p)){ el.style.display = 'none'; return false; }
     var c = pickCreative(p);
-    if(!c || !c.href || !(c.square || c.landscape)){ el.style.display = 'none'; return false; }
+    if(!c || !c.href || !(c.square || c.landscape || c.strip)){ el.style.display = 'none'; return false; }
     injectStyle();
     // headline か cta があるときだけ、画像下のテキスト帯(nia-body)を出す。
     // (今の素材はボタンが画像に焼き込み済みなので通常は出ない)
@@ -137,11 +147,11 @@
     if(c.cta)      bodyParts += '<span class="nia-cta">' + esc(c.cta) + ' →</span>';
     var body = bodyParts ? '<span class="nia-body">' + bodyParts + '</span>' : '';
     el.innerHTML =
-      '<div class="nia-wrap">' +
+      '<div class="nia-wrap" style="max-width:' + (+maxW) + 'px">' +
         '<div class="nia-eyebrow">Sponsored</div>' +
         '<a class="nia-card" href="' + esc(c.href) + '" target="_blank" rel="sponsored noopener nofollow">' +
           (c.noPr ? '' : '<span class="nia-pr">PR</span>') +
-          buildPicture(c) +
+          buildPicture(c, layout) +
           body +
         '</a>' +
       '</div>';

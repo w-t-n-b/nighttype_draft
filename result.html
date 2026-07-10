@@ -1731,7 +1731,8 @@
 <script src="interest-ads.js"></script>
 <script>
   // 診断で「18歳以上」かつ「恋愛対象」を回答した人にだけ、恋愛対象別の広告を描画
-  try { NightInterestAd.render('interestAdSlot'); } catch(e){}
+  // 結果ページ=hero(スマホ正方形/PC横長)。幅は本文(result-main 760px)に合わせる
+  try { NightInterestAd.render('interestAdSlot', {layout:'hero', maxWidth:760}); } catch(e){}
 </script>
 <script>
   // ── Get type code ──

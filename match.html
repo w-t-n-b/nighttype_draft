@@ -544,7 +544,8 @@
 <script>
   // 診断で「18歳以上」かつ「恋愛対象」を回答した人にだけ、恋愛対象別の広告を描画
   // (未診断で相性ページに直接来た人には表示されない)
-  try { NightInterestAd.render('interestAdSlot'); } catch(e){}
+  // 相性ページ=strip(全端末で横長帯)。幅は本文(result-wrap 880px)に合わせる
+  try { NightInterestAd.render('interestAdSlot', {layout:'strip', maxWidth:880}); } catch(e){}
 
   const order = ['A1','A2','A3','A4','B1','B2','B3','B4','C1','C2','C3','C4','D1','D2','D3','D4'];
 
