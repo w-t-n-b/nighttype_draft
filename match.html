@@ -523,6 +523,9 @@
   </div>
 </section>
 
+<!-- 恋愛対象別広告(18歳以上と回答した人にだけ interest-ads.js が描画) -->
+<div id="interestAdSlot" style="display:none"></div>
+
 <!-- Roster -->
 <section class="roster-wrap">
   <div class="roster-head">
@@ -537,7 +540,12 @@
 
 <script src="types.js"></script>
 <script src="nighttype-shell.js"></script>
+<script src="interest-ads.js"></script>
 <script>
+  // 診断で「18歳以上」かつ「恋愛対象」を回答した人にだけ、恋愛対象別の広告を描画
+  // (未診断で相性ページに直接来た人には表示されない)
+  try { NightInterestAd.render('interestAdSlot'); } catch(e){}
+
   const order = ['A1','A2','A3','A4','B1','B2','B3','B4','C1','C2','C3','C4','D1','D2','D3','D4'];
 
   // ── Render roster ──

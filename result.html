@@ -1657,6 +1657,9 @@
     </div>
   </section>
 
+  <!-- 恋愛対象別広告(18歳以上と回答した人にだけ interest-ads.js が描画) -->
+  <div id="interestAdSlot" style="display:none"></div>
+
   <!-- Friend compare -->
   <section class="section-block">
     <div class="section-eyebrow">04 · 比べる</div>
@@ -1725,6 +1728,11 @@
 <script src="nighttype-shell.js"></script>
 <script src="questions.js"></script>
 <script src="gauges.js"></script>
+<script src="interest-ads.js"></script>
+<script>
+  // 診断で「18歳以上」かつ「恋愛対象」を回答した人にだけ、恋愛対象別の広告を描画
+  try { NightInterestAd.render('interestAdSlot'); } catch(e){}
+</script>
 <script>
   // ── Get type code ──
   const params = new URLSearchParams(location.search);
