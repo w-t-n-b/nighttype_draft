@@ -128,7 +128,6 @@
   .reveal-bar{height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--cyan));
     transition:width .15s linear}
 </style>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8982481388531362" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -192,8 +191,7 @@
 
     <button type="submit" class="psubmit" id="pSubmit" disabled>結果を見る →</button>
     <div class="perr" id="pErr"></div>
-    <!-- AdSense: In-article Ad slot [povl-profile] - replace this comment with <ins class="adsbygoogle"> unit after approval -->
-    <div class="ad-slot" id="adSlotProfile"></div>
+    
     <div style="margin-top:14px;font-size:11px;color:var(--ink-mute)">
       <a href="privacy.html" style="text-decoration:underline">プライバシーポリシー</a>
     </div>
@@ -233,21 +231,6 @@
 
   const root = document.getElementById('qvRoot');
   window.QuizVertical.renderPage(root, page);
-
-  // ── AdSense: p=2/3/4 に In-article Ad プレースホルダーを挿入(承認後に adsbygoogle を注入) ──
-  if(page === 2 || page === 3 || page === 4){
-    const insertQuizAd = () => {
-      const nextBtn = document.getElementById('qvNext');
-      if(!nextBtn || document.getElementById('adSlotQuiz' + page)) return;
-      const holder = document.createElement('div');
-      holder.id = 'adSlotQuiz' + page;
-      holder.className = 'ad-slot';
-      /* AdSense: In-article Ad slot [quiz-p2/3/4] - insert unit after approval */
-      nextBtn.parentNode.insertBefore(holder, nextBtn);
-    };
-    setTimeout(insertQuizAd, 150);
-  }
-
 
   // page=1 で最初の5問すべて回答後、「次へ」ボタン押下で quiz_started を発火 (1セッション内1回)
   if(page === 1){
