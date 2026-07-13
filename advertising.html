@@ -17,7 +17,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>広告掲載のご案内｜夜キャラ診断16types</title>
-<meta name="description" content="夜キャラ診断16typesの広告・タイアップのご案内。Z世代女性中心・恋愛/夜の関心が明確な高エンゲージメント層に、診断結果の文脈でネイティブに届く媒体。恋愛対象別の出し分け配信に対応。" />
+<meta name="description" content="夜キャラ診断16typesの広告・タイアップのご案内。利用者の約9割が18〜20代（男女問わず）。恋愛/夜の関心が明確な高エンゲージメント層に、診断結果の文脈でネイティブに届く媒体。マッチングアプリと好相性。" />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="https://yoruchara16types.com/advertising.html" />
 <meta property="og:type" content="website" />
@@ -51,16 +51,23 @@
   }
   .ad-eyebrow::before,.ad-eyebrow::after{content:"";width:22px;height:1px;background:var(--cyan);opacity:.5}
   .ad-hero h1{
-    font-family:"Cormorant Garamond",serif;font-weight:500;
-    font-size:clamp(30px,6vw,52px);line-height:1.18;letter-spacing:-.01em;
+    font-family:"Noto Sans JP",sans-serif;font-weight:700;
+    font-size:clamp(25px,5vw,42px);line-height:1.42;letter-spacing:.01em;
     color:var(--ink);margin-bottom:22px;text-wrap:balance;
   }
   .ad-hero h1 em{
-    font-style:italic;
+    font-style:normal;
     background:linear-gradient(135deg,var(--violet),var(--cyan));
     -webkit-background-clip:text;background-clip:text;color:transparent;
   }
-  .ad-hero p{color:var(--ink-mute);font-size:15px;line-height:1.95;max-width:620px;margin:0 auto 32px;text-wrap:pretty}
+  .ad-hero p{color:var(--ink-mute);font-size:15px;line-height:1.95;max-width:620px;margin:0 auto 24px;text-wrap:pretty}
+  .ad-hero-badge{
+    display:block;width:fit-content;max-width:100%;margin:0 auto 30px;padding:10px 22px;border-radius:99px;
+    font-size:13.5px;color:var(--ink);text-wrap:balance;
+    border:1px solid rgba(244,114,182,.45);background:rgba(244,114,182,.10);
+  }
+  .ad-hero-badge b{background:linear-gradient(135deg,var(--pink),var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
   .ad-hero .cta-start{font-size:15px;min-width:auto;padding:16px 40px}
 
   /* ── Section ── */
@@ -71,8 +78,8 @@
     text-transform:uppercase;color:var(--cyan);margin-bottom:12px;
   }
   .ad-sec-title{
-    font-family:"Cormorant Garamond",serif;font-weight:500;font-style:italic;
-    font-size:clamp(26px,4.6vw,38px);line-height:1.2;color:var(--ink);
+    font-family:"Noto Sans JP",sans-serif;font-weight:700;font-style:normal;
+    font-size:clamp(22px,4vw,32px);line-height:1.35;color:var(--ink);letter-spacing:.01em;
   }
   .ad-sec-sub{color:var(--ink-mute);font-size:13.5px;line-height:1.9;margin-top:14px;max-width:600px;margin-left:auto;margin-right:auto;text-wrap:pretty}
 
@@ -86,7 +93,7 @@
   .ad-strength::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
     background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent)}
   .ad-strength .num{
-    font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;
+    font-family:"Space Mono",monospace;font-size:12px;font-weight:700;letter-spacing:.2em;
     color:var(--cyan);margin-bottom:14px;
   }
   .ad-strength h3{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:12px;line-height:1.5}
@@ -98,18 +105,24 @@
     border:1px solid var(--line);border-radius:16px;background:var(--glass);
     backdrop-filter:blur(14px);padding:26px 18px;text-align:center;
   }
+  .ad-stat{padding:34px 20px}
   .ad-stat .figure{
-    font-family:"Cormorant Garamond",serif;font-weight:600;
-    font-size:clamp(30px,6vw,42px);line-height:1;letter-spacing:-.01em;
+    font-family:"Noto Sans JP",sans-serif;font-weight:700;
+    font-size:clamp(40px,8vw,58px);line-height:1;letter-spacing:-.01em;
+    font-feature-settings:"tnum" 1,"lnum" 1;
     background:linear-gradient(135deg,#fff,var(--violet) 60%,var(--cyan));
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    margin-bottom:10px;
+    margin-bottom:12px;
   }
-  .ad-stat .figure .unit{font-size:.5em;font-family:"Noto Sans JP",sans-serif;font-weight:500;-webkit-text-fill-color:var(--ink-mute)}
-  .ad-stat .label{font-size:12px;color:var(--ink);font-weight:500;margin-bottom:4px}
-  .ad-stat .note{font-size:10.5px;color:var(--ink-faint);line-height:1.5}
+  .ad-stat .figure .unit{font-size:.44em;font-family:"Noto Sans JP",sans-serif;font-weight:700;-webkit-text-fill-color:var(--ink-mute);margin-left:1px}
+  .ad-stat .label{font-size:13.5px;color:var(--ink);font-weight:700;margin-bottom:5px}
+  .ad-stat .note{font-size:11px;color:var(--ink-faint);line-height:1.5}
   .ad-stat.hi{border-color:rgba(155,124,248,.35);background:var(--glass-strong)}
   .ad-data-foot{font-size:11px;color:var(--ink-faint);text-align:center;line-height:1.8;letter-spacing:.02em}
+  /* 補助スタッツ（ピル） */
+  .ad-substats{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 12px;margin:20px auto 0;max-width:760px}
+  .ad-substat{font-size:12px;color:var(--ink-mute);border:1px solid var(--line);border-radius:99px;padding:9px 16px;background:var(--glass)}
+  .ad-substat b{color:var(--ink);font-weight:700;font-feature-settings:"tnum" 1}
 
   /* ── 属性バー ── */
   .ad-attrs{display:flex;flex-direction:column;gap:18px;max-width:560px;margin:34px auto 0}
@@ -130,6 +143,10 @@
   .ad-fit-tags span{
     font-size:12.5px;color:var(--ink);padding:8px 16px;border-radius:99px;
     border:1px solid rgba(155,124,248,.35);background:rgba(155,124,248,.08);
+  }
+  .ad-fit-tags span.feat{
+    font-size:13.5px;font-weight:700;color:#fff;padding:9px 20px;
+    border-color:rgba(244,114,182,.6);background:rgba(244,114,182,.14);
   }
   .ad-fit p{font-size:13px;color:var(--ink-mute);line-height:2;text-align:center;text-wrap:pretty;max-width:640px;margin:0 auto}
 
@@ -164,7 +181,7 @@
     backdrop-filter:blur(14px);padding:24px 18px;text-align:center;
   }
   .ad-step .n{
-    font-family:"Cormorant Garamond",serif;font-style:italic;font-size:30px;
+    font-family:"Noto Sans JP",sans-serif;font-weight:800;font-size:26px;
     color:var(--violet);line-height:1;margin-bottom:12px;
   }
   .ad-step h4{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:8px}
@@ -228,7 +245,7 @@
 
   @media (max-width:720px){
     .ad-strengths{grid-template-columns:1fr}
-    .ad-stats{grid-template-columns:repeat(2,1fr)}
+    .ad-stats{grid-template-columns:1fr}
     .ad-flow{grid-template-columns:repeat(2,1fr)}
   }
   @media (max-width:600px){
@@ -267,10 +284,11 @@
     <div class="ad-eyebrow">For Advertisers</div>
     <h1>「量」ではなく<em>「濃さ」</em>で届く、<br>恋愛特化の診断メディアです。</h1>
     <p>
-      夜キャラ診断16typesは、<b style="color:var(--ink)">恋愛と「夜の相性」に自ら関心を持って訪れる</b>Z世代女性中心のメディア。
-      巨大メディアのような総量はありません。その代わり、あなたの商材が「ど真ん中」に刺さる層だけに、
-      診断結果という高関心の文脈で、広告を"コンテンツの続き"として届けます。
+      夜キャラ診断16typesは、<b style="color:var(--ink)">恋愛と「夜の相性」を自分から調べに来る</b>10〜20代のメディア。
+      利用者の約9割が18〜20代（男女問わず）です。巨大メディアのような数はありません。
+      その代わり、あなたの商材が「ど真ん中」に刺さる人だけに、診断結果という熱量の高い場面で広告を届けます。
     </p>
+    <div class="ad-hero-badge">とくに <b>マッチングアプリ・恋愛サービス</b>と相性抜群です</div>
     <a href="#contact" class="cta-start">広告のご相談・資料請求<span class="arrow">→</span></a>
   </header>
 
@@ -278,24 +296,24 @@
   <section class="ad-sec">
     <div class="ad-sec-head">
       <div class="ad-sec-eyebrow">Why it works</div>
-      <h2 class="ad-sec-title">小さいが、濃い。<br>だから成果につながる。</h2>
-      <p class="ad-sec-sub">「何人来るか」ではなく「狙った層にどれだけ深く当たるか」。この媒体の価値は3点に集約されます。</p>
+      <h2 class="ad-sec-title">小さいけれど、濃い。<br>だから成果につながります。</h2>
+      <p class="ad-sec-sub">「何人来るか」ではなく「狙った人にどれだけ深く刺さるか」。この媒体の強みは3つです。</p>
     </div>
     <div class="ad-strengths">
       <div class="ad-strength">
         <div class="num">01</div>
-        <h3>属性が刺さりすぎている</h3>
-        <p>24歳以下が約9割・女性中心。「恋愛・夜の相性」を自分から調べに来た層。マッチングアプリ・恋愛商材にとって、汎用メディアの数万PVより濃い到達です。</p>
+        <h3>マッチングアプリが<br>一番会いたい層</h3>
+        <p>利用者の約9割が18〜20代（男女問わず）。しかも「恋愛・夜の相性」を自分から調べに来ています。マッチングアプリや恋愛サービスが探している人に、ムダ打ちなく届きます。</p>
       </div>
       <div class="ad-strength">
         <div class="num">02</div>
-        <h3>文脈がそのまま追い風</h3>
-        <p>診断結果ページは「今の自分の恋愛モード」を確かめている瞬間。ここに出す恋愛系広告は"広告"ではなく"続きのコンテンツ"として自然に読まれます。</p>
+        <h3>診断直後は<br>"恋愛スイッチ"が入っている</h3>
+        <p>結果を見た瞬間は、自分の恋愛に一番意識が向くタイミング。そこに出す広告は"宣伝"に見えず、診断結果の"続き"として自然に読んでもらえます。</p>
       </div>
       <div class="ad-strength">
         <div class="num">03</div>
-        <h3>読まれている証拠がある</h3>
-        <p>診断完了率96.5%。直帰で消えていくトラフィックではなく、最後まで読み込む"読むメディア"であることが数字で裏づけられています。</p>
+        <h3>最後まで読まれる<br>（完了率96.5%）</h3>
+        <p>開いてすぐ離脱ではなく、20問を最後まで回答する熱量。しっかり中身を読み込む人が集まる面に、広告を載せられます。</p>
       </div>
     </div>
   </section>
@@ -308,42 +326,36 @@
       <p class="ad-sec-sub">総量よりも、密度とエンゲージメント、そして属性の濃さで評価いただける媒体です。</p>
     </div>
 
-    <!-- 数値はGA4実測（夜キャラ診断_デイリーレポート raw_daily / 直近30日=2026-06-13〜07-12）。
-         最新化する場合はレポートの日次推移から同様に集計して差し替え。 -->
+    <!-- 数値はGA4実測（reportPV30 / 直近30日=2026-06-13〜07-12）:
+         PV=257,570 / sessions=49,546 / users(unique)=36,063 / PV per session=5.20 -->
     <div class="ad-stats">
-      <div class="ad-stat">
-        <div class="figure">4.2<span class="unit">万</span></div>
-        <div class="label">月間ユーザー（のべ）</div>
-        <div class="note">直近30日・GA4実測</div>
+      <div class="ad-stat hi">
+        <div class="figure">26<span class="unit">万</span></div>
+        <div class="label">月間ページビュー</div>
+        <div class="note">1訪問あたり平均5.2ページ回遊（GA4実測）</div>
       </div>
-      <div class="ad-stat">
-        <div class="figure">2.3<span class="unit">万</span></div>
-        <div class="label">月間診断完了数</div>
-        <div class="note">直近30日・診断を最後まで完了</div>
-      </div>
-      <div class="ad-stat">
-        <div class="figure">4,852<span class="unit">/日</span></div>
-        <div class="label">単日最高到達</div>
-        <div class="note">検索起点でバイラル実績あり</div>
+      <div class="ad-stat hi">
+        <div class="figure">9<span class="unit">割</span></div>
+        <div class="label">18〜20代の利用者</div>
+        <div class="note">男女問わず・24歳以下だけで88%（GA4実測）</div>
       </div>
       <div class="ad-stat hi">
         <div class="figure">96.5<span class="unit">%</span></div>
         <div class="label">診断完了率</div>
-        <div class="note">開始した人が最後まで到達</div>
-      </div>
-      <div class="ad-stat hi">
-        <div class="figure">88<span class="unit">%</span></div>
-        <div class="label">24歳以下比率</div>
-        <div class="note">Z世代ど真ん中</div>
-      </div>
-      <div class="ad-stat">
-        <div class="figure">56<span class="unit">%</span></div>
-        <div class="label">女性ユーザー比率</div>
-        <div class="note">恋愛感度の高い層が中心</div>
+        <div class="note">開始した人が最後まで回答</div>
       </div>
     </div>
+
+    <div class="ad-substats">
+      <span class="ad-substat">月間ユニークユーザー <b>約3.6万</b>（直近30日）</span>
+      <span class="ad-substat">月間セッション <b>約5万</b></span>
+      <span class="ad-substat">月間診断完了 <b>約2.3万</b></span>
+      <span class="ad-substat">単日最高 <b>4,852</b>（検索バイラル実績）</span>
+      <span class="ad-substat">SNSシェア <b>月約1,900件</b>・拡散実績あり</span>
+    </div>
+
     <p class="ad-data-foot">
-      ※ GA4実測値（2026年7月時点・直近30日）。日次は現在おおむね2,000〜3,000人で推移し、成長を続けています。<br>
+      ※ GA4実測値（2026年7月時点・直近30日 = 6/13〜7/12）。日次は現在おおむね2,000〜3,000人で推移し、成長を続けています。<br>
       訪問者のほぼ全員が「恋愛・夜の相性」に自ら関心を持って訪れる層です。最新の媒体資料・属性の詳細はお問い合わせ時にお渡しします。
     </p>
   </section>
@@ -352,21 +364,22 @@
   <section class="ad-sec">
     <div class="ad-sec-head">
       <div class="ad-sec-eyebrow">Best fit</div>
-      <h2 class="ad-sec-title">こんな商材と相性が良い媒体です</h2>
+      <h2 class="ad-sec-title">マッチングアプリと、相性抜群。</h2>
+      <p class="ad-sec-sub">恋愛診断サイトは、マッチングアプリ・恋愛サービスにとって"入口"に最適な面です。</p>
     </div>
     <div class="ad-fit">
       <div class="ad-fit-tags">
-        <span>マッチングアプリ</span>
-        <span>恋愛・出会い系サービス</span>
+        <span class="feat">マッチングアプリ</span>
+        <span class="feat">恋愛・出会い系サービス</span>
         <span>コスメ・美容</span>
         <span>占い・診断コンテンツ</span>
-        <span>Z世代向けブランド</span>
+        <span>10〜20代向けブランド</span>
         <span>エンタメ・音楽・アプリ</span>
       </div>
       <p>
-        とくにマッチングアプリ・恋愛系サービスとは、ユーザーの気持ちの向きが完全に一致します。
-        「自分はどんな夜のタイプなのか」を確かめた直後の、恋愛感度が最も高い瞬間。
-        この文脈でのファーストタッチは、汎用面に出すよりも自然に受け止められ、次の行動につながりやすい設計です。
+        「自分はどんな夜のタイプなのか」を確かめた直後は、恋愛への意識が最も高まる瞬間。
+        そこに"次の一歩"としてマッチングアプリを差し出せば、汎用面の広告よりずっと自然に受け止められ、登録・行動につながりやすくなります。
+        利用者の約9割が18〜20代（男女問わず）＝アプリが最も獲得したい新規層です。
       </p>
     </div>
   </section>
@@ -533,7 +546,7 @@
     <div class="ad-faq">
       <details>
         <summary>DAU(1日あたりの利用者)はそれほど多くないのでは?</summary>
-        <div class="a">おっしゃる通り、巨大メディアのような総量はありません。この媒体の価値は「量」ではなく「濃さ」にあります。恋愛・夜の相性に自ら関心を持って訪れるZ世代女性中心の層に、診断結果という高関心の文脈で届くため、汎用面の数万インプレッションよりも1接触あたりの質が高くなります。検索起点で単日4,852人に届いたバイラル実績もあり、上振れの余地もあります。</div>
+        <div class="a">おっしゃる通り、巨大メディアのような総量はありません。この媒体の価値は「量」ではなく「濃さ」にあります。恋愛・夜の相性に自ら関心を持って訪れる18〜20代（男女問わず・約9割）に、診断結果という熱量の高い場面で届くため、汎用面の数万インプレッションよりも1接触あたりの質が高くなります。検索起点で単日4,852人に届いたバイラル実績・SNSでの拡散実績もあり、上振れの余地もあります。</div>
       </details>
       <details>
         <summary>掲載できる商材に制限はありますか?</summary>
