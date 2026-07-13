@@ -1588,6 +1588,9 @@
     </div>
   </section>
 
+  <!-- 恋愛対象別広告(上部・帯) — シェア帯を挟まない位置に配置 -->
+  <div id="interestAdSlotTop" style="display:none"></div>
+
   <!-- Aruaru -->
   <section class="section-block">
     <div class="section-eyebrow">02 · あるある</div>
@@ -1732,6 +1735,8 @@
   // 診断で「18歳以上」かつ「恋愛対象」を回答した人にだけ、恋愛対象別の広告を描画
   // 結果ページ=hero(スマホ正方形/PC横長)。幅は本文(result-main 760px)に合わせる
   try { NightInterestAd.render('interestAdSlot', {layout:'hero', maxWidth:760}); } catch(e){}
+  // 上部枠=帯(strip)。読み流れに入るため軽めに、既存heroと見た目を変える
+  try { NightInterestAd.render('interestAdSlotTop', {layout:'strip', maxWidth:760}); } catch(e){}
 </script>
 <script>
   // ── Get type code ──
