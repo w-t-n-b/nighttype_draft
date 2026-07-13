@@ -1588,7 +1588,7 @@
     </div>
   </section>
 
-  <!-- 恋愛対象別広告(上部・帯) — シェア帯を挟まない位置に配置 -->
+  <!-- 恋愛対象別広告(上部) — シェア帯を挟まない位置に配置 -->
   <div id="interestAdSlotTop" style="display:none"></div>
 
   <!-- Aruaru -->
@@ -1658,9 +1658,6 @@
       </div>
     </div>
   </section>
-
-  <!-- 恋愛対象別広告(18歳以上と回答した人にだけ interest-ads.js が描画) -->
-  <div id="interestAdSlot" style="display:none"></div>
 
   <!-- Friend compare -->
   <section class="section-block">
@@ -1733,10 +1730,8 @@
 <script src="interest-ads.js"></script>
 <script>
   // 診断で「18歳以上」かつ「恋愛対象」を回答した人にだけ、恋愛対象別の広告を描画
-  // 結果ページ=hero(スマホ正方形/PC横長)。幅は本文(result-main 760px)に合わせる
-  try { NightInterestAd.render('interestAdSlot', {layout:'hero', maxWidth:760}); } catch(e){}
-  // 上部枠=帯(strip)。読み流れに入るため軽めに、既存heroと見た目を変える
-  try { NightInterestAd.render('interestAdSlotTop', {layout:'strip', maxWidth:760}); } catch(e){}
+  // 結果ページの広告(上部・01あなたの夜と02あるあるの間)。hero(スマホ正方形/PC横長)、幅は本文760pxに合わせる
+  try { NightInterestAd.render('interestAdSlotTop', {layout:'hero', maxWidth:760}); } catch(e){}
 </script>
 <script>
   // ── Get type code ──
