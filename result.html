@@ -1397,6 +1397,7 @@
     .mega-share-sub{ font-size:11.5px; }
   }
 </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8982481388531362" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -1422,7 +1423,6 @@
     <a href="match.html">Match</a>
     <a href="stickers.html">Stickers</a>
     
-    <a href="advertising.html">広告・タイアップ</a>
   </div>
   <button class="nt-burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
   <div class="nt-overlay" id="navOverlay"></div>
@@ -1589,9 +1589,6 @@
     </div>
   </section>
 
-  <!-- 恋愛対象別広告(上部) — シェア帯を挟まない位置に配置 -->
-  <div id="interestAdSlotTop" style="display:none"></div>
-
   <!-- Aruaru -->
   <section class="section-block">
     <div class="section-eyebrow">02 · あるある</div>
@@ -1684,6 +1681,9 @@
 
   <!-- shareBottom / fabShare は廃止: シェア導線は shareT1(ヒーロー直下) + shareMid(あるある下) の2箇所構成 -->
 
+  <!-- 恋愛対象別 アフィリエイト広告(ad-targeting.js が interest から決定) -->
+  <div class="aff-slot" style="max-width:640px; margin:32px auto; padding:0 20px;"></div>
+
   <!-- 全16キャラ入りLINEスタンプ 販売中 CTA -->
   <a href="https://store.line.me/stickershop/product/34964266/ja"
      class="all-stamp-cta"
@@ -1728,12 +1728,6 @@
 <script src="nighttype-shell.js"></script>
 <script src="questions.js"></script>
 <script src="gauges.js"></script>
-<script src="interest-ads.js"></script>
-<script>
-  // 診断で「18歳以上」かつ「恋愛対象」を回答した人にだけ、恋愛対象別の広告を描画
-  // 結果ページの広告(上部・01あなたの夜と02あるあるの間)。hero(スマホ正方形/PC横長)、幅は本文760pxに合わせる
-  try { NightInterestAd.render('interestAdSlotTop', {layout:'hero', maxWidth:760}); } catch(e){}
-</script>
 <script>
   // ── Get type code ──
   const params = new URLSearchParams(location.search);
