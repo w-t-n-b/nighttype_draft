@@ -30,24 +30,24 @@
     // 恋愛対象=女性 → 「男性向け」広告(性癖マッチング / バーの女性)
     female: {
       href: 'https://ad.ignite-ad.jp/a77r26r8054911bb/cl/?bId=5W56W45f',
-      square:    'images/ads/ad-seiheki-square.jpg',
-      landscape: 'images/ads/ad-seiheki-landscape.jpg',
-      strip:     'images/ads/ad-seiheki-strip.jpg'
+      square:    '/images/ads/ad-seiheki-square.jpg',
+      landscape: '/images/ads/ad-seiheki-landscape.jpg',
+      strip:     '/images/ads/ad-seiheki-strip.jpg'
     },
     // 恋愛対象=どちらも → 男性向け広告(性癖マッチング)に合わせる
     both: {
       href: 'https://ad.ignite-ad.jp/a77r26r8054911bb/cl/?bId=5W56W45f',
-      square:    'images/ads/ad-seiheki-square.jpg',
-      landscape: 'images/ads/ad-seiheki-landscape.jpg',
-      strip:     'images/ads/ad-seiheki-strip.jpg'
+      square:    '/images/ads/ad-seiheki-square.jpg',
+      landscape: '/images/ads/ad-seiheki-landscape.jpg',
+      strip:     '/images/ads/ad-seiheki-strip.jpg'
     },
     // 恋愛対象=男性 → 「女性向け」広告(いつもの恋の外側へ / 窓辺の女性)
     //   noPr:true … 画像にPR/18禁が焼き込まれているのでカード側のPRバッジは出さない
     male: {
       href: 'https://px.a8.net/svt/ejp?a8mat=4B7WD7+GFSW36+1KZ4+601S2',
-      square:    'images/ads/ad-itsumono-square.jpg',
-      landscape: 'images/ads/ad-itsumono-landscape.jpg',
-      strip:     'images/ads/ad-itsumono-strip.jpg',
+      square:    '/images/ads/ad-itsumono-square.jpg',
+      landscape: '/images/ads/ad-itsumono-landscape.jpg',
+      strip:     '/images/ads/ad-itsumono-strip.jpg',
       noPr: true
     }
   };

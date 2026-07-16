@@ -316,7 +316,7 @@
   /* ── Result ── */
   .result-wrap{
     max-width:880px; margin:0 auto;
-    padding:30px 24px 100px;
+    padding:30px 24px 32px;
     position:relative; z-index:5;
   }
   /* 2人揃うまでは結果セクションごと畳む（空白防止） */
@@ -444,7 +444,6 @@
     .result-hearts{font-size:30px; letter-spacing:5px}
   }
 </style>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8982481388531362" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -462,6 +461,7 @@
     <a href="characters.html">Characters</a>
     <a href="match.html" class="active">Match</a>
     <a href="stickers.html">Stickers</a>
+    <a href="advertising.html">広告・タイアップ</a>
   </div>
   <button class="nt-burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
   <div class="nt-overlay" id="navOverlay"></div>
@@ -518,13 +518,13 @@
     <div class="result-comment" id="resComment">—</div>
     <div class="arena-cta">
       <a href="characters.html" class="nt-btn">Browse characters</a>
-      <a href="quiz.html" class="cta-start">診断をはじめる<span class="arrow">→</span></a>
+      <a href="quiz.html?p=1&ref=match" class="cta-start">診断をはじめる<span class="arrow">→</span></a>
     </div>
   </div>
 </section>
 
-<!-- 恋愛対象別 アフィリエイト広告(ad-targeting.js が interest から決定) -->
-<div class="aff-slot" data-aff-context="match" style="max-width:640px; margin:28px auto 0; padding:0 20px;"></div>
+<!-- 恋愛対象別広告(18歳以上と回答した人にだけ interest-ads.js が描画) -->
+<div id="interestAdSlot" style="display:none"></div>
 
 <!-- Roster -->
 <section class="roster-wrap">
@@ -539,9 +539,13 @@
 </section>
 
 <script src="types.js"></script>
-<script src="ad-targeting.js" defer></script>
+<script src="interest-ads.js"></script>
 <script src="nighttype-shell.js"></script>
 <script>
+  // 診断で「18歳以上」かつ「恋愛対象」を回答した人にだけ、恋愛対象別の広告を描画
+  // 相性ページ=strip(全端末で横長帯)。幅は本文(result-wrap 880px)に合わせる
+  try { NightInterestAd.render('interestAdSlot', {layout:'strip', maxWidth:880}); } catch(e){}
+
   const order = ['A1','A2','A3','A4','B1','B2','B3','B4','C1','C2','C3','C4','D1','D2','D3','D4'];
 
   // ── Render roster ──
@@ -772,7 +776,7 @@
   <section class="seo-wrap" style="max-width:760px;margin:0 auto;padding:40px 22px 24px">
     <details>
       <summary>夜の相性診断とは？</summary>
-      <div class="acc-body"><p style="margin:0"><strong>夜の相性診断</strong>は、<strong>夜キャラ診断（ナイトタイプ診断）</strong>の16タイプ同士の組み合わせから、2人の“夜の相性”を読み解く無料の相性チェックです。自分と相手のナイトタイプを選ぶだけで、16×16すべての組み合わせの相性が見られます。診断を受けていない人も、<a href="characters.html">16タイプ一覧</a>から近いタイプを選べばOK。自分のタイプを正確に知りたい場合は<a href="quiz.html">無料診断（20問・約2〜3分）</a>から。</p></div>
+      <div class="acc-body"><p style="margin:0"><strong>夜の相性診断</strong>は、<strong>夜キャラ診断（ナイトタイプ診断）</strong>の16タイプ同士の組み合わせから、2人の“夜の相性”を読み解く無料の相性チェックです。自分と相手のナイトタイプを選ぶだけで、16×16すべての組み合わせの相性が見られます。診断を受けていない人も、<a href="characters.html">16タイプ一覧</a>から近いタイプを選べばOK。自分のタイプを正確に知りたい場合は<a href="quiz.html?p=1&ref=match">無料診断（20問・約2〜3分）</a>から。全組み合わせの一覧は<a href="matrix.html">相性一覧表</a>でも見られます。</p></div>
     </details>
     <details>
       <summary>相性はどう決まる？（4軸の読み方）</summary>

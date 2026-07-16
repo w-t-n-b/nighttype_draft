@@ -1397,7 +1397,6 @@
     .mega-share-sub{ font-size:11.5px; }
   }
 </style>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8982481388531362" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -1422,6 +1421,7 @@
     <a href="index.html#about">About</a>
     <a href="match.html">Match</a>
     <a href="stickers.html">Stickers</a>
+    <a href="advertising.html">広告・タイアップ</a>
     
   </div>
   <button class="nt-burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
@@ -1589,6 +1589,9 @@
     </div>
   </section>
 
+  <!-- 恋愛対象別広告(上部) — シェア帯を挟まない位置に配置 -->
+  <div id="interestAdSlotTop" style="display:none"></div>
+
   <!-- Aruaru -->
   <section class="section-block">
     <div class="section-eyebrow">02 · あるある</div>
@@ -1681,8 +1684,6 @@
 
   <!-- shareBottom / fabShare は廃止: シェア導線は shareT1(ヒーロー直下) + shareMid(あるある下) の2箇所構成 -->
 
-  <!-- 恋愛対象別 アフィリエイト広告(ad-targeting.js が interest から決定) -->
-  <div class="aff-slot" style="max-width:640px; margin:32px auto; padding:0 20px;"></div>
 
   <!-- 全16キャラ入りLINEスタンプ 販売中 CTA -->
   <a href="https://store.line.me/stickershop/product/34964266/ja"
@@ -1728,6 +1729,12 @@
 <script src="nighttype-shell.js"></script>
 <script src="questions.js"></script>
 <script src="gauges.js"></script>
+<script src="interest-ads.js"></script>
+<script>
+  // 診断で「18歳以上」かつ「恋愛対象」を回答した人にだけ、恋愛対象別の広告を描画
+  // 結果ページの広告(上部・01あなたの夜と02あるあるの間)。hero(スマホ正方形/PC横長)、幅は本文760pxに合わせる
+  try { NightInterestAd.render('interestAdSlotTop', {layout:'hero', maxWidth:760}); } catch(e){}
+</script>
 <script>
   // ── Get type code ──
   const params = new URLSearchParams(location.search);
@@ -2888,5 +2895,33 @@
   </div>
 </div>
 
+<script>
+/* 相性ページ(matrix/match)発の診断者にだけ、結果確認後すぐ相性へ戻れるCTAを表示 */
+(function(){
+  var ref = null; try{ ref = sessionStorage.getItem('quizRef'); }catch(_){}
+  if(ref !== 'matrix' && ref !== 'match') return;
+  function ins(){
+    var hero = document.querySelector('.result-hero');
+    if(!hero || document.getElementById('backToCompat')) return;
+    var my = ''; try{ my = localStorage.getItem('nightTypeResult') || ''; }catch(_){}
+    var href = (ref === 'matrix') ? 'matrix.html' : ('match.html' + (my ? ('?a=' + encodeURIComponent(my)) : ''));
+    var label = (ref === 'matrix') ? '相性一覧表に戻る（あなたの行が光ります）' : '夜の相性診断に戻る（あなたのタイプ入りで）';
+    var d = document.createElement('div');
+    d.id = 'backToCompat';
+    d.style.cssText = 'max-width:640px;margin:18px auto 6px;padding:0 20px;';
+    d.innerHTML = '<a href="' + href + '"' +
+      ' style="display:flex;align-items:center;justify-content:center;gap:8px;border-radius:99px;padding:15px 20px;' +
+      'font-size:14.5px;font-weight:700;letter-spacing:.03em;text-decoration:none;color:#0b0820;' +
+      'background:linear-gradient(135deg,#F472B6,#9B7CF8);box-shadow:0 10px 34px rgba(155,124,248,.3);">' +
+      '\u2190 ' + label + '</a>';
+    d.querySelector('a').addEventListener('click', function(){
+      try{ if(typeof gtag === 'function') gtag('event', 'back_to_compat_click', { ref: ref }); }catch(_){}
+    });
+    hero.parentNode.insertBefore(d, hero.nextSibling);
+    try{ if(typeof gtag === 'function') gtag('event', 'back_to_compat_shown', { ref: ref }); }catch(_){}
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ins); else ins();
+})();
+</script>
 </body>
 </html>

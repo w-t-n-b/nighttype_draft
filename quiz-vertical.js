@@ -126,6 +126,10 @@
         answers[qid] = val;
         saveAnswers(answers);
         applySelection(qid, val);
+        // GA4: 質問ごとの到達/回答（離脱箇所の特定用・初回回答時のみ）
+        if(isNew && typeof window.gtag === 'function'){
+          try{ window.gtag('event', 'question_answered', { question_number: qid, answer_value: val }); }catch(_){}
+        }
         // 初回回答時のみ、次の未回答質問へスクロール
         if(isNew){
           setTimeout(() => scrollToNext(rootEl, qs, answers, qid), 250);

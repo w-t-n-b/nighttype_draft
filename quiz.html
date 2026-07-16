@@ -128,7 +128,6 @@
   .reveal-bar{height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--cyan));
     transition:width .15s linear}
 </style>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8982481388531362" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -144,6 +143,7 @@
     <a href="stickers.html">Stickers</a>
     
     <a href="quiz.html" class="active">Quiz →</a>
+    <a href="advertising.html">広告・タイアップ</a>
   </div>
   <button class="nt-burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
   <div class="nt-overlay" id="navOverlay"></div>
@@ -179,8 +179,8 @@
     <div class="pfield">
       <span class="plabel">あなたの年齢層は?</span>
       <div class="pages-grid" id="pAge">
-        <button type="button" class="pgbtn" data-a="10e">10代前半</button>
-        <button type="button" class="pgbtn" data-a="10l">10代後半</button>
+        <button type="button" class="pgbtn" data-a="u18">17歳以下</button>
+        <button type="button" class="pgbtn" data-a="18t">18・19歳</button>
         <button type="button" class="pgbtn" data-a="20e">20代前半</button>
         <button type="button" class="pgbtn" data-a="20l">20代後半</button>
         <button type="button" class="pgbtn" data-a="30e">30代前半</button>
@@ -192,8 +192,6 @@
 
     <button type="submit" class="psubmit" id="pSubmit" disabled>結果を見る →</button>
     <div class="perr" id="pErr"></div>
-    <!-- AdSense: In-article Ad slot [povl-profile] - replace this comment with <ins class="adsbygoogle"> unit after approval -->
-    <div class="ad-slot" id="adSlotProfile"></div>
     <div style="margin-top:14px;font-size:11px;color:var(--ink-mute)">
       <a href="privacy.html" style="text-decoration:underline">プライバシーポリシー</a>
     </div>
@@ -221,32 +219,28 @@
     localStorage.removeItem('nightTypeAnswers');
     localStorage.removeItem('nightTypeResult');
     localStorage.removeItem('nightTypeScores');
-    // Q1〜はTOPなのでリスタートはTOPへ
-    location.replace('index.html');
+    // 再診断はQ1から直接スタート（TOPへは戻さない）
+    page = 1;
+    try{
+      const q = new URLSearchParams(location.search);
+      q.delete('restart'); q.set('p', '1');
+      history.replaceState(null, '', 'quiz.html?' + q.toString());
+    }catch(_){}
   }
 
-  // p=1/2/3/4 のみ有効。それ以外はTOPへ(?from= は引き継ぎ)
+  // p未指定・不正時はQ1〜5ページとして表示（TOPへは戻さない。?from= 等は保持）
   if(![1,2,3,4].includes(page)){
-    const from = params.get('from');
-    location.replace('index.html' + (from ? '?from=' + encodeURIComponent(from) : ''));
+    page = 1;
+    try{
+      const q = new URLSearchParams(location.search);
+      q.set('p', '1');
+      history.replaceState(null, '', 'quiz.html?' + q.toString());
+    }catch(_){}
   }
 
   const root = document.getElementById('qvRoot');
   window.QuizVertical.renderPage(root, page);
 
-  // ── AdSense: p=2/3/4 に In-article Ad プレースホルダーを挿入(承認後に adsbygoogle を注入) ──
-  if(page === 2 || page === 3 || page === 4){
-    const insertQuizAd = () => {
-      const nextBtn = document.getElementById('qvNext');
-      if(!nextBtn || document.getElementById('adSlotQuiz' + page)) return;
-      const holder = document.createElement('div');
-      holder.id = 'adSlotQuiz' + page;
-      holder.className = 'ad-slot';
-      /* AdSense: In-article Ad slot [quiz-p2/3/4] - insert unit after approval */
-      nextBtn.parentNode.insertBefore(holder, nextBtn);
-    };
-    setTimeout(insertQuizAd, 150);
-  }
 
 
   // page=1 で最初の5問すべて回答後、「次へ」ボタン押下で quiz_started を発火 (1セッション内1回)
@@ -461,5 +455,12 @@
     <a href="terms.html">利用規約</a>
   </div>
 </footer>
+<script>
+/* 相性系ページ(matrix/match)から来た人を記録 → 結果ページで「相性に戻る」CTAを出す */
+try{
+  var __ref = new URLSearchParams(location.search).get('ref');
+  if(__ref === 'matrix' || __ref === 'match') sessionStorage.setItem('quizRef', __ref);
+}catch(_){}
+</script>
 </body>
 </html>
