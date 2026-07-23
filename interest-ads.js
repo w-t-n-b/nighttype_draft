@@ -156,10 +156,31 @@
         '</a>' +
       '</div>';
     el.style.display = 'block';
+    // 広告リンクの識別: male→a8「いつもの」/ female・both→ignite「セイヘキ」
+    var interestKey = (p && p.romanticInterest) || 'both';
+    var adId = (interestKey === 'male') ? 'itsumono_a8' : 'seiheki_ignite';
     if(typeof gtag === 'function'){
-      try { gtag('event', 'interest_ad_view', { interest: (p.romanticInterest || 'both') }); } catch(_){}
+      try { gtag('event', 'interest_ad_view', { interest: interestKey }); } catch(_){}
+    }
+    // クリック計測(1回だけbind): ad_click { ad_id, placement }
+    var adLink = el.querySelector('a.nia-card');
+    if(adLink && !adLink.__adBound){
+      adLink.__adBound = true;
+      adLink.addEventListener('click', function(){
+        if(typeof gtag === 'function'){
+          try { gtag('event', 'ad_click', { ad_id: adId, placement: niaPageName() }); } catch(_){}
+        }
+      });
     }
     return true;
+  }
+
+  // 設置ページ名(placement)。/type/A1.html → type_A1、/result.html → result。
+  function niaPageName(){
+    var parts = (location.pathname || '').split('/').filter(Boolean);
+    var last = parts.length ? parts[parts.length-1].replace(/\.html?$/i,'') : 'index';
+    if(parts.length >= 2 && parts[parts.length-2] === 'type') return 'type_' + last;
+    return last || 'index';
   }
 
   window.NightInterestAd = { render: render, isEligible: isEligible, CREATIVES: CREATIVES };

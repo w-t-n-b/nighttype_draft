@@ -152,4 +152,30 @@
     ovl?.addEventListener('click', ()=>toggle(false));
     links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>toggle(false)));
   }
+
+  // === LINEスタンプ クリック計測（全ページ共通・デリゲート） ===
+  // スタンプへのリンク(全員セット/キャラ別/FAB)を1箇所で捕捉し GA4 に送る。
+  //   イベント: sticker_click { sticker_id, placement }
+  //   sticker_id → GA4カスタムディメンション(要登録)でキャラ別集計。placement=ページ(組込pagePathでも可)。
+  function ntPageName(){
+    var parts = (location.pathname || '').split('/').filter(Boolean);
+    var last = parts.length ? parts[parts.length-1].replace(/\.html?$/i,'') : 'index';
+    if(parts.length >= 2 && parts[parts.length-2] === 'type') return 'type_' + last; // /type/A1.html → type_A1
+    return last || 'index';
+  }
+  document.addEventListener('click', function(e){
+    var a = (e.target && e.target.closest) ? e.target.closest('a') : null;
+    if(!a) return;
+    var href = a.getAttribute('href') || '';
+    var id = a.getAttribute('data-sticker-id');
+    if(!id){
+      var m = href.match(/(?:stickershop\/product\/|S\/sticker\/)(\d+)/);
+      if(m) id = m[1];
+    }
+    var isSticker = !!id || /line\.me\/S\/sticker|store\.line\.me\/stickershop/.test(href);
+    if(!isSticker) return;
+    if(typeof gtag === 'function'){
+      try { gtag('event','sticker_click',{ sticker_id: id || 'unknown', placement: ntPageName() }); } catch(_){}
+    }
+  }, true);
 })();
