@@ -109,13 +109,14 @@
   <div class="seo-txt">
     <b>夜キャラ相性一覧表（ナイトタイプ相性マトリクス）</b>は、夜キャラ診断の16タイプすべての組み合わせ（16×16）の夜の相性を、
     「神」「最適」「共犯」「ギリ耐え」「共倒れ」「天敵」の6段階で俯瞰できる無料の一覧表です。
-    相性はS/M・愛/欲・Give/Takeの軸の補完と衝突から算出しています。
+    相性はS/M・愛/欲・Give/Takeの軸の補完と衝突から算出しています（各軸の意味は<a href="axes/" style="color:var(--violet)">4軸解説</a>へ）。
+    セルをタップすると、その組み合わせ専用の相性解説ページが開きます。
     自分のナイトタイプが分からない人は<a href="quiz.html" style="color:var(--violet)">20問・約2〜3分の無料診断</a>からどうぞ。
   </div>
 
   <div class="foot">
     夜キャラ診断 — 相性マトリクス<br/>
-    <a href="index.html">トップへ</a> ・ <a href="quiz.html">診断する</a> ・ <a href="match.html">夜の相性診断</a> ・ <a href="today.html">今夜の夜キャラ</a>
+    <a href="index.html">トップへ</a> ・ <a href="quiz.html">診断する</a> ・ <a href="match.html">夜の相性診断</a> ・ <a href="axes/">4軸解説</a> ・ <a href="today.html">今夜の夜キャラ</a>
   </div>
 </div>
 
@@ -157,7 +158,8 @@
     ORDER.forEach(function(col){
       var s = getCompat(row, col);
       var sc = SCALE[s] || SCALE[3];
-      html += '<td><a href="match.html?a='+row+'&b='+col+'" style="background:'+sc.bg+';color:'+sc.fg+'"' +
+      var pk = (ORDER.indexOf(row) <= ORDER.indexOf(col)) ? (row+'-'+col) : (col+'-'+row);
+      html += '<td><a href="compat/'+pk+'.html" style="background:'+sc.bg+';color:'+sc.fg+'"' +
         ' aria-label="'+esc(charName(row))+' × '+esc(charName(col))+' = '+sc.label+'"' +
         ' title="'+esc(charName(row))+' × '+esc(charName(col))+' = '+sc.label+'"' +
         ' onclick="track(\'matrix_cell_click\',{pair:\''+row+'-'+col+'\',score:'+s+'})">'+sc.sym+'</a></td>';
